@@ -5,43 +5,43 @@ import 'HunHome.dart';
 
 class LogIn extends StatefulWidget {
   @override
-  LogInState createState() => new LogInState();
+  createState() => new LogInState();
 }
 
 class LogInState extends State<LogIn> with TickerProviderStateMixin {
 
-  AnimationController cont1;
-  Animation anim1;
-  AnimationController cont2;
-  Animation anim2;
+  AnimationController rotationController;
+  Animation rotationAnimation;
+  AnimationController fadeController;
+  Animation fadeAnimation;
   Timer time;
 
   @override
   void initState() {
     super.initState();
 
-    cont1 =
+    rotationController =
         new AnimationController(vsync: this, duration: Duration(seconds: 1));
-    anim1 = new Tween(begin: 0.0, end: 0.5).animate(cont1);
+    rotationAnimation = new Tween(begin: 0.0, end: 0.5).animate(rotationController);
 
-    cont2 =
-        new AnimationController(vsync: this, duration: Duration(seconds: 1));
-    anim2 = new Tween(begin: 1.0, end: 0.0).animate(cont2);
+    fadeController =
+        new AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    fadeAnimation = new Tween(begin: 1.0, end: 0.0).animate(fadeController);
 
-    cont1.addStatusListener((status1) {
-      if (status1 == AnimationStatus.completed) {
-        cont2.forward();
-      }else if(status1 == AnimationStatus.dismissed){
-        cont1.forward();
+    rotationController.addStatusListener((rotationStatus) {
+      if (rotationStatus == AnimationStatus.completed) {
+        fadeController.forward();
+      }else if(rotationStatus == AnimationStatus.dismissed){
+        rotationController.forward();
       }
     });
 
-    cont2.addStatusListener((status2) {
-      if (status2 == AnimationStatus.completed) {
-        cont2.reverse();
-      }else if(status2 == AnimationStatus.dismissed){
-        cont1.repeat();
-        time = new Timer(Duration(seconds: 2), (){
+    fadeController.addStatusListener((fadeStatus) {
+      if (fadeStatus == AnimationStatus.completed) {
+        fadeController.reverse();
+      }else if(fadeStatus == AnimationStatus.dismissed){
+        rotationController.repeat();
+        time = new Timer(Duration(seconds: 3, milliseconds: 500), (){
           setState(() {
             Navigator.push(
                 context,
@@ -53,7 +53,7 @@ class LogInState extends State<LogIn> with TickerProviderStateMixin {
       }
     });
 
-    cont1.addListener((){
+    rotationController.addListener((){
       setState(() {
 
       });
@@ -61,19 +61,19 @@ class LogInState extends State<LogIn> with TickerProviderStateMixin {
   }
 
   void dispose() {
-    cont2.dispose();
-    cont1.dispose();
+    fadeController.dispose();
+    rotationController.dispose();
     super.dispose();
   }
 
   Widget build(BuildContext context) {
-    cont1.forward();
+    rotationController.forward();
     return Scaffold(
       body: Center(
         child: RotationTransition(
-            turns: anim1,
+            turns: rotationAnimation,
             child: FadeTransition(
-              opacity: anim2,
+              opacity: fadeAnimation,
               child: Container(
                 width: 190,
                 height: 190,

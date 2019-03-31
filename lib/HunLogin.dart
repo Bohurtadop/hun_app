@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'HunRegister.dart';
 import 'LogIn.dart';
 
-GlobalKey logo = GlobalKey();
+GlobalKey logo = new GlobalKey();
 
 class HunLogin extends StatefulWidget {
   @override
-  createState() => HunLoginState();
+  createState() => new HunLoginState();
 }
 
 double getLogoPosition() {
@@ -17,6 +18,7 @@ double getLogoPosition() {
 }
 
 class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
+
   double beginY = 0.0;
   double totalY = 0.0;
   double logoAlignmentY = 0.0;
@@ -24,6 +26,10 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
   var variables = false;
   Timer time;
   bool firstStateEnabled = true;
+
+  void dispose(){
+    super.dispose();
+  }
 
   animateState() {
     this.totalY = MediaQuery.of(context).size.height;
@@ -155,97 +161,127 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
     );
   }
 
+  _mainButton(String buttonText, double height, double width){
+
+    _onPressed(){
+      return setState(() {
+        animateState();
+        _y = 0.0;
+        time = new Timer(Duration(seconds: 1), () {
+          setState(() {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        LogIn()));
+          });
+        });
+      });
+    }
+
+    return Container(
+      child: RaisedButton(
+        onPressed: () {
+          _onPressed();
+        },
+        color: Color(0xffFF8800),
+        elevation: 5,
+        highlightElevation: 0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)),
+        child: Text(
+          buttonText,
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ),
+      height: height,
+      width: width,
+    );
+  }
+
+  _offTopicButton(String buttonText, double height, double width){
+
+    _onPressed(){
+      return setState((){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    HunRegister()));
+      });
+    }
+
+    return Container(
+      child: RaisedButton(
+        onPressed: (){
+          _onPressed();
+        },
+        color: Color(0xff74BEE7),
+        elevation: 5,
+        highlightElevation: 0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)),
+        child: Text(
+          buttonText,
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ),
+      height: height,
+      width: width,
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: Center(
-        child: AnimatedCrossFade(
-            firstChild: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    _spaceBetween(30),
-                    _hunLogo(logo),
-                    _paddingTitle(),
-                    _spaceBetween(20),
-                    _tittleTextField('Usuario/Email'),
-                    _textField('Usuario/Email', false),
-                    _tittleTextField('Contraseña'),
-                    _textField('Contraseña', true),
-                    _spaceBetween(5),
-                    Container(
-                      child: RaisedButton(
-                        onPressed: () {
-                          animateState();
-                          _y = 0.0;
-                          time = new Timer(Duration(seconds: 1), () {
-                            setState(() {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          LogIn()));
-                            });
-                          });
-                        },
-                        color: Color(0xffFF8800),
-                        elevation: 5,
-                        highlightElevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          'Iniciar Sesión',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: AnimatedCrossFade(
+              firstChild: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      _spaceBetween(30),
+                      _hunLogo(logo),
+                      _paddingTitle(),
+                      _spaceBetween(20),
+                      _tittleTextField('Usuario/Email'),
+                      _textField('Usuario/Email', false),
+                      _tittleTextField('Contraseña'),
+                      _textField('Contraseña', true),
+                      _spaceBetween(5),
+                      _mainButton('Iniciar Sesión', 46, 200),
+                      _spaceBetween(20),
+                      Text(
+                        '¿Es usuario nuevo?',
+                        style: TextStyle(fontSize: 15, color: Color(0xff707070)),
                       ),
-                      height: 46,
-                      width: 200,
-                    ),
-                    _spaceBetween(20),
-                    Text(
-                      '¿Es usuario nuevo?',
-                      style: TextStyle(fontSize: 15, color: Color(0xff707070)),
-                    ),
-                    Container(
-                      child: RaisedButton(
-                        onPressed: null,
-                        disabledColor: Color(0xff74BEE7),
-                        disabledTextColor: Colors.white,
-                        disabledElevation: 5,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Text(
-                          'Registrarse',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      height: 32,
-                      width: 140,
-                    ),
-                    _spaceBetween(40)
-                  ],
-                )
-              ],
-            ),
-            secondChild: Center(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    AnimatedContainer(
-                      alignment: Alignment(0.0, _y),
-                      child: _hunLogo(null),
-                      duration: Duration(seconds: 1),
-                    )
-                  ]),
-            ),
-            crossFadeState: firstStateEnabled
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
-            duration: Duration(seconds: 1)),
+                      _offTopicButton('Registrarse', 32, 140),
+                      _spaceBetween(40)
+                    ],
+                  )
+                ],
+              ),
+              secondChild: Center(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      AnimatedContainer(
+                        alignment: Alignment(0.0, _y),
+                        child: _hunLogo(null),
+                        duration: Duration(seconds: 1),
+                      )
+                    ]),
+              ),
+              crossFadeState: firstStateEnabled
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+              duration: Duration(seconds: 1)),
+        )
       ),
     );
   }
