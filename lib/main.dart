@@ -5,6 +5,7 @@ void main() {
   runApp(MaterialApp(
     title: 'HUN Aplication',
     debugShowCheckedModeBanner: false,
+    checkerboardOffscreenLayers: false,
     home: HunLogin(),
   ));
 }
