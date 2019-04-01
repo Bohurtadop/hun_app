@@ -82,45 +82,28 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
     );
   }
 
-  _tittleTextField(String tittle) {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: 18,
-        ),
-        Container(
-          width: 230,
-          child: Text(
-            tittle,
-            textAlign: TextAlign.left,
-            style: TextStyle(color: Color(0xff707070), fontSize: 20),
-          ),
-        ),
-      ],
-    );
-  }
-
   _textField(String hintText, bool obscureText) {
     return Container(
-      height: 36,
-      width: 248,
+      height: 32,
+      width: 260,
       child: Stack(
         children: <Widget>[
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                height: 36,
-                width: 18,
+                height: 32,
+                width: 16,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(18),
-                    topLeft: Radius.circular(18),
+                    bottomLeft: Radius.circular(16),
+                    topLeft: Radius.circular(16),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                width: 210,
+                width: 228,
                 height: 36,
                 decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
@@ -128,12 +111,12 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
                 ),
               ),
               Container(
-                height: 36,
-                width: 18,
+                height: 32,
+                width: 16,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(18),
-                    topRight: Radius.circular(18),
+                    bottomRight: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -141,18 +124,18 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
             ],
           ),
           Positioned(
-            left: 18,
-            width: 220,
+            left: 16,
+            width: 250,
             bottom: -5,
             child: TextField(
               obscureText: obscureText,
                 textAlign: TextAlign.left,
                 style: new TextStyle(
-                    fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                    fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                 decoration: new InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                        fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)),
@@ -226,7 +209,7 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(10)),
         child: Text(
           buttonText,
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
       ),
       height: height,
@@ -252,11 +235,10 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
                       _hunLogo(logo),
                       _paddingTitle(),
                       _spaceBetween(20),
-                      _tittleTextField('Usuario/Email'),
                       _textField('Usuario/Email', false),
-                      _tittleTextField('Contraseña'),
+                      _spaceBetween(10),
                       _textField('Contraseña', true),
-                      _spaceBetween(5),
+                      _spaceBetween(20),
                       _mainButton('Iniciar Sesión', 46, 200),
                       _spaceBetween(20),
                       Text(

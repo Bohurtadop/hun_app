@@ -30,7 +30,7 @@ class HunRegisterState extends State<HunRegister>
 
   _darkTittle(String tittle) {
     return Padding(
-      padding: EdgeInsets.all(30),
+      padding: EdgeInsets.all(20),
       child: Text(
         tittle,
         textDirection: TextDirection.ltr,
@@ -81,16 +81,14 @@ class HunRegisterState extends State<HunRegister>
 
   _tittleTextField(String tittle) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: 18,
-        ),
-        Container(
-          width: 230,
+          width: 250,
           child: Text(
             tittle,
-            textAlign: TextAlign.left,
-            style: TextStyle(color: Color(0xff707070), fontSize: 20),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Color(0xff707070), fontSize: 18),
           ),
         ),
       ],
@@ -100,38 +98,38 @@ class HunRegisterState extends State<HunRegister>
   _textFormField(
       TextEditingController controller, String hintText, bool obscureText) {
     return Container(
-      height: 36,
-      width: 248,
+      height: 32,
+      width: 260,
       child: Stack(
         children: <Widget>[
           Row(
             children: <Widget>[
               Container(
-                height: 36,
-                width: 18,
+                height: 32,
+                width: 16,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(18),
-                    topLeft: Radius.circular(18),
+                    bottomLeft: Radius.circular(16),
+                    topLeft: Radius.circular(16),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                width: 210,
-                height: 36,
+                width: 228,
+                height: 32,
                 decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                height: 36,
-                width: 18,
+                height: 32,
+                width: 16,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(18),
-                    topRight: Radius.circular(18),
+                    bottomRight: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -139,19 +137,19 @@ class HunRegisterState extends State<HunRegister>
             ],
           ),
           Positioned(
-            left: 18,
-            width: 220,
+            left: 16,
+            width: 250,
             bottom: -5,
             child: TextFormField(
                 controller: controller,
                 obscureText: obscureText,
                 textAlign: TextAlign.left,
                 style: new TextStyle(
-                    fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                    fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                 decoration: new InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                        fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)),
@@ -165,38 +163,38 @@ class HunRegisterState extends State<HunRegister>
 
   _emailTextField(TextEditingController controller, String hintText, bool obscureText) {
     return Container(
-      height: 36,
-      width: 248,
+      height: 32,
+      width: 260,
       child: Stack(
         children: <Widget>[
           Row(
             children: <Widget>[
               Container(
-                height: 36,
-                width: 18,
+                height: 32,
+                width: 16,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(18),
-                    topLeft: Radius.circular(18),
+                    bottomLeft: Radius.circular(16),
+                    topLeft: Radius.circular(16),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                width: 210,
-                height: 36,
+                width: 228,
+                height: 32,
                 decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                height: 36,
-                width: 18,
+                height: 32,
+                width: 16,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(18),
-                    topRight: Radius.circular(18),
+                    bottomRight: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -204,8 +202,8 @@ class HunRegisterState extends State<HunRegister>
             ],
           ),
           Positioned(
-            left: 18,
-            width: 220,
+            left: 16,
+            width: 250,
             bottom: -5,
             child: TextField(
                 onChanged: (String pass) {
@@ -229,18 +227,18 @@ class HunRegisterState extends State<HunRegister>
                 obscureText: obscureText,
                 textAlign: TextAlign.left,
                 style: new TextStyle(
-                    fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                    fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                 decoration: new InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                        fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)))),
           ),
-          Positioned(right: 2, width: 36, height: 36, child: _emailIcon),
+          Positioned(right: 2, width: 32, height: 32, child: _emailIcon),
         ],
       ),
     );
@@ -248,38 +246,38 @@ class HunRegisterState extends State<HunRegister>
 
   _passTextField(TextEditingController controller, String hintText, bool obscureText) {
     return Container(
-      height: 36,
-      width: 248,
+      height: 32,
+      width: 260,
       child: Stack(
         children: <Widget>[
           Row(
             children: <Widget>[
               Container(
-                height: 36,
-                width: 18,
+                height: 32,
+                width: 16,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(18),
-                    topLeft: Radius.circular(18),
+                    bottomLeft: Radius.circular(16),
+                    topLeft: Radius.circular(16),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                width: 210,
-                height: 36,
+                width: 228,
+                height: 32,
                 decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                height: 36,
-                width: 18,
+                height: 32,
+                width: 16,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(18),
-                    topRight: Radius.circular(18),
+                    bottomRight: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -287,8 +285,8 @@ class HunRegisterState extends State<HunRegister>
             ],
           ),
           Positioned(
-            left: 18,
-            width: 220,
+            left: 16,
+            width: 250,
             bottom: -5,
             child: TextField(
                 onChanged: (String pass) {
@@ -312,11 +310,11 @@ class HunRegisterState extends State<HunRegister>
                 obscureText: obscureText,
                 textAlign: TextAlign.left,
                 style: new TextStyle(
-                    fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                    fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                 decoration: new InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                        fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)),
@@ -333,37 +331,37 @@ class HunRegisterState extends State<HunRegister>
     _textFieldDateSmall(
         TextEditingController controller, String hintText, bool obscureText) {
       return Container(
-        height: 36,
+        height: 32,
         child: Stack(
           children: <Widget>[
             Row(
               children: <Widget>[
                 Container(
-                  height: 36,
-                  width: 18,
+                  height: 32,
+                  width: 16,
                   decoration: new BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(18),
-                      topLeft: Radius.circular(18),
+                      bottomLeft: Radius.circular(16),
+                      topLeft: Radius.circular(16),
                     ),
                     color: Color(0xffF1F1F1),
                   ),
                 ),
                 Container(
                   width: 40,
-                  height: 36,
+                  height: 32,
                   decoration: new BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Color(0xffF1F1F1),
                   ),
                 ),
                 Container(
-                  height: 36,
-                  width: 18,
+                  height: 32,
+                  width: 16,
                   decoration: new BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(18),
-                      topRight: Radius.circular(18),
+                      bottomRight: Radius.circular(16),
+                      topRight: Radius.circular(16),
                     ),
                     color: Color(0xffF1F1F1),
                   ),
@@ -371,7 +369,7 @@ class HunRegisterState extends State<HunRegister>
               ],
             ),
             Positioned(
-              left: 18,
+              left: 16,
               width: 40,
               bottom: -5,
               child: TextField(
@@ -382,12 +380,12 @@ class HunRegisterState extends State<HunRegister>
                   obscureText: obscureText,
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                      fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                   decoration: new InputDecoration(
                       counterText: '',
                       hintText: hintText,
                       hintStyle: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: Color.fromRGBO(158, 158, 158, 1)),
                       fillColor: Colors.white,
                       enabledBorder: UnderlineInputBorder(
@@ -403,37 +401,37 @@ class HunRegisterState extends State<HunRegister>
     _textFieldDateBig(
         TextEditingController controller, String hintText, bool obscureText) {
       return Container(
-        height: 36,
+        height: 32,
         child: Stack(
           children: <Widget>[
             Row(
               children: <Widget>[
                 Container(
-                  height: 36,
-                  width: 18,
+                  height: 32,
+                  width: 16,
                   decoration: new BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(18),
-                      topLeft: Radius.circular(18),
+                      bottomLeft: Radius.circular(16),
+                      topLeft: Radius.circular(16),
                     ),
                     color: Color(0xffF1F1F1),
                   ),
                 ),
                 Container(
                   width: 60,
-                  height: 36,
+                  height: 32,
                   decoration: new BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Color(0xffF1F1F1),
                   ),
                 ),
                 Container(
-                  height: 36,
-                  width: 18,
+                  height: 32,
+                  width: 16,
                   decoration: new BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(18),
-                      topRight: Radius.circular(18),
+                      bottomRight: Radius.circular(16),
+                      topRight: Radius.circular(16),
                     ),
                     color: Color(0xffF1F1F1),
                   ),
@@ -441,7 +439,7 @@ class HunRegisterState extends State<HunRegister>
               ],
             ),
             Positioned(
-              left: 18,
+              left: 16,
               width: 60,
               bottom: -5,
               child: TextField(
@@ -452,12 +450,12 @@ class HunRegisterState extends State<HunRegister>
                   obscureText: obscureText,
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      fontSize: 20, color: Color.fromRGBO(158, 158, 158, 1)),
+                      fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
                   decoration: new InputDecoration(
                       counterText: '',
                       hintText: hintText,
                       hintStyle: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: Color.fromRGBO(158, 158, 158, 1)),
                       fillColor: Colors.white,
                       enabledBorder: UnderlineInputBorder(
