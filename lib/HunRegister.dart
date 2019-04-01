@@ -221,8 +221,8 @@ class HunRegisterState extends State<HunRegister>
                         color: Colors.red,
                       );
                     }
-                    if (controller.text == null || pass == null){
-                      _emailIcon = null;
+                    if (pass == ''){
+                      _emailIcon = new Icon(null);
                     }
                   });
                 },
@@ -304,8 +304,8 @@ class HunRegisterState extends State<HunRegister>
                         color: Colors.red,
                       );
                     }
-                    if (controller.text == null || pass == null){
-                      _passIcon = null;
+                    if (pass == ''){
+                      _passIcon = new Icon(null);
                     }
                   });
                 },
