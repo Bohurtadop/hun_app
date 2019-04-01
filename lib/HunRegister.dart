@@ -97,7 +97,7 @@ class HunRegisterState extends State<HunRegister>
     );
   }
 
-  _textField(
+  _textFormField(
       TextEditingController controller, String hintText, bool obscureText) {
     return Container(
       height: 36,
@@ -142,7 +142,7 @@ class HunRegisterState extends State<HunRegister>
             left: 18,
             width: 220,
             bottom: -5,
-            child: TextField(
+            child: TextFormField(
                 controller: controller,
                 obscureText: obscureText,
                 textAlign: TextAlign.left,
@@ -517,11 +517,11 @@ class HunRegisterState extends State<HunRegister>
                   _spaceBetween(30),
                   _hunLogoAndTittle(),
                   _darkTittle('REGISTRO'),
-                  _textField(null, 'Nombres', false),
-                  _textField(null, 'Apellidos', false),
-                  _textField(emailController, 'Email', false),
+                  _textFormField(null, 'Nombres', false),
+                  _textFormField(null, 'Apellidos', false),
+                  _textFormField(emailController, 'Email', false),
                   _emailTextField(emailController, 'Repetir email', false),
-                  _textField(passController, 'Contraseña', true),
+                  _textFormField(passController, 'Contraseña', true),
                   _passTextField(passController, 'Repetir contraseña', true),
                   _tittleTextField('Fecha de nacimiento'),
                   _birthDateField(),
