@@ -107,7 +107,7 @@ class HunHome extends StatelessWidget {
                 ),
                 child: Padding(
                   padding:
-                  EdgeInsets.only(bottom: 0, left: 20, right: 20, top: 20),
+                  EdgeInsets.only(bottom: 0, left: 10, right: 10, top: 10),
                   child: Stack(
                     children: <Widget>[
                       Column(
@@ -128,7 +128,7 @@ class HunHome extends StatelessWidget {
                                   children: <Widget>[
                                     Icon(
                                       Icons.accessible,
-                                      size: 90,
+                                      size: 80,
                                     ),
                                     SizedBox(
                                       width: 5,
@@ -190,7 +190,7 @@ class HunHome extends StatelessWidget {
                                   onPressed: null,
                                 ),
                                 height: 68,
-                                width: 100,
+                                width: 80,
                               ),
                               Container(
                                 child: RaisedButton(
@@ -215,7 +215,7 @@ class HunHome extends StatelessWidget {
                                   onPressed: null,
                                 ),
                                 height: 68,
-                                width: 100,
+                                width: 80,
                               ),
                             ],
                           )

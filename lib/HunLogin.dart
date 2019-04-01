@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'HunRegister.dart';
 import 'LogIn.dart';
@@ -27,8 +28,10 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
   Timer time;
   bool firstStateEnabled = true;
 
-  void dispose(){
-    super.dispose();
+  @override
+  void initState(){
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    super.initState();
   }
 
   animateState() {
