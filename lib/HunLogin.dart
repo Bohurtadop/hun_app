@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -12,36 +11,12 @@ class HunLogin extends StatefulWidget {
   createState() => new HunLoginState();
 }
 
-double getLogoPosition() {
-  RenderBox box = logo.currentContext.findRenderObject();
-  Offset position = box.localToGlobal(Offset.zero); //this is global position
-  return position.dy;
-}
-
 class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
 
-  double beginY = 0.0;
-  double totalY = 0.0;
-  double logoAlignmentY = 0.0;
-  var _y = - 1.0;
-  var variables = false;
-  Timer time;
-  bool firstStateEnabled = true;
-
   @override
-  void initState(){
+  void initState() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
-  }
-
-  animateState() {
-    this.totalY = MediaQuery.of(context).size.height;
-    this.beginY = getLogoPosition();
-    this.logoAlignmentY = ((beginY * 2) / totalY) - 1;
-    this._y = beginY;
-    setState(() {
-      firstStateEnabled = false;
-    });
   }
 
   _hunLogo(Key key) {
@@ -64,13 +39,13 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
           Text('HUN',
               style: new TextStyle(
                 fontSize: 40,
-                fontWeight: FontWeight.bold,
+                fontFamily: 'Ancízar Sans Bold',
                 color: const Color(0xFF1266A4),
               )),
           Text('Salud',
               style: new TextStyle(
                 fontSize: 40,
-                fontWeight: FontWeight.normal,
+                fontFamily: 'Ancízar Sans Light',
                 color: const Color(0xFF1266A4),
               ))
         ]));
@@ -84,39 +59,39 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
 
   _textField(String hintText, bool obscureText) {
     return Container(
-      height: 32,
-      width: 260,
+      height: 38,
+      width: 200,
       child: Stack(
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                height: 32,
-                width: 16,
+                height: 38,
+                width: 19,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(16),
-                    topLeft: Radius.circular(16),
+                    bottomLeft: Radius.circular(19),
+                    topLeft: Radius.circular(19),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                width: 228,
-                height: 36,
+                width: 162,
+                height: 38,
                 decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
               ),
               Container(
-                height: 32,
-                width: 16,
+                height: 38,
+                width: 19,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(16),
-                    topRight: Radius.circular(16),
+                    bottomRight: Radius.circular(19),
+                    topRight: Radius.circular(19),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -124,18 +99,22 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
             ],
           ),
           Positioned(
-            left: 16,
-            width: 250,
-            bottom: -5,
+            left: 19,
+            width: 180,
+            bottom: -3,
             child: TextField(
-              obscureText: obscureText,
+                obscureText: obscureText,
                 textAlign: TextAlign.left,
                 style: new TextStyle(
-                    fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                    fontFamily: 'Ancízar Sans Light',
+                    fontSize: 14,
+                    color: Color.fromRGBO(158, 158, 158, 1)),
                 decoration: new InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                        fontFamily: 'Ancízar Sans Light',
+                        fontSize: 14,
+                        color: Color.fromRGBO(158, 158, 158, 1)),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)),
@@ -147,21 +126,11 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
     );
   }
 
-  _mainButton(String buttonText, double height, double width){
-
-    _onPressed(){
+  _mainButton(String buttonText, double height, double width) {
+    _onPressed() {
       return setState(() {
-        animateState();
-        _y = 0.0;
-        time = new Timer(Duration(seconds: 1), () {
-          setState(() {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        LogIn()));
-          });
-        });
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => LogIn()));
       });
     }
 
@@ -173,11 +142,10 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
         color: Color(0xffFF8800),
         elevation: 5,
         highlightElevation: 0,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
         child: Text(
           buttonText,
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
       height: height,
@@ -185,31 +153,28 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
     );
   }
 
-  _offTopicButton(String buttonText, double height, double width){
-
-    _onPressed(){
-      return setState((){
+  _offTopicButton(String buttonText, double height, double width) {
+    _onPressed() {
+      return setState(() {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    HunRegister()));
+                builder: (BuildContext context) => HunRegister()));
       });
     }
 
     return Container(
       child: RaisedButton(
-        onPressed: (){
+        onPressed: () {
           _onPressed();
         },
-        color: Color(0xff74BEE7),
+        color: Color(0xFF1266A4),
         elevation: 5,
         highlightElevation: 0,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
         child: Text(
           buttonText,
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
       height: height,
@@ -220,54 +185,36 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: AnimatedCrossFade(
-              firstChild: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      _spaceBetween(30),
-                      _hunLogo(logo),
-                      _paddingTitle(),
-                      _spaceBetween(20),
-                      _textField('Usuario/Email', false),
-                      _spaceBetween(10),
-                      _textField('Contraseña', true),
-                      _spaceBetween(20),
-                      _mainButton('Iniciar Sesión', 46, 200),
-                      _spaceBetween(20),
-                      Text(
-                        '¿Es usuario nuevo?',
-                        style: TextStyle(fontSize: 15, color: Color(0xff707070)),
-                      ),
-                      _offTopicButton('Registrarse', 32, 140),
-                      _spaceBetween(40)
-                    ],
-                  )
-                ],
+      body: SingleChildScrollView(child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _spaceBetween(40),
+              Hero(tag: 'hunLogo', child:
+              _hunLogo(logo)),
+              _paddingTitle(),
+              _spaceBetween(30),
+              _textField('Usuario/Email', false),
+              _spaceBetween(10),
+              _textField('Contraseña', true),
+              _spaceBetween(30),
+              _mainButton('Iniciar Sesión', 38, 200),
+              _spaceBetween(20),
+              Text(
+                '¿Es usuario nuevo?',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Ancízar Sans Light',
+                    color: Color(0xff707070)),
               ),
-              secondChild: Center(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      AnimatedContainer(
-                        alignment: Alignment(0.0, _y),
-                        child: _hunLogo(null),
-                        duration: Duration(seconds: 1),
-                      )
-                    ]),
-              ),
-              crossFadeState: firstStateEnabled
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
-              duration: Duration(seconds: 1)),
-        )
-      ),
+              _offTopicButton('Registrarse', 38, 200),
+              _spaceBetween(20)
+            ],
+          )
+        ],
+      ),)
     );
   }
 }

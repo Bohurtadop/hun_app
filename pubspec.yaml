@@ -36,7 +36,22 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/
+    - assets/images/HunLogo1.png
+    - assets/images/ProfileImage.png
+
+  fonts:
+    - family: Ancízar Sans Regular
+      fonts:
+        - asset: assets/fonts/Ancízar Sans Font/AncizarSans-Regular.ttf
+    - family: Ancízar Sans Bold
+      fonts:
+        - asset: assets/fonts/Ancízar Sans Font/AncizarSans-Bold.ttf
+    - family: Ancízar Sans Light
+      fonts:
+        - asset: assets/fonts/Ancízar Sans Font/AncizarSans-Light.ttf
+    - family: ExtraBold
+      fonts:
+        - asset: assets/fonts/Ancízar Sans Font/AncizarSans-ExtraboldItalic.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -41,7 +41,7 @@ class LogInState extends State<LogIn> with TickerProviderStateMixin {
         fadeController.reverse();
       }else if(fadeStatus == AnimationStatus.dismissed){
         rotationController.repeat();
-        time = new Timer(Duration(seconds: 3, milliseconds: 500), (){
+        time = new Timer(Duration(seconds: 1), (){
           setState(() {
             Navigator.push(
                 context,
@@ -70,21 +70,24 @@ class LogInState extends State<LogIn> with TickerProviderStateMixin {
     rotationController.forward();
     return Scaffold(
       body: Center(
-        child: RotationTransition(
-            turns: rotationAnimation,
-            child: FadeTransition(
-              opacity: fadeAnimation,
-              child: Container(
-                width: 190,
-                height: 190,
-                decoration: new BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  image: new DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage('assets/images/HunLogo1.png')),
+        child: Hero(
+          tag: 'hunLogo',
+          child: RotationTransition(
+              turns: rotationAnimation,
+              child: FadeTransition(
+                opacity: fadeAnimation,
+                child: Container(
+                  width: 190,
+                  height: 190,
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    image: new DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage('assets/images/HunLogo1.png')),
+                  ),
                 ),
-              ),
-            )),
+              )),
+        )
       ),
     );
   }

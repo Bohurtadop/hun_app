@@ -36,7 +36,7 @@ class HunRegisterState extends State<HunRegister>
         textDirection: TextDirection.ltr,
         style: new TextStyle(
             fontSize: 30,
-            fontWeight: FontWeight.bold,
+            fontFamily: 'Ancízar Sans Bold',
             color: Color(0xff707070)),
       ),
     );
@@ -50,7 +50,8 @@ class HunRegisterState extends State<HunRegister>
 
   _hunLogoAndTittle() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      Container(
+      Hero(tag: 'hunLogo',
+      child: Container(
         width: 60,
         height: 60,
         decoration: new BoxDecoration(
@@ -59,20 +60,20 @@ class HunRegisterState extends State<HunRegister>
               fit: BoxFit.fill,
               image: AssetImage('assets/images/HunLogo1.png')),
         ),
-      ),
+      ),),
       Padding(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(5),
           child: Row(children: <Widget>[
             Text('HUN',
                 style: new TextStyle(
                   fontSize: 40,
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Ancízar Sans Bold',
                   color: const Color(0xFF1266A4),
                 )),
             Text('Salud',
                 style: new TextStyle(
                   fontSize: 40,
-                  fontWeight: FontWeight.normal,
+                  fontFamily: 'Ancízar Sans Light',
                   color: const Color(0xFF1266A4),
                 ))
           ])),
@@ -88,7 +89,10 @@ class HunRegisterState extends State<HunRegister>
           child: Text(
             tittle,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xff707070), fontSize: 18),
+            style: TextStyle(
+                fontFamily: 'Ancízar Sans Light',
+                color: Color(0xff707070),
+                fontSize: 14),
           ),
         ),
       ],
@@ -99,7 +103,7 @@ class HunRegisterState extends State<HunRegister>
       TextEditingController controller, String hintText, bool obscureText) {
     return Container(
       height: 32,
-      width: 260,
+      width: 200,
       child: Stack(
         children: <Widget>[
           Row(
@@ -116,7 +120,7 @@ class HunRegisterState extends State<HunRegister>
                 ),
               ),
               Container(
-                width: 228,
+                width: 168,
                 height: 32,
                 decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
@@ -138,18 +142,22 @@ class HunRegisterState extends State<HunRegister>
           ),
           Positioned(
             left: 16,
-            width: 250,
-            bottom: -5,
+            width: 170,
+            bottom: -4,
             child: TextFormField(
                 controller: controller,
                 obscureText: obscureText,
                 textAlign: TextAlign.left,
                 style: new TextStyle(
-                    fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                    fontSize: 14,
+                    fontFamily: 'Ancízar Sans Light',
+                    color: Color(0xff707070)),
                 decoration: new InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                        fontSize: 14,
+                        fontFamily: 'Ancízar Sans Light',
+                        color: Color.fromRGBO(158, 158, 158, 1)),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)),
@@ -161,10 +169,11 @@ class HunRegisterState extends State<HunRegister>
     );
   }
 
-  _emailTextField(TextEditingController controller, String hintText, bool obscureText) {
+  _emailTextField(
+      TextEditingController controller, String hintText, bool obscureText) {
     return Container(
       height: 32,
-      width: 260,
+      width: 200,
       child: Stack(
         children: <Widget>[
           Row(
@@ -181,7 +190,7 @@ class HunRegisterState extends State<HunRegister>
                 ),
               ),
               Container(
-                width: 228,
+                width: 168,
                 height: 32,
                 decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
@@ -203,8 +212,8 @@ class HunRegisterState extends State<HunRegister>
           ),
           Positioned(
             left: 16,
-            width: 250,
-            bottom: -5,
+            width: 180,
+            bottom: -4,
             child: TextField(
                 onChanged: (String pass) {
                   setState(() {
@@ -219,7 +228,7 @@ class HunRegisterState extends State<HunRegister>
                         color: Colors.red,
                       );
                     }
-                    if (pass == ''){
+                    if (pass == '') {
                       _emailIcon = new Icon(null);
                     }
                   });
@@ -227,11 +236,15 @@ class HunRegisterState extends State<HunRegister>
                 obscureText: obscureText,
                 textAlign: TextAlign.left,
                 style: new TextStyle(
-                    fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                    fontSize: 14,
+                    fontFamily: 'Ancízar Sans Light',
+                    color: Color(0xff707070)),
                 decoration: new InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                        fontSize: 14,
+                        fontFamily: 'Ancízar Sans Light',
+                        color: Color.fromRGBO(158, 158, 158, 1)),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)),
@@ -244,10 +257,11 @@ class HunRegisterState extends State<HunRegister>
     );
   }
 
-  _passTextField(TextEditingController controller, String hintText, bool obscureText) {
+  _passTextField(
+      TextEditingController controller, String hintText, bool obscureText) {
     return Container(
       height: 32,
-      width: 260,
+      width: 200,
       child: Stack(
         children: <Widget>[
           Row(
@@ -264,7 +278,7 @@ class HunRegisterState extends State<HunRegister>
                 ),
               ),
               Container(
-                width: 228,
+                width: 168,
                 height: 32,
                 decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
@@ -286,7 +300,7 @@ class HunRegisterState extends State<HunRegister>
           ),
           Positioned(
             left: 16,
-            width: 250,
+            width: 180,
             bottom: -5,
             child: TextField(
                 onChanged: (String pass) {
@@ -302,7 +316,7 @@ class HunRegisterState extends State<HunRegister>
                         color: Colors.red,
                       );
                     }
-                    if (pass == ''){
+                    if (pass == '') {
                       _passIcon = new Icon(null);
                     }
                   });
@@ -310,18 +324,22 @@ class HunRegisterState extends State<HunRegister>
                 obscureText: obscureText,
                 textAlign: TextAlign.left,
                 style: new TextStyle(
-                    fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                    fontSize: 14,
+                    fontFamily: 'Ancízar Sans Light',
+                    color: Color(0xff707070)),
                 decoration: new InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                        fontSize: 14,
+                        fontFamily: 'Ancízar Sans Light',
+                        color: Color.fromRGBO(158, 158, 158, 1)),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none)))),
           ),
-          Positioned(right: 2, width: 36, height: 36, child: _passIcon),
+          Positioned(right: 2, width: 32, height: 32, child: _passIcon),
         ],
       ),
     );
@@ -348,7 +366,7 @@ class HunRegisterState extends State<HunRegister>
                   ),
                 ),
                 Container(
-                  width: 40,
+                  width: 30,
                   height: 32,
                   decoration: new BoxDecoration(
                     shape: BoxShape.rectangle,
@@ -370,8 +388,8 @@ class HunRegisterState extends State<HunRegister>
             ),
             Positioned(
               left: 16,
-              width: 40,
-              bottom: -5,
+              width: 30,
+              bottom: -4,
               child: TextField(
                   controller: controller,
                   maxLength: 2,
@@ -380,12 +398,15 @@ class HunRegisterState extends State<HunRegister>
                   obscureText: obscureText,
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                      fontSize: 14,
+                      fontFamily: 'Ancízar Sans Light',
+                      color: Color(0xff707070)),
                   decoration: new InputDecoration(
                       counterText: '',
                       hintText: hintText,
                       hintStyle: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
+                          fontFamily: 'Ancízar Sans Light',
                           color: Color.fromRGBO(158, 158, 158, 1)),
                       fillColor: Colors.white,
                       enabledBorder: UnderlineInputBorder(
@@ -418,7 +439,7 @@ class HunRegisterState extends State<HunRegister>
                   ),
                 ),
                 Container(
-                  width: 60,
+                  width: 50,
                   height: 32,
                   decoration: new BoxDecoration(
                     shape: BoxShape.rectangle,
@@ -440,8 +461,8 @@ class HunRegisterState extends State<HunRegister>
             ),
             Positioned(
               left: 16,
-              width: 60,
-              bottom: -5,
+              width: 50,
+              bottom: -4,
               child: TextField(
                   controller: controller,
                   maxLength: 4,
@@ -450,12 +471,15 @@ class HunRegisterState extends State<HunRegister>
                   obscureText: obscureText,
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      fontSize: 18, color: Color.fromRGBO(158, 158, 158, 1)),
+                      fontSize: 14,
+                      fontFamily: 'Ancízar Sans Light',
+                      color: Color(0xff707070)),
                   decoration: new InputDecoration(
                       counterText: '',
                       hintText: hintText,
                       hintStyle: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
+                          fontFamily: 'Ancízar Sans Light',
                           color: Color.fromRGBO(158, 158, 158, 1)),
                       fillColor: Colors.white,
                       enabledBorder: UnderlineInputBorder(
@@ -481,17 +505,15 @@ class HunRegisterState extends State<HunRegister>
     return Container(
       child: RaisedButton(
         onPressed: () {
-          setState(() {
             Navigator.pop(context);
-          });
         },
         color: Color(0xffFF8800),
         elevation: 5,
         highlightElevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
         child: Text(
           buttonText,
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
       height: height,
@@ -524,7 +546,7 @@ class HunRegisterState extends State<HunRegister>
                   _tittleTextField('Fecha de nacimiento'),
                   _birthDateField(),
                   _spaceBetween(20),
-                  _mainButton('Registrarse', 46, 200),
+                  _mainButton('Registrarse', 38, 200),
                   _spaceBetween(40)
                 ],
               )
