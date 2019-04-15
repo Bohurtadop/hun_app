@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Loading.dart';
 import 'HunLogin.dart';
 
 void main() {
@@ -9,7 +10,7 @@ void main() {
     checkerboardOffscreenLayers: false,
     checkerboardRasterCacheImages: false,
     theme: ThemeData(fontFamily: 'Ancízar Sans Regular'),
-    home: HunLogin(),
+    home: Loading(),
   ));
 }
 

@@ -4,24 +4,20 @@ import 'package:flutter/widgets.dart';
 import 'HunRegister.dart';
 import 'LogIn.dart';
 
-GlobalKey logo = new GlobalKey();
-
 class HunLogin extends StatefulWidget {
   @override
   createState() => new HunLoginState();
 }
 
 class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
-
   @override
   void initState() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
   }
 
-  _hunLogo(Key key) {
+  _hunLogo() {
     return Container(
-      key: key,
       width: 190,
       height: 190,
       decoration: new BoxDecoration(
@@ -184,37 +180,37 @@ class HunLoginState extends State<HunLogin> with TickerProviderStateMixin {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _spaceBetween(40),
-              Hero(tag: 'hunLogo', child:
-              _hunLogo(logo)),
-              _paddingTitle(),
-              _spaceBetween(30),
-              _textField('Usuario/Email', false),
-              _spaceBetween(10),
-              _textField('Contraseña', true),
-              _spaceBetween(30),
-              _mainButton('Iniciar Sesión', 38, 200),
-              _spaceBetween(20),
-              Text(
-                '¿Es usuario nuevo?',
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Ancízar Sans Light',
-                    color: Color(0xff707070)),
-              ),
-              _offTopicButton('Registrarse', 38, 200),
-              _spaceBetween(20)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  _spaceBetween(40),
+                  Hero(tag: 'hunLogo', child: _hunLogo()),
+                  _paddingTitle(),
+                  _spaceBetween(30),
+                  _textField('Usuario/Email', false),
+                  _spaceBetween(10),
+                  _textField('Contraseña', true),
+                  _spaceBetween(30),
+                  _mainButton('Iniciar Sesión', 38, 200),
+                  _spaceBetween(20),
+                  Text(
+                    '¿Es usuario nuevo?',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Ancízar Sans Light',
+                        color: Color(0xff707070)),
+                  ),
+                  _offTopicButton('Registrarse', 38, 200),
+                  _spaceBetween(20)
+                ],
+              )
             ],
-          )
-        ],
-      ),)
-    );
+          ),
+        ));
   }
 }
