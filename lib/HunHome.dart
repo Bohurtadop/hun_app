@@ -72,25 +72,36 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
     ]);
   }
 
-  _userName() {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Text('$userName',
-          style: new TextStyle(
-              fontSize: 30,
-              color: Color(0xFF1266A4),
-              fontFamily: 'Ancízar Sans Bold')),
-    );
-  }
-
-  _userType() {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Text('$typeUser',
-          style: new TextStyle(
-              fontSize: 20,
-              fontFamily: 'Ancízar Sans Light',
-              color: Color(0xff9E9E9E))),
+  _userNameTypeBox() {
+    return SizedBox(
+      width: 250,
+      height: 51,
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            width: 250,
+            top: 0,
+            child: Center(
+              child: Text('$userName',
+                  style: new TextStyle(
+                      fontSize: 30,
+                      color: Color(0xFF1266A4),
+                      fontFamily: 'Ancízar Sans Bold')),
+            ),
+          ),
+          Positioned(
+            width: 250,
+            top: 30,
+            child: Center(
+              child: Text('$typeUser',
+                  style: new TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Ancízar Sans Light',
+                      color: Color(0xff9E9E9E))),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -335,8 +346,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
             _spaceBetween(40),
             _hunLogoAndTittle(),
             _spaceBetween(30),
-            _userName(),
-            _userType(),
+            _userNameTypeBox(),
             _darkTittle('PRÓXIMAS CITAS'),
             _meetingContainer(),
             _spaceBetween(20),

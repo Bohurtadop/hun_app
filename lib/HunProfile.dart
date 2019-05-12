@@ -83,25 +83,36 @@ class HunProfileState extends State<HunProfile> with TickerProviderStateMixin {
     );
   }
 
-  _userName() {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Text('$userName',
-          style: new TextStyle(
-              fontSize: 30,
-              color: Color(0xFF1266A4),
-              fontFamily: 'Ancízar Sans Bold')),
-    );
-  }
-
-  _userType() {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Text('$typeUser',
-          style: new TextStyle(
-              fontSize: 20,
-              fontFamily: 'Ancízar Sans Light',
-              color: Color(0xff9E9E9E))),
+  _userNameTypeBox() {
+    return SizedBox(
+      width: 250,
+      height: 51,
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            width: 250,
+            top: 0,
+            child: Center(
+              child: Text('$userName',
+                  style: new TextStyle(
+                      fontSize: 30,
+                      color: Color(0xFF1266A4),
+                      fontFamily: 'Ancízar Sans Bold')),
+            ),
+          ),
+          Positioned(
+            width: 250,
+            top: 30,
+            child: Center(
+              child: Text('$typeUser',
+                  style: new TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Ancízar Sans Light',
+                      color: Color(0xff9E9E9E))),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -118,6 +129,26 @@ class HunProfileState extends State<HunProfile> with TickerProviderStateMixin {
         child: Text(
           buttonText,
           style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ),
+      height: height,
+      width: width,
+    );
+  }
+
+  _offTopicButton(String buttonText, double height, double width) {
+    return Container(
+      child: RaisedButton(
+        onPressed: (){
+          Navigator.of(context);
+        },
+        color: Color(0xFF1266A4),
+        elevation: 5,
+        highlightElevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Text(
+          buttonText,
+          style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
       height: height,
@@ -232,15 +263,15 @@ class HunProfileState extends State<HunProfile> with TickerProviderStateMixin {
           children: <Widget>[
             _spaceBetween(40),
             _hunLogoAndTittle(),
-            _spaceBetween(10),
             _profilePhoto(),
-            _userName(),
-            _userType(),
-            _spaceBetween(20),
-            _mainButton("Editar datos", 50, 200),
-            _spaceBetween(20),
-            _mainButton("Mi historia clínica", 50, 200),
-            _spaceBetween(30)
+            _userNameTypeBox(),
+            _spaceBetween(15),
+            _mainButton("Editar datos", 40, 200),
+            _spaceBetween(10),
+            _mainButton("Mi historia clínica", 40, 200),
+            _spaceBetween(15),
+            _offTopicButton("Cerrar sesión", 30, 200),
+            _spaceBetween(15),
           ],
         ),
       ),
