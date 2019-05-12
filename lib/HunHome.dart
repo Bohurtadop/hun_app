@@ -322,8 +322,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
   }
 
   _floatingActionButton() {
-    return Hero(tag: 'floatingButton',
-      child: FloatingActionButton(
+    return FloatingActionButton(
         backgroundColor: Colors.orange,
         onPressed: () {
           Navigator.of(context);
@@ -332,7 +331,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
           Icons.add,
           size: 40,
         ),
-      ),);
+      );
   }
 
   @override

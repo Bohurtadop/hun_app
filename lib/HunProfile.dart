@@ -238,17 +238,14 @@ class HunProfileState extends State<HunProfile> with TickerProviderStateMixin {
   }
 
   _floatingActionButton() {
-    return Hero(
-      tag: 'floatingButton',
-      child: FloatingActionButton(
-        backgroundColor: Colors.orange,
-        onPressed: () {
-          Navigator.of(context);
-        },
-        child: Icon(
-          Icons.add,
-          size: 40,
-        ),
+    return FloatingActionButton(
+      backgroundColor: Colors.orange,
+      onPressed: () {
+        Navigator.of(context);
+      },
+      child: Icon(
+        Icons.add,
+        size: 40,
       ),
     );
   }
