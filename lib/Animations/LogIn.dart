@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'HunHome.dart';
+import 'package:hun_app/Screens/Home.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -43,11 +43,10 @@ class LogInState extends State<LogIn> with TickerProviderStateMixin {
         rotationController.repeat();
         time = new Timer(Duration(seconds: 1), (){
           setState(() {
-            Navigator.push(
+            Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        HunHome()));
+                    builder: (BuildContext context) => Home()), (_) => false);
           });
         });
       }
@@ -77,8 +76,8 @@ class LogInState extends State<LogIn> with TickerProviderStateMixin {
               child: FadeTransition(
                 opacity: fadeAnimation,
                 child: Container(
-                  width: 190,
-                  height: 190,
+                  width: MediaQuery.of(context).size.width / 2.1,
+                  height: MediaQuery.of(context).size.width / 2.1,
                   decoration: new BoxDecoration(
                     shape: BoxShape.rectangle,
                     image: new DecorationImage(

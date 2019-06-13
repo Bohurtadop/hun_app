@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hun_app/HunProfile.dart';
+import 'package:hun_app/Screens/Profile.dart';
+import 'package:hun_app/Screens/SetSpeciality.dart';
 
 String userName = 'Cristian Veloza';
 String typeUser = 'Usuario particular';
 List cita1 = ["Fisioterapia", "Domingo 30 de Diciembre", "10:00 a.m."];
 
-class HunHome extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  createState() => new HunHomeState();
+  createState() => new HomeState();
 }
 
-class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
+class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -25,7 +26,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
         tittle,
         textDirection: TextDirection.ltr,
         style: new TextStyle(
-            fontSize: 30,
+            fontSize: MediaQuery.of(context).size.width / 12,
             fontFamily: 'Ancízar Sans Bold',
             color: Color(0xff707070)),
       ),
@@ -43,8 +44,8 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
       Hero(
         tag: 'hunLogo',
         child: Container(
-          width: 60,
-          height: 60,
+          width: MediaQuery.of(context).size.width / 7,
+          height: MediaQuery.of(context).size.width / 7,
           decoration: new BoxDecoration(
             shape: BoxShape.rectangle,
             image: new DecorationImage(
@@ -54,48 +55,48 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
         ),
       ),
       Padding(
-            padding: EdgeInsets.all(5),
-            child: Row(children: <Widget>[
-              Text('HUN',
-                  style: new TextStyle(
-                    fontSize: 40,
-                    fontFamily: 'Ancízar Sans Bold',
-                    color: const Color(0xFF1266A4),
-                  )),
-              Text('Salud',
-                  style: new TextStyle(
-                    fontSize: 40,
-                    fontFamily: 'Ancízar Sans Light',
-                    color: const Color(0xFF1266A4),
-                  ))
-            ])),
+          padding: EdgeInsets.all(5),
+          child: Row(children: <Widget>[
+            Text('HUN',
+                style: new TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 9,
+                  fontFamily: 'Ancízar Sans Bold',
+                  color: const Color(0xFF1266A4),
+                )),
+            Text('Salud',
+                style: new TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 9,
+                  fontFamily: 'Ancízar Sans Light',
+                  color: const Color(0xFF1266A4),
+                ))
+          ])),
     ]);
   }
 
   _userNameTypeBox() {
     return SizedBox(
-      width: 250,
-      height: 51,
+      width: MediaQuery.of(context).size.width / 1.5,
+      height: MediaQuery.of(context).size.width / 5,
       child: Stack(
         children: <Widget>[
           Positioned(
-            width: 250,
+            width: MediaQuery.of(context).size.width / 1.5,
             top: 0,
             child: Center(
               child: Text('$userName',
                   style: new TextStyle(
-                      fontSize: 30,
+                      fontSize: MediaQuery.of(context).size.width / 10,
                       color: Color(0xFF1266A4),
                       fontFamily: 'Ancízar Sans Bold')),
             ),
           ),
           Positioned(
-            width: 250,
-            top: 30,
+            width: MediaQuery.of(context).size.width / 1.5,
+            top: MediaQuery.of(context).size.width / 9,
             child: Center(
               child: Text('$typeUser',
                   style: new TextStyle(
-                      fontSize: 20,
+                      fontSize: MediaQuery.of(context).size.width / 15,
                       fontFamily: 'Ancízar Sans Light',
                       color: Color(0xff9E9E9E))),
             ),
@@ -108,7 +109,8 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
   _meetingContainer() {
     return Container(
         decoration: new BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(
+              Radius.circular(MediaQuery.of(context).size.width / 18)),
           boxShadow: [
             new BoxShadow(
                 blurRadius: 5.0,
@@ -118,23 +120,31 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
           color: Colors.white,
         ),
         child: Padding(
-          padding: EdgeInsets.only(bottom: 20, left: 10, right: 10, top: 20),
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.width / 18,
+              left: MediaQuery.of(context).size.width / 150,
+              right: MediaQuery.of(context).size.width / 150,
+              top: MediaQuery.of(context).size.width / 18),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Container(
                   decoration: new BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(25),
-                      bottomRight: Radius.circular(25),
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
+                      bottomLeft: Radius.circular(
+                          MediaQuery.of(context).size.width / 20),
+                      bottomRight: Radius.circular(
+                          MediaQuery.of(context).size.width / 20),
+                      topLeft: Radius.circular(
+                          MediaQuery.of(context).size.width / 20),
+                      topRight: Radius.circular(
+                          MediaQuery.of(context).size.width / 20),
                     ),
                     color: Colors.black12,
                   ),
                   child: Icon(
                     Icons.accessible,
-                    size: 50,
+                    size: MediaQuery.of(context).size.width / 7,
                   )),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +154,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
                     style: new TextStyle(
                       color: Color(0xff1266A4),
                       fontFamily: 'Ancízar Sans Bold',
-                      fontSize: 16,
+                      fontSize: MediaQuery.of(context).size.width / 18,
                     ),
                   ),
                   Text(
@@ -152,7 +162,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
                     style: new TextStyle(
                       color: Colors.black54,
                       fontFamily: 'Ancízar Sans Light',
-                      fontSize: 15,
+                      fontSize: MediaQuery.of(context).size.width / 20,
                     ),
                   ),
                   Text(
@@ -160,7 +170,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
                     style: new TextStyle(
                       color: Colors.black54,
                       fontFamily: 'Ancízar Sans Light',
-                      fontSize: 15,
+                      fontSize: MediaQuery.of(context).size.width / 20,
                     ),
                   )
                 ],
@@ -178,21 +188,22 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
                           Icon(
                             Icons.event,
                             color: Color(0xff1266A4),
-                            size: 25,
+                            size: MediaQuery.of(context).size.width / 12,
                           ),
                           Text(
                             'Reagendar',
                             style: new TextStyle(
                                 color: Color(0xff1266A4),
                                 fontFamily: 'Ancízar Sans Light',
-                                fontSize: 10),
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 29),
                           )
                         ],
                       ),
                       onPressed: null,
                     ),
-                    height: 50,
-                    width: 50,
+                    height: MediaQuery.of(context).size.width / 7,
+                    width: MediaQuery.of(context).size.width / 7,
                   ),
                   Container(
                     child: RaisedButton(
@@ -204,21 +215,22 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
                           Icon(
                             Icons.cancel,
                             color: Color(0xff1266A4),
-                            size: 25,
+                            size: MediaQuery.of(context).size.width / 12,
                           ),
                           Text(
                             'Cancelar',
                             style: new TextStyle(
                                 color: Color(0xff1266A4),
                                 fontFamily: 'Ancízar Sans Light',
-                                fontSize: 10),
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 29),
                           )
                         ],
                       ),
                       onPressed: null,
                     ),
-                    height: 50,
-                    width: 50,
+                    height: MediaQuery.of(context).size.width / 8,
+                    width: MediaQuery.of(context).size.width / 8,
                   ),
                 ],
               )
@@ -233,7 +245,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
       child: Text(
         'Usted no tiene más citas agendadas.',
         style: new TextStyle(
-            fontSize: 20,
+            fontSize: MediaQuery.of(context).size.width / 18,
             fontFamily: 'Ancízar Sans Light',
             color: Color(0xFF1266A4)),
       ),
@@ -244,7 +256,10 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
     return BottomAppBar(
         shape: new AutomaticNotchedShape(RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(15), topLeft: Radius.circular(15)))),
+                topRight:
+                    Radius.circular(MediaQuery.of(context).size.width / 18),
+                topLeft:
+                    Radius.circular(MediaQuery.of(context).size.width / 18)))),
         color: Color(0xff1266A4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -258,7 +273,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
                     child: Icon(
                       Icons.home,
                       color: Colors.white,
-                      size: 25,
+                      size: MediaQuery.of(context).size.width / 14,
                     ),
                   ),
                   Padding(
@@ -267,53 +282,53 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
                       'INICIO',
                       style: new TextStyle(
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: MediaQuery.of(context).size.width / 28,
                           fontFamily: 'Ancízar Sans Regular'),
                     ),
                   )
                 ],
               ),
-              height: 52,
-              width: 60,
+              height: MediaQuery.of(context).size.width / 7,
+              width: MediaQuery.of(context).size.width / 6,
             ),
             Container(
-              height: 52,
-              width: 60,
+              height: MediaQuery.of(context).size.width / 7,
+              width: MediaQuery.of(context).size.width / 6,
               child: IconButton(
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => HunProfile()));
+                            builder: (BuildContext context) => Profile()));
                   },
                   icon: Icon(
                     Icons.account_circle,
-                    size: 25,
+                    size: MediaQuery.of(context).size.width / 14,
                     color: Color.fromRGBO(255, 255, 255, 0.50),
                   )),
             ),
             SizedBox(
-              width: 20,
+              width: MediaQuery.of(context).size.width / 16,
             ),
             Container(
-              height: 52,
-              width: 60,
+              height: MediaQuery.of(context).size.width / 7,
+              width: MediaQuery.of(context).size.width / 6,
               child: IconButton(
                   onPressed: null,
                   icon: Icon(
                     Icons.event,
-                    size: 25,
+                    size: MediaQuery.of(context).size.width / 14,
                     color: Color.fromRGBO(255, 255, 255, 0.50),
                   )),
             ),
             Container(
-                height: 52,
-                width: 60,
+                height: MediaQuery.of(context).size.width / 7,
+                width: MediaQuery.of(context).size.width / 6,
                 child: IconButton(
                   onPressed: null,
                   icon: Icon(
                     Icons.search,
-                    size: 25,
+                    size: MediaQuery.of(context).size.width / 14,
                     color: Color.fromRGBO(255, 255, 255, 0.50),
                   ),
                 )),
@@ -323,15 +338,17 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
 
   _floatingActionButton() {
     return FloatingActionButton(
-        backgroundColor: Colors.orange,
-        onPressed: () {
-          Navigator.of(context);
-        },
-        child: Icon(
-          Icons.add,
-          size: 40,
-        ),
-      );
+      backgroundColor: Colors.orange,
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => SetSpeciality()));
+      },
+      child: Icon(
+        Icons.add,
+        size: MediaQuery.of(context).size.width / 12,
+      ),
+    );
   }
 
   @override
@@ -342,7 +359,7 @@ class HunHomeState extends State<HunHome> with TickerProviderStateMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _spaceBetween(40),
+            _spaceBetween(50),
             _hunLogoAndTittle(),
             _spaceBetween(30),
             _userNameTypeBox(),
