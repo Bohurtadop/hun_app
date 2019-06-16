@@ -3,7 +3,6 @@ import 'package:hun_app/Animations/Loading.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: 'HUN Aplication',
     debugShowCheckedModeBanner: false,
     debugShowMaterialGrid: false,
     checkerboardOffscreenLayers: false,
