@@ -23,6 +23,7 @@ class LoadingState extends State<Loading> {
     nextTime = new Timer(Duration(seconds: 3), () {
       setState(() {
         Navigator.push(context,
+            //TODO: move to RootPage
             MaterialPageRoute(builder: (BuildContext context) => Login()));
       });
     });
