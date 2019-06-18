@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hun_app/Screens/Home.dart';
 
-class LogIn extends StatefulWidget {
+class LoggedIn extends StatefulWidget {
   @override
-  createState() => new LogInState();
+  createState() => new LoggedInState();
 }
 
-class LogInState extends State<LogIn> with TickerProviderStateMixin {
+class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
 
   AnimationController rotationController;
   Animation rotationAnimation;

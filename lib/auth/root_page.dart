@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hun_app/Animations/LogIn.dart';
+import 'package:hun_app/Animations/LoggedIn.dart';
 import 'auth_provider.dart';
 import 'package:hun_app/Screens/Login.dart';
 import 'auth.dart';
@@ -14,7 +14,7 @@ class RootPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if(snapshot.connectionState == ConnectionState.active){
           final bool isLoggedIn = snapshot.hasData;
-          return isLoggedIn ? LogIn() : Login();
+          return isLoggedIn ? LoggedIn() : Login();
         }
         return _buildWaitingScreen();
       },
