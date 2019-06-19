@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hun_app/Screens/Register.dart';
-import 'package:hun_app/Animations/LogIn.dart';
+import 'package:hun_app/auth/auth.dart';
+import 'package:hun_app/auth/auth_provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -10,9 +11,36 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> with TickerProviderStateMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String _email;
+  String _password;
+
+  bool validateAndSave() {
+    final FormState form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> validateAndSubmit() async {
+    if (this.validateAndSave()) {
+      try {
+        final BaseAuth auth = AuthProvider.of(context).auth;
+        final String userId =
+            await auth.signInWithEmailAndPassword(_email, _password);
+        print(userId);
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+  }
+
   @override
   void initState() {
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    SystemChannels.textInput.invokeMethod('TextInput.show');
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -34,21 +62,28 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
 
   _paddingTitle() {
     return Padding(
-        padding: EdgeInsets.all(5),
-        child: Row(children: <Widget>[
-          Text('HUN',
-              style: new TextStyle(
-                fontSize: MediaQuery.of(context).size.height / 14,
-                fontFamily: 'Ancízar Sans Bold',
-                color: const Color(0xFF1266A4),
-              )),
-          Text('Salud',
-              style: new TextStyle(
-                fontSize: MediaQuery.of(context).size.height / 14,
-                fontFamily: 'Ancízar Sans Light',
-                color: const Color(0xFF1266A4),
-              ))
-        ]));
+      padding: EdgeInsets.all(5),
+      child: Row(
+        children: <Widget>[
+          Text(
+            'HUN',
+            style: new TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 14,
+              fontFamily: 'Ancízar Sans Bold',
+              color: const Color(0xFF1266A4),
+            ),
+          ),
+          Text(
+            'Salud',
+            style: new TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 14,
+              fontFamily: 'Ancízar Sans Light',
+              color: const Color(0xFF1266A4),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   _spaceBetween(double space) {
@@ -57,7 +92,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
     );
   }
 
-  _textField(String hintText, bool obscureText) {
+  _textFormField(String hintText, bool obscureText) {
     return Container(
       height: MediaQuery.of(context).size.height / 15,
       width: MediaQuery.of(context).size.width / 1.8,
@@ -71,8 +106,12 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                 width: MediaQuery.of(context).size.height / 34,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(MediaQuery.of(context).size.height / 34),
-                    topLeft: Radius.circular(MediaQuery.of(context).size.height / 34),
+                    bottomLeft: Radius.circular(
+                      MediaQuery.of(context).size.height / 34,
+                    ),
+                    topLeft: Radius.circular(
+                      MediaQuery.of(context).size.height / 34,
+                    ),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -85,31 +124,50 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                   color: Color(0xffF1F1F1),
                 ),
                 child: TextFormField(
-                    obscureText: obscureText,
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(
-                        fontFamily: 'Ancízar Sans Light',
-                        fontSize: MediaQuery.of(context).size.height / 39,
-                        color: Color.fromRGBO(158, 158, 158, 1)),
-                    decoration: new InputDecoration(
-                        hintText: hintText,
-                        hintStyle: TextStyle(
-                            fontFamily: 'Ancízar Sans Light',
-                            fontSize: MediaQuery.of(context).size.height / 39,
-                            color: Color.fromRGBO(158, 158, 158, 1)),
-                        fillColor: Colors.white,
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(style: BorderStyle.none)),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(style: BorderStyle.none)))),
+                  key: !obscureText ? Key('email') : Key("password"),
+                  obscureText: obscureText,
+                  textAlign: TextAlign.left,
+                  style: new TextStyle(
+                    fontFamily: 'Ancízar Sans Light',
+                    fontSize: MediaQuery.of(context).size.height / 39,
+                    color: Color.fromRGBO(158, 158, 158, 1),
+                  ),
+                  decoration: new InputDecoration(
+                    hintText: hintText,
+                    hintStyle: TextStyle(
+                      fontFamily: 'Ancízar Sans Light',
+                      fontSize: MediaQuery.of(context).size.height / 39,
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                    ),
+                    fillColor: Colors.white,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                    ),
+                  ),
+                  onSaved: (String value) {
+                    if (!obscureText) {
+                      _email = value;
+                    } else {
+                      _password = value;
+                    }
+                  },
+                  validator: null,
+                ),
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 15,
                 width: MediaQuery.of(context).size.height / 34,
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(MediaQuery.of(context).size.height / 34),
-                    topRight: Radius.circular(MediaQuery.of(context).size.height / 34),
+                    bottomRight: Radius.circular(
+                      MediaQuery.of(context).size.height / 34,
+                    ),
+                    topRight: Radius.circular(
+                      MediaQuery.of(context).size.height / 34,
+                    ),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -122,25 +180,21 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   _mainButton(String buttonText, double height, double width) {
-    _onPressed() {
-      return setState(() {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => LogIn()));
-      });
-    }
-
     return Container(
       child: RaisedButton(
-        onPressed: () {
-          _onPressed();
-        },
+        onPressed: this.validateAndSubmit,
         color: Color(0xffFF8800),
         elevation: 5,
         highlightElevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height / 34)),
+        shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(MediaQuery.of(context).size.height / 34),
+        ),
         child: Text(
           buttonText,
-          style: TextStyle(fontSize: MediaQuery.of(context).size.height / 39, color: Colors.white),
+          style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 39,
+              color: Colors.white),
         ),
       ),
       height: height,
@@ -149,27 +203,30 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   _offTopicButton(String buttonText, double height, double width) {
-    _onPressed() {
-      return setState(() {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => Register()));
-      });
-    }
-
     return Container(
       child: RaisedButton(
         onPressed: () {
-          _onPressed();
+          _formKey.currentState.reset();
+          return setState(() {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => Register(),
+              ),
+            );
+          });
         },
         color: Color(0xFF1266A4),
         elevation: 5,
         highlightElevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height / 35)),
+        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(MediaQuery.of(context).size.height / 35)),
         child: Text(
           buttonText,
-          style: TextStyle(fontSize: MediaQuery.of(context).size.height / 39, color: Colors.white),
+          style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 39,
+              color: Colors.white),
         ),
       ),
       height: height,
@@ -179,11 +236,13 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Form(
+            key: this._formKey,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -194,26 +253,37 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                     Hero(tag: 'hunLogo', child: _hunLogo()),
                     _paddingTitle(),
                     _spaceBetween(20),
-                    _textField('Usuario/Email', false),
+                    _textFormField('Usuario/Email', false),
                     _spaceBetween(1),
-                    _textField('Contraseña', true),
+                    _textFormField('Contraseña', true),
                     _spaceBetween(20),
-                    _mainButton('Iniciar Sesión', MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width / 2),
+                    _mainButton(
+                      'Iniciar Sesión',
+                      MediaQuery.of(context).size.height / 16,
+                      MediaQuery.of(context).size.width / 2,
+                    ),
                     _spaceBetween(5),
                     Text(
                       '¿Es usuario nuevo?',
                       style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height / 39,
-                          fontFamily: 'Ancízar Sans Light',
-                          color: Color(0xff707070)),
+                        fontSize: MediaQuery.of(context).size.height / 39,
+                        fontFamily: 'Ancízar Sans Light',
+                        color: Color(0xff707070),
+                      ),
                     ),
-                    _offTopicButton('Registrarse', MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width / 2.1),
+                    _offTopicButton(
+                      'Registrarse',
+                      MediaQuery.of(context).size.height / 16,
+                      MediaQuery.of(context).size.width / 2.1,
+                    ),
                     _spaceBetween(20)
                   ],
                 )
               ],
             ),
-          )
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -340,9 +340,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     return FloatingActionButton(
       backgroundColor: Colors.orange,
       onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => SetSpeciality()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => SetSpeciality(),
+          ),
+        );
       },
       child: Icon(
         Icons.add,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:hun_app/Screens/Login.dart';
+import 'package:hun_app/auth/root_page.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -15,16 +15,24 @@ class LoadingState extends State<Loading> {
 
   @override
   void initState() {
-    fadeTime = new Timer(Duration(seconds: 2), () {
-      setState(() {
-        firstStateEnabled = false;
-      });
-    });
+    fadeTime = new Timer(
+      Duration(seconds: 2),
+      () {
+        setState(() {
+          firstStateEnabled = false;
+        });
+      },
+    );
     nextTime = new Timer(Duration(seconds: 3), () {
-      setState(() {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => Login()));
-      });
+      setState(
+        () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => RootPage()),
+            (_) => false,
+          );
+        },
+      );
     });
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
@@ -37,28 +45,37 @@ class LoadingState extends State<Loading> {
       decoration: new BoxDecoration(
         shape: BoxShape.rectangle,
         image: new DecorationImage(
-            fit: BoxFit.fill, image: AssetImage('assets/images/HunLogo1.png')),
+          fit: BoxFit.fill,
+          image: AssetImage('assets/images/HunLogo1.png'),
+        ),
       ),
     );
   }
 
   _paddingTitle() {
     return Padding(
-        padding: EdgeInsets.all(5),
-        child: Row(children: <Widget>[
-          Text('HUN',
-              style: new TextStyle(
-                fontSize: MediaQuery.of(context).size.height / 12,
-                fontFamily: 'Ancízar Sans Bold',
-                color: const Color(0xFF1266A4),
-              )),
-          Text('Salud',
-              style: new TextStyle(
-                fontSize: MediaQuery.of(context).size.height / 12,
-                fontFamily: 'Ancízar Sans Light',
-                color: const Color(0xFF1266A4),
-              ))
-        ]));
+      padding: EdgeInsets.all(5),
+      child: Row(
+        children: <Widget>[
+          Text(
+            'HUN',
+            style: new TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 12,
+              fontFamily: 'Ancízar Sans Bold',
+              color: const Color(0xFF1266A4),
+            ),
+          ),
+          Text(
+            'Salud',
+            style: new TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 12,
+              fontFamily: 'Ancízar Sans Light',
+              color: const Color(0xFF1266A4),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   _spaceBetween(double space) {
@@ -81,91 +98,98 @@ class LoadingState extends State<Loading> {
     return Text(
       tittle,
       style: new TextStyle(
-          fontSize: MediaQuery.of(context).size.width / 20,
-          fontFamily: 'Ancízar Serif Regular',
-          color: const Color(0xFF1266A4)),
+        fontSize: MediaQuery.of(context).size.width / 20,
+        fontFamily: 'Ancízar Serif Regular',
+        color: const Color(0xFF1266A4),
+      ),
     );
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              AnimatedCrossFade(
-                  firstChild: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width / 1.9,
-                          height: MediaQuery.of(context).size.width / 1.9,
-                          decoration: new BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            image: new DecorationImage(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                AnimatedCrossFade(
+                    firstChild: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width / 1.9,
+                            height: MediaQuery.of(context).size.width / 1.9,
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              image: new DecorationImage(
                                 fit: BoxFit.fill,
-                                image:
-                                AssetImage('assets/images/HunLogo3.png')),
+                                image: AssetImage('assets/images/HunLogo3.png'),
+                              ),
+                            ),
                           ),
-                        ),
-                        _spaceBetween(10),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.7,
-                          height: MediaQuery.of(context).size.width / 8,
-                          child: Stack(
-                            children: <Widget>[
-                              Positioned(
-                                width: MediaQuery.of(context).size.width / 1.7,
-                                top: 0,
-                                child: Center(
-                                  child: _serifTittle("HOSPITAL UNIVERSITARIO"),
+                          _spaceBetween(10),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 1.7,
+                            height: MediaQuery.of(context).size.width / 8,
+                            child: Stack(
+                              children: <Widget>[
+                                Positioned(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.7,
+                                  top: 0,
+                                  child: Center(
+                                    child:
+                                        _serifTittle("HOSPITAL UNIVERSITARIO"),
+                                  ),
                                 ),
-                              ),
-                              Positioned(
-                                width: MediaQuery.of(context).size.width / 1.7,
-                                top: MediaQuery.of(context).size.width / 30,
-                                child: Center(
-                                  child: _sansTittle("N A C I O N A L"),
+                                Positioned(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.7,
+                                  top: MediaQuery.of(context).size.width / 30,
+                                  child: Center(
+                                    child: _sansTittle("N A C I O N A L"),
+                                  ),
                                 ),
-                              ),
-                              Positioned(
-                                  width: MediaQuery.of(context).size.width / 1.7,
+                                Positioned(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.7,
                                   top: MediaQuery.of(context).size.width / 14,
                                   child: Center(
                                     child: _serifTittle("DE COLOMBIA"),
-                                  ))
-                            ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  secondChild: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Column(
+                    secondChild: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Hero(tag: 'hunLogo', child: _hunLogo()),
                               _paddingTitle(),
-                            ]
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  crossFadeState: firstStateEnabled
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: Duration(milliseconds: 500)),
-            ],
-          )
-        ],
-      )),
+                    crossFadeState: firstStateEnabled
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
+                    duration: Duration(milliseconds: 500)),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }
