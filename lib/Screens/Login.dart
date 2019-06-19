@@ -40,7 +40,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    SystemChannels.textInput.invokeMethod('TextInput.show');
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -62,21 +62,28 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
 
   _paddingTitle() {
     return Padding(
-        padding: EdgeInsets.all(5),
-        child: Row(children: <Widget>[
-          Text('HUN',
-              style: new TextStyle(
-                fontSize: MediaQuery.of(context).size.height / 14,
-                fontFamily: 'Ancízar Sans Bold',
-                color: const Color(0xFF1266A4),
-              )),
-          Text('Salud',
-              style: new TextStyle(
-                fontSize: MediaQuery.of(context).size.height / 14,
-                fontFamily: 'Ancízar Sans Light',
-                color: const Color(0xFF1266A4),
-              ))
-        ]));
+      padding: EdgeInsets.all(5),
+      child: Row(
+        children: <Widget>[
+          Text(
+            'HUN',
+            style: new TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 14,
+              fontFamily: 'Ancízar Sans Bold',
+              color: const Color(0xFF1266A4),
+            ),
+          ),
+          Text(
+            'Salud',
+            style: new TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 14,
+              fontFamily: 'Ancízar Sans Light',
+              color: const Color(0xFF1266A4),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   _spaceBetween(double space) {
@@ -100,9 +107,11 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(
-                        MediaQuery.of(context).size.height / 34),
+                      MediaQuery.of(context).size.height / 34,
+                    ),
                     topLeft: Radius.circular(
-                        MediaQuery.of(context).size.height / 34),
+                      MediaQuery.of(context).size.height / 34,
+                    ),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
