@@ -61,8 +61,8 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
         // user type defining
         await CloudFunctions.instance
             .getHttpsCallable(functionName: 'update_user_type')
-            .call({'user_type': 'Usuario particular'});
-        print('User type has been modifed to Usuario particular');
+            .call({'client': true});
+        print('User type has been updated. The user is a client now.');
       } catch (e) {
         print('Error: ${e.toString()}');
       }
