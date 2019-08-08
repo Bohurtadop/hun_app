@@ -17,6 +17,8 @@ List cita1 = [
 ];
 
 class Profile extends StatefulWidget {
+  String uid;
+  Profile(this.uid);
   @override
   createState() => new ProfileState();
 }
@@ -204,7 +206,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => Home(),
+                    builder: (BuildContext context) => Home(widget.uid),
                   ),
                 );
               },
@@ -281,7 +283,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => SetSpeciality()));
+                builder: (BuildContext context) => SetSpeciality(widget.uid)));
       },
       child: Icon(
         Icons.add,

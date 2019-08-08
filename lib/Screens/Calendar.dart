@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:hun_app/Screens/Home.dart';
 
 class HunCalendar extends StatefulWidget {
+  final String uid;
+  HunCalendar(this.uid);
   @override
   createState() => new HunCalendarState();
 }
@@ -163,7 +165,7 @@ class HunCalendarState extends State<HunCalendar> with TickerProviderStateMixin 
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => Home()));
+                            builder: (BuildContext context) => Home(widget.uid)));
                   },
                   icon: Icon(
                     Icons.home,

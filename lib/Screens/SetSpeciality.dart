@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 
 class SetSpeciality extends StatefulWidget {
+  String uid;
+  SetSpeciality(this.uid);
   @override
   createState() => new SetSpecialityState();
 }

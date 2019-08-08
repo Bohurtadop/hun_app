@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hun_app/Screens/Profile.dart';
 import 'package:hun_app/Screens/SetSpeciality.dart';
+import 'package:hun_app/models/UserInfo.dart';
 
 String userName = 'Cristian Veloza';
 String typeUser = 'Usuario particular';
 List cita1 = ["Fisioterapia", "Domingo 30 de Diciembre", "10:00 a.m."];
 
 class Home extends StatefulWidget {
+  final String uid;
+  Home(this.uid);
+
   @override
   createState() => new HomeState();
 }
@@ -40,37 +44,46 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   _hunLogoAndTittle() {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      Hero(
-        tag: 'hunLogo',
-        child: Container(
-          width: MediaQuery.of(context).size.width / 7,
-          height: MediaQuery.of(context).size.width / 7,
-          decoration: new BoxDecoration(
-            shape: BoxShape.rectangle,
-            image: new DecorationImage(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Hero(
+          tag: 'hunLogo',
+          child: Container(
+            width: MediaQuery.of(context).size.width / 7,
+            height: MediaQuery.of(context).size.width / 7,
+            decoration: new BoxDecoration(
+              shape: BoxShape.rectangle,
+              image: new DecorationImage(
                 fit: BoxFit.fill,
-                image: AssetImage('assets/images/HunLogo1.png')),
+                image: AssetImage('assets/images/HunLogo1.png'),
+              ),
+            ),
           ),
         ),
-      ),
-      Padding(
+        Padding(
           padding: EdgeInsets.all(5),
-          child: Row(children: <Widget>[
-            Text('HUN',
-                style: new TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 9,
-                  fontFamily: 'Ancízar Sans Bold',
-                  color: const Color(0xFF1266A4),
-                )),
-            Text('Salud',
+          child: Row(
+            children: <Widget>[
+              Text('HUN',
+                  style: new TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 9,
+                    fontFamily: 'Ancízar Sans Bold',
+                    color: const Color(0xFF1266A4),
+                  )),
+              Text(
+                'Salud',
                 style: new TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 9,
                   fontFamily: 'Ancízar Sans Light',
                   color: const Color(0xFF1266A4),
-                ))
-          ])),
-    ]);
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   _userNameTypeBox() {
@@ -83,22 +96,27 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             width: MediaQuery.of(context).size.width / 1.5,
             top: 0,
             child: Center(
-              child: Text('$userName',
-                  style: new TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 10,
-                      color: Color(0xFF1266A4),
-                      fontFamily: 'Ancízar Sans Bold')),
+              child: Text(
+                '$userName',
+                style: new TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 10,
+                    color: Color(0xFF1266A4),
+                    fontFamily: 'Ancízar Sans Bold'),
+              ),
             ),
           ),
           Positioned(
             width: MediaQuery.of(context).size.width / 1.5,
             top: MediaQuery.of(context).size.width / 9,
             child: Center(
-              child: Text('$typeUser',
-                  style: new TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 15,
-                      fontFamily: 'Ancízar Sans Light',
-                      color: Color(0xff9E9E9E))),
+              child: Text(
+                '$typeUser',
+                style: new TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 15,
+                  fontFamily: 'Ancízar Sans Light',
+                  color: Color(0xff9E9E9E),
+                ),
+              ),
             ),
           ),
         ],
@@ -254,86 +272,88 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   _bottomNavigationBar() {
     return BottomAppBar(
-        shape: new AutomaticNotchedShape(RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight:
-                    Radius.circular(MediaQuery.of(context).size.width / 18),
-                topLeft:
-                    Radius.circular(MediaQuery.of(context).size.width / 18)))),
-        color: Color(0xff1266A4),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(0),
-                    child: Icon(
-                      Icons.home,
-                      color: Colors.white,
-                      size: MediaQuery.of(context).size.width / 14,
-                    ),
+      shape: new AutomaticNotchedShape(RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(MediaQuery.of(context).size.width / 18),
+              topLeft:
+                  Radius.circular(MediaQuery.of(context).size.width / 18)))),
+      color: Color(0xff1266A4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Icon(
+                    Icons.home,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.width / 14,
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(0),
-                    child: Text(
-                      'INICIO',
-                      style: new TextStyle(
-                          color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.width / 28,
-                          fontFamily: 'Ancízar Sans Regular'),
-                    ),
-                  )
-                ],
-              ),
-              height: MediaQuery.of(context).size.width / 7,
-              width: MediaQuery.of(context).size.width / 6,
-            ),
-            Container(
-              height: MediaQuery.of(context).size.width / 7,
-              width: MediaQuery.of(context).size.width / 6,
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => Profile()));
-                  },
-                  icon: Icon(
-                    Icons.account_circle,
-                    size: MediaQuery.of(context).size.width / 14,
-                    color: Color.fromRGBO(255, 255, 255, 0.50),
-                  )),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 16,
-            ),
-            Container(
-              height: MediaQuery.of(context).size.width / 7,
-              width: MediaQuery.of(context).size.width / 6,
-              child: IconButton(
-                  onPressed: null,
-                  icon: Icon(
-                    Icons.event,
-                    size: MediaQuery.of(context).size.width / 14,
-                    color: Color.fromRGBO(255, 255, 255, 0.50),
-                  )),
-            ),
-            Container(
-                height: MediaQuery.of(context).size.width / 7,
-                width: MediaQuery.of(context).size.width / 6,
-                child: IconButton(
-                  onPressed: null,
-                  icon: Icon(
-                    Icons.search,
-                    size: MediaQuery.of(context).size.width / 14,
-                    color: Color.fromRGBO(255, 255, 255, 0.50),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Text(
+                    'INICIO',
+                    style: new TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width / 28,
+                        fontFamily: 'Ancízar Sans Regular'),
                   ),
+                )
+              ],
+            ),
+            height: MediaQuery.of(context).size.width / 7,
+            width: MediaQuery.of(context).size.width / 6,
+          ),
+          Container(
+            height: MediaQuery.of(context).size.width / 7,
+            width: MediaQuery.of(context).size.width / 6,
+            child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              Profile(widget.uid)));
+                },
+                icon: Icon(
+                  Icons.account_circle,
+                  size: MediaQuery.of(context).size.width / 14,
+                  color: Color.fromRGBO(255, 255, 255, 0.50),
                 )),
-          ],
-        ));
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 16,
+          ),
+          Container(
+            height: MediaQuery.of(context).size.width / 7,
+            width: MediaQuery.of(context).size.width / 6,
+            child: IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.event,
+                  size: MediaQuery.of(context).size.width / 14,
+                  color: Color.fromRGBO(255, 255, 255, 0.50),
+                )),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.width / 7,
+            width: MediaQuery.of(context).size.width / 6,
+            child: IconButton(
+              onPressed: null,
+              icon: Icon(
+                Icons.search,
+                size: MediaQuery.of(context).size.width / 14,
+                color: Color.fromRGBO(255, 255, 255, 0.50),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   _floatingActionButton() {
@@ -343,7 +363,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => SetSpeciality(),
+            builder: (BuildContext context) => SetSpeciality(widget.uid),
           ),
         );
       },
@@ -366,6 +386,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             _hunLogoAndTittle(),
             _spaceBetween(30),
             _userNameTypeBox(),
+            new UserInfo(uid: widget.uid),
             _darkTittle('PRÓXIMAS CITAS'),
             _meetingContainer(),
             _spaceBetween(20),
