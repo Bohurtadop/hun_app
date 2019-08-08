@@ -7,15 +7,6 @@ import 'package:hun_app/auth/auth_provider.dart';
 import 'package:hun_app/auth/root_page.dart';
 import 'package:hun_app/models/UserInfo.dart';
 
-String userName = 'Cristian Veloza';
-String typeUser = 'Usuario particular';
-List cita1 = [
-  "Fisioterapia",
-  "Domingo 30 de Diciembre",
-  "10:00 a.m.",
-  "Johana Beltrán",
-  "Fisioterapeuta"
-];
 
 class Profile extends StatefulWidget {
   final String uid;

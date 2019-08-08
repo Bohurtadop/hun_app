@@ -17,23 +17,18 @@ class LoadingState extends State<Loading> {
   void initState() {
     fadeTime = new Timer(
       Duration(seconds: 2),
-      () {
-        setState(() {
-          firstStateEnabled = false;
-        });
-      },
+      () => setState(() => firstStateEnabled = false),
     );
-    nextTime = new Timer(Duration(seconds: 3), () {
-      setState(
-        () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => RootPage()),
-            (_) => false,
-          );
-        },
-      );
-    });
+    nextTime = new Timer(
+      Duration(seconds: 3),
+      () => setState(
+        () => Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => RootPage()),
+          (_) => false,
+        ),
+      ),
+    );
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
   }
@@ -88,9 +83,10 @@ class LoadingState extends State<Loading> {
     return Text(
       tittle,
       style: new TextStyle(
-          fontSize: MediaQuery.of(context).size.width / 18,
-          fontFamily: 'Ancízar Sans Regular',
-          color: const Color(0xFF1266A4)),
+        fontSize: MediaQuery.of(context).size.width / 18,
+        fontFamily: 'Ancízar Sans Regular',
+        color: const Color(0xFF1266A4),
+      ),
     );
   }
 
@@ -115,76 +111,73 @@ class LoadingState extends State<Loading> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 AnimatedCrossFade(
-                    firstChild: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width / 1.9,
-                            height: MediaQuery.of(context).size.width / 1.9,
-                            decoration: new BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/HunLogo3.png'),
-                              ),
+                  firstChild: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width / 1.9,
+                          height: MediaQuery.of(context).size.width / 1.9,
+                          decoration: new BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: new DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage('assets/images/HunLogo3.png'),
                             ),
                           ),
-                          _spaceBetween(10),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 1.7,
-                            height: MediaQuery.of(context).size.width / 8,
-                            child: Stack(
-                              children: <Widget>[
-                                Positioned(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.7,
-                                  top: 0,
-                                  child: Center(
-                                    child:
-                                        _serifTittle("HOSPITAL UNIVERSITARIO"),
-                                  ),
-                                ),
-                                Positioned(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.7,
-                                  top: MediaQuery.of(context).size.width / 30,
-                                  child: Center(
-                                    child: _sansTittle("N A C I O N A L"),
-                                  ),
-                                ),
-                                Positioned(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.7,
-                                  top: MediaQuery.of(context).size.width / 14,
-                                  child: Center(
-                                    child: _serifTittle("DE COLOMBIA"),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    secondChild: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        _spaceBetween(10),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 1.7,
+                          height: MediaQuery.of(context).size.width / 8,
+                          child: Stack(
                             children: <Widget>[
-                              Hero(tag: 'hunLogo', child: _hunLogo()),
-                              _paddingTitle(),
+                              Positioned(
+                                width: MediaQuery.of(context).size.width / 1.7,
+                                top: 0,
+                                child: Center(
+                                  child: _serifTittle("HOSPITAL UNIVERSITARIO"),
+                                ),
+                              ),
+                              Positioned(
+                                width: MediaQuery.of(context).size.width / 1.7,
+                                top: MediaQuery.of(context).size.width / 30,
+                                child: Center(
+                                  child: _sansTittle("N A C I O N A L"),
+                                ),
+                              ),
+                              Positioned(
+                                width: MediaQuery.of(context).size.width / 1.7,
+                                top: MediaQuery.of(context).size.width / 14,
+                                child: Center(
+                                  child: _serifTittle("DE COLOMBIA"),
+                                ),
+                              )
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    crossFadeState: firstStateEnabled
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
-                    duration: Duration(milliseconds: 500)),
+                  ),
+                  secondChild: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Hero(tag: 'hunLogo', child: _hunLogo()),
+                            _paddingTitle(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  crossFadeState: firstStateEnabled
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: Duration(milliseconds: 500),
+                ),
               ],
             )
           ],

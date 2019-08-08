@@ -4,8 +4,6 @@ import 'package:hun_app/Screens/Profile.dart';
 import 'package:hun_app/Screens/SetSpeciality.dart';
 import 'package:hun_app/models/UserInfo.dart';
 
-String userName = 'Cristian Veloza';
-String typeUser = 'Usuario particular';
 List cita1 = ["Fisioterapia", "Domingo 30 de Diciembre", "10:00 a.m."];
 
 class Home extends StatefulWidget {
@@ -92,12 +90,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     return Container(
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(
-            Radius.circular(MediaQuery.of(context).size.width / 18)),
+          Radius.circular(MediaQuery.of(context).size.width / 18),
+        ),
         boxShadow: [
           new BoxShadow(
-              blurRadius: 5.0,
-              color: new Color.fromRGBO(0, 0, 0, 0.36),
-              offset: new Offset(0, 5.0)),
+            blurRadius: 5.0,
+            color: new Color.fromRGBO(0, 0, 0, 0.36),
+            offset: new Offset(0, 5.0),
+          ),
         ],
         color: Colors.white,
       ),
@@ -175,9 +175,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                         Text(
                           'Reagendar',
                           style: new TextStyle(
-                              color: Color(0xff1266A4),
-                              fontFamily: 'Ancízar Sans Light',
-                              fontSize: MediaQuery.of(context).size.width / 29),
+                            color: Color(0xff1266A4),
+                            fontFamily: 'Ancízar Sans Light',
+                            fontSize: MediaQuery.of(context).size.width / 29,
+                          ),
                         )
                       ],
                     ),
@@ -201,9 +202,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                         Text(
                           'Cancelar',
                           style: new TextStyle(
-                              color: Color(0xff1266A4),
-                              fontFamily: 'Ancízar Sans Light',
-                              fontSize: MediaQuery.of(context).size.width / 29),
+                            color: Color(0xff1266A4),
+                            fontFamily: 'Ancízar Sans Light',
+                            fontSize: MediaQuery.of(context).size.width / 29,
+                          ),
                         )
                       ],
                     ),
@@ -235,11 +237,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   _bottomNavigationBar() {
     return BottomAppBar(
-      shape: new AutomaticNotchedShape(RoundedRectangleBorder(
+      shape: new AutomaticNotchedShape(
+        RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              topRight: Radius.circular(MediaQuery.of(context).size.width / 18),
-              topLeft:
-                  Radius.circular(MediaQuery.of(context).size.width / 18)))),
+            topRight: Radius.circular(MediaQuery.of(context).size.width / 18),
+            topLeft: Radius.circular(MediaQuery.of(context).size.width / 18),
+          ),
+        ),
+      ),
       color: Color(0xff1266A4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -261,9 +266,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                   child: Text(
                     'INICIO',
                     style: new TextStyle(
-                        color: Colors.white,
-                        fontSize: MediaQuery.of(context).size.width / 28,
-                        fontFamily: 'Ancízar Sans Regular'),
+                      color: Colors.white,
+                      fontSize: MediaQuery.of(context).size.width / 28,
+                      fontFamily: 'Ancízar Sans Regular',
+                    ),
                   ),
                 )
               ],
@@ -275,18 +281,18 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             height: MediaQuery.of(context).size.width / 7,
             width: MediaQuery.of(context).size.width / 6,
             child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              Profile(widget.uid)));
-                },
-                icon: Icon(
-                  Icons.account_circle,
-                  size: MediaQuery.of(context).size.width / 14,
-                  color: Color.fromRGBO(255, 255, 255, 0.50),
-                )),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => Profile(widget.uid),
+                ),
+              ),
+              icon: Icon(
+                Icons.account_circle,
+                size: MediaQuery.of(context).size.width / 14,
+                color: Color.fromRGBO(255, 255, 255, 0.50),
+              ),
+            ),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width / 16,
@@ -322,14 +328,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   _floatingActionButton() {
     return FloatingActionButton(
       backgroundColor: Colors.orange,
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => SetSpeciality(widget.uid),
-          ),
-        );
-      },
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => SetSpeciality(widget.uid),
+        ),
+      ),
       child: Icon(
         Icons.add,
         size: MediaQuery.of(context).size.width / 12,
