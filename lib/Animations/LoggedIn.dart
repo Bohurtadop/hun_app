@@ -67,7 +67,7 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
       },
     );
 
-    rotationController.addListener(null);
+    rotationController.addListener(()=> {});
   }
 
   void dispose() {

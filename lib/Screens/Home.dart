@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hun_app/Screens/Profile.dart';
 import 'package:hun_app/Screens/SetSpeciality.dart';
+import 'package:hun_app/models/Appointments.dart';
 import 'package:hun_app/models/UserInfo.dart';
 
 List cita1 = ["Fisioterapia", "Domingo 30 de Diciembre", "10:00 a.m."];
@@ -86,151 +87,16 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  _meetingContainer() {
-    return Container(
-      decoration: new BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(MediaQuery.of(context).size.width / 18),
-        ),
-        boxShadow: [
-          new BoxShadow(
-            blurRadius: 5.0,
-            color: new Color.fromRGBO(0, 0, 0, 0.36),
-            offset: new Offset(0, 5.0),
-          ),
-        ],
-        color: Colors.white,
-      ),
-      child: Padding(
-        padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.width / 18,
-            left: MediaQuery.of(context).size.width / 150,
-            right: MediaQuery.of(context).size.width / 150,
-            top: MediaQuery.of(context).size.width / 18),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Container(
-                decoration: new BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft:
-                        Radius.circular(MediaQuery.of(context).size.width / 20),
-                    bottomRight:
-                        Radius.circular(MediaQuery.of(context).size.width / 20),
-                    topLeft:
-                        Radius.circular(MediaQuery.of(context).size.width / 20),
-                    topRight:
-                        Radius.circular(MediaQuery.of(context).size.width / 20),
-                  ),
-                  color: Colors.black12,
-                ),
-                child: Icon(
-                  Icons.accessible,
-                  size: MediaQuery.of(context).size.width / 7,
-                )),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  '${cita1[0]}',
-                  style: new TextStyle(
-                    color: Color(0xff1266A4),
-                    fontFamily: 'Ancízar Sans Bold',
-                    fontSize: MediaQuery.of(context).size.width / 18,
-                  ),
-                ),
-                Text(
-                  '${cita1[1]}',
-                  style: new TextStyle(
-                    color: Colors.black54,
-                    fontFamily: 'Ancízar Sans Light',
-                    fontSize: MediaQuery.of(context).size.width / 20,
-                  ),
-                ),
-                Text(
-                  '${cita1[2]}',
-                  style: new TextStyle(
-                    color: Colors.black54,
-                    fontFamily: 'Ancízar Sans Light',
-                    fontSize: MediaQuery.of(context).size.width / 20,
-                  ),
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: RaisedButton(
-                    disabledColor: Colors.white,
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.event,
-                          color: Color(0xff1266A4),
-                          size: MediaQuery.of(context).size.width / 12,
-                        ),
-                        Text(
-                          'Reagendar',
-                          style: new TextStyle(
-                            color: Color(0xff1266A4),
-                            fontFamily: 'Ancízar Sans Light',
-                            fontSize: MediaQuery.of(context).size.width / 29,
-                          ),
-                        )
-                      ],
-                    ),
-                    onPressed: null,
-                  ),
-                  height: MediaQuery.of(context).size.width / 7,
-                  width: MediaQuery.of(context).size.width / 7,
-                ),
-                Container(
-                  child: RaisedButton(
-                    disabledColor: Colors.white,
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.cancel,
-                          color: Color(0xff1266A4),
-                          size: MediaQuery.of(context).size.width / 12,
-                        ),
-                        Text(
-                          'Cancelar',
-                          style: new TextStyle(
-                            color: Color(0xff1266A4),
-                            fontFamily: 'Ancízar Sans Light',
-                            fontSize: MediaQuery.of(context).size.width / 29,
-                          ),
-                        )
-                      ],
-                    ),
-                    onPressed: null,
-                  ),
-                  height: MediaQuery.of(context).size.width / 8,
-                  width: MediaQuery.of(context).size.width / 8,
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   _endText() {
     return Padding(
       padding: EdgeInsets.all(30),
       child: Text(
         'Usted no tiene más citas agendadas.',
         style: new TextStyle(
-            fontSize: MediaQuery.of(context).size.width / 18,
-            fontFamily: 'Ancízar Sans Light',
-            color: Color(0xFF1266A4)),
+          fontSize: MediaQuery.of(context).size.width / 18,
+          fontFamily: 'Ancízar Sans Light',
+          color: Color(0xFF1266A4),
+        ),
       ),
     );
   }
@@ -354,15 +220,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             _spaceBetween(30),
             new UserInfo(uid: widget.uid),
             _darkTittle('PRÓXIMAS CITAS'),
-            _meetingContainer(),
-            _spaceBetween(20),
-            _meetingContainer(),
-            _spaceBetween(20),
-            _meetingContainer(),
-            _spaceBetween(20),
-            _meetingContainer(),
-            _spaceBetween(20),
-            _meetingContainer(),
+            new ActiveAppointments(uid: widget.uid),
             _endText(),
             _spaceBetween(20)
           ],
