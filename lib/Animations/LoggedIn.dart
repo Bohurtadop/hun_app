@@ -4,6 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:hun_app/Screens/Home.dart';
 
 class LoggedIn extends StatefulWidget {
+  String uid;
+  LoggedIn(this.uid);
+
   @override
   createState() => new LoggedInState();
 }
@@ -46,7 +49,7 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => Home()), (_) => false);
+                    builder: (BuildContext context) => Home(widget.uid)), (_) => false);
           });
         });
       }
