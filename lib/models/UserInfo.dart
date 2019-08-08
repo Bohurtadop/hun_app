@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class UserInfo extends StatelessWidget {
@@ -17,8 +18,7 @@ class UserInfo extends StatelessWidget {
         }
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            //TODO: Loading widget
-            return new Text('Loading...');
+            return new CircularProgressIndicator();
             break;
           default:
             if (snapshot.hasData) {

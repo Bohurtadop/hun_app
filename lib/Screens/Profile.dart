@@ -5,6 +5,7 @@ import 'package:hun_app/Screens/SetSpeciality.dart';
 import 'package:hun_app/auth/auth.dart';
 import 'package:hun_app/auth/auth_provider.dart';
 import 'package:hun_app/auth/root_page.dart';
+import 'package:hun_app/models/UserInfo.dart';
 
 String userName = 'Cristian Veloza';
 String typeUser = 'Usuario particular';
@@ -17,7 +18,7 @@ List cita1 = [
 ];
 
 class Profile extends StatefulWidget {
-  String uid;
+  final String uid;
   Profile(this.uid);
   @override
   createState() => new ProfileState();
@@ -101,39 +102,6 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
         image: new DecorationImage(
             fit: BoxFit.fill,
             image: AssetImage('assets/images/ProfileImage.png')),
-      ),
-    );
-  }
-
-  _userNameTypeBox() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 1.5,
-      height: MediaQuery.of(context).size.width / 5,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            width: MediaQuery.of(context).size.width / 1.5,
-            top: 0,
-            child: Center(
-              child: Text('$userName',
-                  style: new TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 10,
-                      color: Color(0xFF1266A4),
-                      fontFamily: 'Ancízar Sans Bold')),
-            ),
-          ),
-          Positioned(
-            width: MediaQuery.of(context).size.width / 1.5,
-            top: MediaQuery.of(context).size.width / 9,
-            child: Center(
-              child: Text('$typeUser',
-                  style: new TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 15,
-                      fontFamily: 'Ancízar Sans Light',
-                      color: Color(0xff9E9E9E))),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -306,7 +274,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
             _spaceBetween(40),
             _hunLogoAndTittle(),
             _profilePhoto(),
-            _userNameTypeBox(),
+            new UserInfo(uid: widget.uid),
             _spaceBetween(10),
             _mainButton("Editar datos", MediaQuery.of(context).size.height / 16,
                 MediaQuery.of(context).size.width / 2),
