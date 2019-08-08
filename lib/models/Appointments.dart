@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+enum AppointmentState { available, reserved }
+
 // This class creates a widget with all active appointments.
 class ActiveAppointments extends StatelessWidget {
   const ActiveAppointments({@required this.uid});
@@ -22,7 +24,7 @@ class ActiveAppointments extends StatelessWidget {
             return CircularProgressIndicator();
           default:
             if (!snapshot.hasData) {
-              return Text('No se pudieron obtener tus citas');
+              return Text('No se pudieron obtener sus citas');
             }
 
             debugPrint('********\nAppointments:\n+++++++');
@@ -30,15 +32,18 @@ class ActiveAppointments extends StatelessWidget {
             // we save the appointments' widgets in a list
             List<Container> appointments = snapshot.data.documents.map(
               (DocumentSnapshot document) {
+                AppointmentState state =
+                    AppointmentState.values[document['state']];
                 String appointmentType = document['type'];
                 DateTime dateStart = document['start'].toDate();
                 DateTime dateEnd = document['end'].toDate();
 
+                debugPrint('Appointment id: ${document.documentID}');
                 debugPrint('Type: $appointmentType');
                 debugPrint('Doctor\'s id: ${document['doctor']}');
-                debugPrint('State: ${document['state']}');
-                debugPrint('Start: ${dateStart.toString()}}');
-                debugPrint('End: ${dateEnd.toString()}}');
+                debugPrint('State: ${state.toString()}');
+                debugPrint('Start: ${dateStart.toString()}');
+                debugPrint('End: ${dateEnd.toString()}');
                 debugPrint('+++++++');
 
                 return Container(
@@ -46,6 +51,7 @@ class ActiveAppointments extends StatelessWidget {
                     type: appointmentType,
                     dateStart: dateStart,
                     dateEnd: dateEnd,
+                    state: state,
                   ),
                 );
               },
@@ -53,18 +59,20 @@ class ActiveAppointments extends StatelessWidget {
 
             int length = appointments.length - 1;
 
-            debugPrint('appointments.length: $length');
+            debugPrint('Active appointment(s): ${length + 1}');
+            debugPrint('Space(s) to be inserted: $length');
 
             // We add spaces between appointments
             for (var i = 0; i < length; i++) {
-              debugPrint('Index: ${2 * i + 1}');
               appointments.insert(
                 2 * i + 1,
                 Container(child: SizedBox(height: 20)),
               );
+              debugPrint('\nSpace inserted at: ${2 * i + 1}');
             }
 
-            debugPrint('appointments.length: ${appointments.length}\n--------');
+            debugPrint(
+                '\nWidgets to be displayed: ${appointments.length}\n--------');
 
             return Column(children: appointments);
         }
@@ -79,11 +87,15 @@ class AppointmentWidget extends StatelessWidget {
     @required this.type,
     @required this.dateStart,
     @required this.dateEnd,
+    this.state,
   }) : super(key: key);
 
   final String type;
   final DateTime dateStart;
   final DateTime dateEnd;
+
+  // TODO: show the state of the appointment
+  final AppointmentState state;
 
   @override
   Widget build(BuildContext context) {
