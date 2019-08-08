@@ -7,7 +7,7 @@ import 'package:hun_app/auth/auth_provider.dart';
 
 class Login extends StatefulWidget {
   @override
-  createState() => new LoginState();
+  createState() =>  LoginState();
 }
 
 class LoginState extends State<Login> with TickerProviderStateMixin {
@@ -52,9 +52,9 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
     return Container(
       width: MediaQuery.of(context).size.width / 2.1,
       height: MediaQuery.of(context).size.width / 2.1,
-      decoration: new BoxDecoration(
+      decoration:  BoxDecoration(
         shape: BoxShape.rectangle,
-        image: new DecorationImage(
+        image:  DecorationImage(
             fit: BoxFit.fill, image: AssetImage('assets/images/HunLogo1.png')),
       ),
     );
@@ -67,7 +67,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
         children: <Widget>[
           Text(
             'HUN',
-            style: new TextStyle(
+            style:  TextStyle(
               fontSize: MediaQuery.of(context).size.height / 14,
               fontFamily: 'Ancízar Sans Bold',
               color: const Color(0xFF1266A4),
@@ -75,7 +75,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
           ),
           Text(
             'Salud',
-            style: new TextStyle(
+            style:  TextStyle(
               fontSize: MediaQuery.of(context).size.height / 14,
               fontFamily: 'Ancízar Sans Light',
               color: const Color(0xFF1266A4),
@@ -104,7 +104,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
               Container(
                 height: MediaQuery.of(context).size.height / 15,
                 width: MediaQuery.of(context).size.height / 34,
-                decoration: new BoxDecoration(
+                decoration:  BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(
                       MediaQuery.of(context).size.height / 34,
@@ -119,7 +119,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
               Container(
                 width: MediaQuery.of(context).size.width / 2.3,
                 height: MediaQuery.of(context).size.height / 15,
-                decoration: new BoxDecoration(
+                decoration:  BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
@@ -127,12 +127,12 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                   key: !obscureText ? Key('email') : Key("password"),
                   obscureText: obscureText,
                   textAlign: TextAlign.left,
-                  style: new TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Ancízar Sans Light',
                     fontSize: MediaQuery.of(context).size.height / 39,
                     color: Color.fromRGBO(158, 158, 158, 1),
                   ),
-                  decoration: new InputDecoration(
+                  decoration:  InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
                       fontFamily: 'Ancízar Sans Light',
@@ -160,7 +160,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
               Container(
                 height: MediaQuery.of(context).size.height / 15,
                 width: MediaQuery.of(context).size.height / 34,
-                decoration: new BoxDecoration(
+                decoration:  BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(
                       MediaQuery.of(context).size.height / 34,

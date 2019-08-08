@@ -4,12 +4,12 @@ import "package:flutter/material.dart";
 import 'package:hun_app/auth/auth.dart';
 import 'package:hun_app/auth/auth_provider.dart';
 
-GlobalKey pass = new GlobalKey();
-GlobalKey passRepeat = new GlobalKey();
+GlobalKey pass = GlobalKey();
+GlobalKey passRepeat = GlobalKey();
 
 class Register extends StatefulWidget {
   @override
-  createState() => new RegisterState();
+  createState() => RegisterState();
 }
 
 class RegisterState extends State<Register> with TickerProviderStateMixin {
@@ -18,8 +18,8 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Icon _emailIcon = new Icon(null);
-  Icon _passIcon = new Icon(null);
+  Icon _emailIcon = Icon(null);
+  Icon _passIcon = Icon(null);
 
   TextEditingController _firstNameController;
   TextEditingController _lastNameController;
@@ -61,8 +61,8 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
         // user type defining
         await CloudFunctions.instance
             .getHttpsCallable(functionName: 'update_user_type')
-            .call({'user_type': 'Usuario particular'});
-        print('User type has been modifed to Usuario particular');
+            .call({'client': true});
+        print('User type has been updated. The user is a client now.');
       } catch (e) {
         print('Error: ${e.toString()}');
       }
@@ -92,7 +92,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
       child: Text(
         tittle,
         textDirection: TextDirection.ltr,
-        style: new TextStyle(
+        style: TextStyle(
             fontSize: MediaQuery.of(context).size.width / 12,
             fontFamily: 'Ancízar Sans Bold',
             color: Color(0xff707070)),
@@ -113,9 +113,9 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
         child: Container(
           width: MediaQuery.of(context).size.width / 6,
           height: MediaQuery.of(context).size.width / 6,
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            image: new DecorationImage(
+            image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage('assets/images/HunLogo1.png')),
           ),
@@ -125,13 +125,13 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
           padding: EdgeInsets.all(5),
           child: Row(children: <Widget>[
             Text('HUN',
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 10,
                   fontFamily: 'Ancízar Sans Bold',
                   color: const Color(0xFF1266A4),
                 )),
             Text('Salud',
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 10,
                   fontFamily: 'Ancízar Sans Light',
                   color: const Color(0xFF1266A4),
@@ -177,7 +177,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                   Container(
                     height: MediaQuery.of(context).size.height / 19,
                     width: MediaQuery.of(context).size.height / 38,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(
                           MediaQuery.of(context).size.height / 38,
@@ -192,7 +192,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                   Container(
                     width: MediaQuery.of(context).size.width / 2,
                     height: MediaQuery.of(context).size.height / 19,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       color: Color(0xffF1F1F1),
                     ),
@@ -211,12 +211,12 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                       controller: controller,
                       obscureText: obscureText,
                       textAlign: TextAlign.left,
-                      style: new TextStyle(
+                      style: TextStyle(
                         fontSize: MediaQuery.of(context).size.height / 39,
                         fontFamily: 'Ancízar Sans Light',
                         color: Color(0xff707070),
                       ),
-                      decoration: new InputDecoration(
+                      decoration: InputDecoration(
                         hintText: hintText,
                         hintStyle: TextStyle(
                           fontSize: MediaQuery.of(context).size.height / 39,
@@ -236,7 +236,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                   Container(
                     height: MediaQuery.of(context).size.height / 19,
                     width: MediaQuery.of(context).size.height / 38,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(
                             MediaQuery.of(context).size.height / 38),
@@ -269,7 +269,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
               Container(
                 height: MediaQuery.of(context).size.height / 19,
                 width: MediaQuery.of(context).size.height / 38,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(
                       MediaQuery.of(context).size.height / 38,
@@ -284,7 +284,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
               Container(
                 width: MediaQuery.of(context).size.width / 2,
                 height: MediaQuery.of(context).size.height / 19,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
@@ -303,18 +303,18 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                         );
                       }
                       if (email == '') {
-                        this._emailIcon = new Icon(null);
+                        this._emailIcon = Icon(null);
                       }
                     });
                   },
                   obscureText: obscureText,
                   textAlign: TextAlign.left,
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontSize: MediaQuery.of(context).size.height / 39,
                     fontFamily: 'Ancízar Sans Light',
                     color: Color(0xff707070),
                   ),
-                  decoration: new InputDecoration(
+                  decoration: InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
                         fontSize: MediaQuery.of(context).size.height / 39,
@@ -333,7 +333,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
               Container(
                 height: MediaQuery.of(context).size.height / 19,
                 width: MediaQuery.of(context).size.height / 38,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(
                         MediaQuery.of(context).size.height / 38),
@@ -369,7 +369,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
               Container(
                 height: MediaQuery.of(context).size.height / 19,
                 width: MediaQuery.of(context).size.height / 38,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(
                         MediaQuery.of(context).size.height / 38),
@@ -382,7 +382,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
               Container(
                 width: MediaQuery.of(context).size.width / 2,
                 height: MediaQuery.of(context).size.height / 19,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
@@ -401,17 +401,17 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                         );
                       }
                       if (password == '') {
-                        _passIcon = new Icon(null);
+                        _passIcon = Icon(null);
                       }
                     });
                   },
                   obscureText: obscureText,
                   textAlign: TextAlign.left,
-                  style: new TextStyle(
+                  style: TextStyle(
                       fontSize: MediaQuery.of(context).size.height / 39,
                       fontFamily: 'Ancízar Sans Light',
                       color: Color(0xff707070)),
-                  decoration: new InputDecoration(
+                  decoration: InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
                         fontSize: MediaQuery.of(context).size.height / 39,
@@ -430,7 +430,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
               Container(
                 height: MediaQuery.of(context).size.height / 19,
                 width: MediaQuery.of(context).size.height / 38,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(
                         MediaQuery.of(context).size.height / 38),
@@ -464,7 +464,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 Container(
                   height: MediaQuery.of(context).size.height / 19,
                   width: MediaQuery.of(context).size.height / 38,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(
                         MediaQuery.of(context).size.height / 38,
@@ -479,7 +479,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 Container(
                   width: MediaQuery.of(context).size.height / 19,
                   height: MediaQuery.of(context).size.height / 19,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Color(0xffF1F1F1),
                   ),
@@ -490,11 +490,11 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                         decimal: false, signed: false),
                     obscureText: obscureText,
                     textAlign: TextAlign.center,
-                    style: new TextStyle(
+                    style: TextStyle(
                         fontSize: MediaQuery.of(context).size.height / 39,
                         fontFamily: 'Ancízar Sans Light',
                         color: Color(0xff707070)),
-                    decoration: new InputDecoration(
+                    decoration: InputDecoration(
                       counterText: '',
                       hintText: hintText,
                       hintStyle: TextStyle(
@@ -513,7 +513,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 Container(
                   height: MediaQuery.of(context).size.height / 19,
                   width: MediaQuery.of(context).size.height / 38,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(
                         MediaQuery.of(context).size.height / 38,
@@ -543,7 +543,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 Container(
                   height: MediaQuery.of(context).size.height / 19,
                   width: MediaQuery.of(context).size.height / 38,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(
                         MediaQuery.of(context).size.height / 38,
@@ -558,7 +558,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 Container(
                   width: MediaQuery.of(context).size.height / 12,
                   height: MediaQuery.of(context).size.height / 19,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Color(0xffF1F1F1),
                   ),
@@ -569,11 +569,11 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                           decimal: false, signed: false),
                       obscureText: obscureText,
                       textAlign: TextAlign.center,
-                      style: new TextStyle(
+                      style: TextStyle(
                           fontSize: MediaQuery.of(context).size.height / 39,
                           fontFamily: 'Ancízar Sans Light',
                           color: Color(0xff707070)),
-                      decoration: new InputDecoration(
+                      decoration: InputDecoration(
                           counterText: '',
                           hintText: hintText,
                           hintStyle: TextStyle(
@@ -590,7 +590,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 Container(
                   height: MediaQuery.of(context).size.height / 19,
                   width: MediaQuery.of(context).size.height / 38,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(
                           MediaQuery.of(context).size.height / 38),

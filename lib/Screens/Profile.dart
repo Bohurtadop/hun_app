@@ -5,20 +5,13 @@ import 'package:hun_app/Screens/SetSpeciality.dart';
 import 'package:hun_app/auth/auth.dart';
 import 'package:hun_app/auth/auth_provider.dart';
 import 'package:hun_app/auth/root_page.dart';
-
-String userName = 'Cristian Veloza';
-String typeUser = 'Usuario particular';
-List cita1 = [
-  "Fisioterapia",
-  "Domingo 30 de Diciembre",
-  "10:00 a.m.",
-  "Johana Beltrán",
-  "Fisioterapeuta"
-];
+import 'package:hun_app/models/UserInfo.dart';
 
 class Profile extends StatefulWidget {
+  final String uid;
+  Profile(this.uid);
   @override
-  createState() => new ProfileState();
+  createState() => ProfileState();
 }
 
 class ProfileState extends State<Profile> with TickerProviderStateMixin {
@@ -26,13 +19,13 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
     try {
       final BaseAuth auth = AuthProvider.of(context).auth;
       await auth.signOut();
-      setState(() {
-        Navigator.pushAndRemoveUntil(
+      setState(
+        () => Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (BuildContext context) => RootPage()),
           (_) => false,
-        );
-      });
+        ),
+      );
     } catch (e) {
       print(e);
     }
@@ -51,87 +44,64 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
   }
 
   _hunLogoAndTittle() {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      Hero(
-        tag: 'hunLogo',
-        child: Container(
-          width: MediaQuery.of(context).size.width / 7,
-          height: MediaQuery.of(context).size.width / 7,
-          decoration: new BoxDecoration(
-            shape: BoxShape.rectangle,
-            image: new DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage('assets/images/HunLogo1.png')),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Hero(
+          tag: 'hunLogo',
+          child: Container(
+            width: MediaQuery.of(context).size.width / 7,
+            height: MediaQuery.of(context).size.width / 7,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/images/HunLogo1.png')),
+            ),
           ),
         ),
-      ),
-      Padding(
+        Padding(
           padding: EdgeInsets.all(5),
-          child: Row(children: <Widget>[
-            Text('HUN',
-                style: new TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 9,
-                  fontFamily: 'Ancízar Sans Bold',
-                  color: const Color(0xFF1266A4),
-                )),
-            Text('Salud',
-                style: new TextStyle(
+          child: Row(
+            children: <Widget>[
+              Text('HUN',
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 9,
+                    fontFamily: 'Ancízar Sans Bold',
+                    color: const Color(0xFF1266A4),
+                  )),
+              Text(
+                'Salud',
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 9,
                   fontFamily: 'Ancízar Sans Light',
                   color: const Color(0xFF1266A4),
-                ))
-          ])),
-    ]);
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   _profilePhoto() {
     return Container(
       width: MediaQuery.of(context).size.width / 2.2,
       height: MediaQuery.of(context).size.width / 2.2,
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
         boxShadow: [
-          new BoxShadow(
-              blurRadius: 5,
-              color: new Color.fromRGBO(0, 0, 0, 0.26),
-              offset: new Offset(5.0, 5.0)),
+          BoxShadow(
+            blurRadius: 5,
+            color: Color.fromRGBO(0, 0, 0, 0.26),
+            offset: Offset(5.0, 5.0),
+          ),
         ],
         shape: BoxShape.circle,
-        image: new DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage('assets/images/ProfileImage.png')),
-      ),
-    );
-  }
-
-  _userNameTypeBox() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 1.5,
-      height: MediaQuery.of(context).size.width / 5,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            width: MediaQuery.of(context).size.width / 1.5,
-            top: 0,
-            child: Center(
-              child: Text('$userName',
-                  style: new TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 10,
-                      color: Color(0xFF1266A4),
-                      fontFamily: 'Ancízar Sans Bold')),
-            ),
-          ),
-          Positioned(
-            width: MediaQuery.of(context).size.width / 1.5,
-            top: MediaQuery.of(context).size.width / 9,
-            child: Center(
-              child: Text('$typeUser',
-                  style: new TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 15,
-                      fontFamily: 'Ancízar Sans Light',
-                      color: Color(0xff9E9E9E))),
-            ),
-          ),
-        ],
+        image: DecorationImage(
+          fit: BoxFit.fill,
+          image: AssetImage('assets/images/ProfileImage.png'),
+        ),
       ),
     );
   }
@@ -146,8 +116,9 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
         elevation: 5,
         highlightElevation: 0,
         shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.height / 34)),
+          borderRadius:
+              BorderRadius.circular(MediaQuery.of(context).size.height / 34),
+        ),
         child: Text(
           buttonText,
           style: TextStyle(
@@ -168,8 +139,9 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
         elevation: 5,
         highlightElevation: 0,
         shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.height / 35)),
+          borderRadius:
+              BorderRadius.circular(MediaQuery.of(context).size.height / 35),
+        ),
         child: Text(
           buttonText,
           style: TextStyle(
@@ -184,7 +156,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   _bottomNavigationBar() {
     return BottomAppBar(
-      shape: new AutomaticNotchedShape(
+      shape: AutomaticNotchedShape(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(MediaQuery.of(context).size.width / 18),
@@ -204,7 +176,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => Home(),
+                    builder: (BuildContext context) => Home(widget.uid),
                   ),
                 );
               },
@@ -231,7 +203,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
                   padding: EdgeInsets.all(0),
                   child: Text(
                     'PERFIL',
-                    style: new TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: MediaQuery.of(context).size.width / 28,
                       fontFamily: 'Ancízar Sans Regular',
@@ -279,9 +251,11 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
       backgroundColor: Colors.orange,
       onPressed: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => SetSpeciality()));
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => SetSpeciality(widget.uid),
+          ),
+        );
       },
       child: Icon(
         Icons.add,
@@ -295,33 +269,39 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
       body: SingleChildScrollView(
-          child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.9,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _spaceBetween(40),
-            _hunLogoAndTittle(),
-            _profilePhoto(),
-            _userNameTypeBox(),
-            _spaceBetween(10),
-            _mainButton("Editar datos", MediaQuery.of(context).size.height / 16,
-                MediaQuery.of(context).size.width / 2),
-            _spaceBetween(5),
-            _mainButton(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.9,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _spaceBetween(40),
+              _hunLogoAndTittle(),
+              _profilePhoto(),
+              UserInfo(uid: widget.uid),
+              _spaceBetween(10),
+              _mainButton(
+                "Editar datos",
+                MediaQuery.of(context).size.height / 16,
+                MediaQuery.of(context).size.width / 2,
+              ),
+              _spaceBetween(5),
+              _mainButton(
                 "Mi historia clínica",
                 MediaQuery.of(context).size.height / 16,
-                MediaQuery.of(context).size.width / 2),
-            _spaceBetween(10),
-            _offTopicButton(
+                MediaQuery.of(context).size.width / 2,
+              ),
+              _spaceBetween(10),
+              _offTopicButton(
                 "Cerrar sesión",
                 MediaQuery.of(context).size.height / 16,
-                MediaQuery.of(context).size.width / 2.1),
-            _spaceBetween(20),
-          ],
+                MediaQuery.of(context).size.width / 2.1,
+              ),
+              _spaceBetween(20),
+            ],
+          ),
         ),
-      )),
+      ),
       bottomNavigationBar: _bottomNavigationBar(),
       floatingActionButton: _floatingActionButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
