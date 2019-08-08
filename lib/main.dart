@@ -4,7 +4,7 @@ import 'package:hun_app/auth/auth.dart';
 import 'package:hun_app/auth/auth_provider.dart';
 
 void main() {
-  runApp(new HUN());
+  runApp(HUN());
 }
 
 class HUN extends StatelessWidget {

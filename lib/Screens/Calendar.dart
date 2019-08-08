@@ -7,7 +7,7 @@ class HunCalendar extends StatefulWidget {
   final String uid;
   HunCalendar(this.uid);
   @override
-  createState() => new HunCalendarState();
+  createState() =>  HunCalendarState();
 }
 
 class HunCalendarState extends State<HunCalendar>
@@ -33,9 +33,9 @@ class HunCalendarState extends State<HunCalendar>
           child: Container(
             width: 60,
             height: 60,
-            decoration: new BoxDecoration(
+            decoration:  BoxDecoration(
               shape: BoxShape.rectangle,
-              image: new DecorationImage(
+              image:  DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage('assets/images/HunLogo1.png'),
               ),
@@ -48,7 +48,7 @@ class HunCalendarState extends State<HunCalendar>
             children: <Widget>[
               Text(
                 'HUN',
-                style: new TextStyle(
+                style:  TextStyle(
                   fontSize: 40,
                   fontFamily: 'Ancízar Sans Bold',
                   color: const Color(0xFF1266A4),
@@ -56,7 +56,7 @@ class HunCalendarState extends State<HunCalendar>
               ),
               Text(
                 'Salud',
-                style: new TextStyle(
+                style:  TextStyle(
                   fontSize: 40,
                   fontFamily: 'Ancízar Sans Light',
                   color: const Color(0xFF1266A4),
@@ -73,16 +73,16 @@ class HunCalendarState extends State<HunCalendar>
     return Container(
       width: 190,
       height: 190,
-      decoration: new BoxDecoration(
+      decoration:  BoxDecoration(
         boxShadow: [
-          new BoxShadow(
+           BoxShadow(
             blurRadius: 5,
-            color: new Color.fromRGBO(0, 0, 0, 0.26),
-            offset: new Offset(5.0, 5.0),
+            color:  Color.fromRGBO(0, 0, 0, 0.26),
+            offset:  Offset(5.0, 5.0),
           ),
         ],
         shape: BoxShape.circle,
-        image: new DecorationImage(
+        image:  DecorationImage(
           fit: BoxFit.fill,
           image: AssetImage('assets/images/ProfileImage.png'),
         ),
@@ -130,7 +130,7 @@ class HunCalendarState extends State<HunCalendar>
 
   _bottomNavigationBar() {
     return BottomAppBar(
-      shape: new AutomaticNotchedShape(
+      shape:  AutomaticNotchedShape(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(15),
@@ -175,7 +175,7 @@ class HunCalendarState extends State<HunCalendar>
                   padding: EdgeInsets.all(0),
                   child: Text(
                     'PERFIL',
-                    style: new TextStyle(
+                    style:  TextStyle(
                         color: Colors.white,
                         fontSize: 10,
                         fontFamily: 'Ancízar Sans Regular'),
@@ -240,7 +240,7 @@ class HunCalendarState extends State<HunCalendar>
             _spaceBetween(40),
             _hunLogoAndTittle(),
             _profilePhoto(),
-            new UserInfo(uid: widget.uid),
+             UserInfo(uid: widget.uid),
             _spaceBetween(15),
             _mainButton("Editar datos", 40, 200),
             _spaceBetween(10),

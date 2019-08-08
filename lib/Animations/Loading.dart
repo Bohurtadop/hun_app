@@ -5,7 +5,7 @@ import 'package:hun_app/auth/root_page.dart';
 
 class Loading extends StatefulWidget {
   @override
-  createState() => new LoadingState();
+  createState() =>  LoadingState();
 }
 
 class LoadingState extends State<Loading> {
@@ -15,11 +15,11 @@ class LoadingState extends State<Loading> {
 
   @override
   void initState() {
-    fadeTime = new Timer(
+    fadeTime =  Timer(
       Duration(seconds: 2),
       () => setState(() => firstStateEnabled = false),
     );
-    nextTime = new Timer(
+    nextTime =  Timer(
       Duration(seconds: 3),
       () => setState(
         () => Navigator.pushAndRemoveUntil(
@@ -37,9 +37,9 @@ class LoadingState extends State<Loading> {
     return Container(
       width: MediaQuery.of(context).size.width / 1.9,
       height: MediaQuery.of(context).size.width / 1.9,
-      decoration: new BoxDecoration(
+      decoration:  BoxDecoration(
         shape: BoxShape.rectangle,
-        image: new DecorationImage(
+        image:  DecorationImage(
           fit: BoxFit.fill,
           image: AssetImage('assets/images/HunLogo1.png'),
         ),
@@ -54,7 +54,7 @@ class LoadingState extends State<Loading> {
         children: <Widget>[
           Text(
             'HUN',
-            style: new TextStyle(
+            style:  TextStyle(
               fontSize: MediaQuery.of(context).size.height / 12,
               fontFamily: 'Ancízar Sans Bold',
               color: const Color(0xFF1266A4),
@@ -62,7 +62,7 @@ class LoadingState extends State<Loading> {
           ),
           Text(
             'Salud',
-            style: new TextStyle(
+            style:  TextStyle(
               fontSize: MediaQuery.of(context).size.height / 12,
               fontFamily: 'Ancízar Sans Light',
               color: const Color(0xFF1266A4),
@@ -82,7 +82,7 @@ class LoadingState extends State<Loading> {
   _sansTittle(String tittle) {
     return Text(
       tittle,
-      style: new TextStyle(
+      style:  TextStyle(
         fontSize: MediaQuery.of(context).size.width / 18,
         fontFamily: 'Ancízar Sans Regular',
         color: const Color(0xFF1266A4),
@@ -93,7 +93,7 @@ class LoadingState extends State<Loading> {
   _serifTittle(String tittle) {
     return Text(
       tittle,
-      style: new TextStyle(
+      style:  TextStyle(
         fontSize: MediaQuery.of(context).size.width / 20,
         fontFamily: 'Ancízar Serif Regular',
         color: const Color(0xFF1266A4),
@@ -118,9 +118,9 @@ class LoadingState extends State<Loading> {
                         Container(
                           width: MediaQuery.of(context).size.width / 1.9,
                           height: MediaQuery.of(context).size.width / 1.9,
-                          decoration: new BoxDecoration(
+                          decoration:  BoxDecoration(
                             shape: BoxShape.rectangle,
-                            image: new DecorationImage(
+                            image:  DecorationImage(
                               fit: BoxFit.fill,
                               image: AssetImage('assets/images/HunLogo3.png'),
                             ),

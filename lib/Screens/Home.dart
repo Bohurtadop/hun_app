@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
   Home(this.uid);
 
   @override
-  createState() => new HomeState();
+  createState() => HomeState();
 }
 
 class HomeState extends State<Home> with TickerProviderStateMixin {
@@ -28,7 +28,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       child: Text(
         tittle,
         textDirection: TextDirection.ltr,
-        style: new TextStyle(
+        style: TextStyle(
             fontSize: MediaQuery.of(context).size.width / 12,
             fontFamily: 'Ancízar Sans Bold',
             color: Color(0xff707070)),
@@ -51,9 +51,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           child: Container(
             width: MediaQuery.of(context).size.width / 7,
             height: MediaQuery.of(context).size.width / 7,
-            decoration: new BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              image: new DecorationImage(
+              image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage('assets/images/HunLogo1.png'),
               ),
@@ -66,7 +66,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             children: <Widget>[
               Text(
                 'HUN',
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 9,
                   fontFamily: 'Ancízar Sans Bold',
                   color: const Color(0xFF1266A4),
@@ -74,7 +74,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               ),
               Text(
                 'Salud',
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 9,
                   fontFamily: 'Ancízar Sans Light',
                   color: const Color(0xFF1266A4),
@@ -92,7 +92,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       padding: EdgeInsets.all(30),
       child: Text(
         'Usted no tiene más citas agendadas.',
-        style: new TextStyle(
+        style: TextStyle(
           fontSize: MediaQuery.of(context).size.width / 18,
           fontFamily: 'Ancízar Sans Light',
           color: Color(0xFF1266A4),
@@ -103,7 +103,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   _bottomNavigationBar() {
     return BottomAppBar(
-      shape: new AutomaticNotchedShape(
+      shape: AutomaticNotchedShape(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(MediaQuery.of(context).size.width / 18),
@@ -131,7 +131,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                   padding: EdgeInsets.all(0),
                   child: Text(
                     'INICIO',
-                    style: new TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: MediaQuery.of(context).size.width / 28,
                       fontFamily: 'Ancízar Sans Regular',
@@ -218,9 +218,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             _spaceBetween(50),
             _hunLogoAndTittle(),
             _spaceBetween(30),
-            new UserInfo(uid: widget.uid),
+            UserInfo(uid: widget.uid),
             _darkTittle('PRÓXIMAS CITAS'),
-            new ActiveAppointments(uid: widget.uid),
+            ActiveAppointments(uid: widget.uid),
             _endText(),
             _spaceBetween(20)
           ],

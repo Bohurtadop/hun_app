@@ -8,7 +8,7 @@ class LoggedIn extends StatefulWidget {
   LoggedIn(this.uid);
 
   @override
-  createState() => new LoggedInState();
+  createState() =>  LoggedInState();
 }
 
 class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
@@ -22,18 +22,18 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    rotationController = new AnimationController(
+    rotationController =  AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
     );
     rotationAnimation =
-        new Tween(begin: 0.0, end: 0.5).animate(rotationController);
+         Tween(begin: 0.0, end: 0.5).animate(rotationController);
 
-    fadeController = new AnimationController(
+    fadeController =  AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 500),
     );
-    fadeAnimation = new Tween(begin: 1.0, end: 0.0).animate(fadeController);
+    fadeAnimation =  Tween(begin: 1.0, end: 0.0).animate(fadeController);
 
     rotationController.addStatusListener(
       (rotationStatus) {
@@ -51,7 +51,7 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
           fadeController.reverse();
         } else if (fadeStatus == AnimationStatus.dismissed) {
           rotationController.repeat();
-          time = new Timer(
+          time =  Timer(
             Duration(seconds: 1),
             () => setState(
               () => Navigator.pushAndRemoveUntil(
@@ -89,9 +89,9 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
               child: Container(
                 width: MediaQuery.of(context).size.width / 2.1,
                 height: MediaQuery.of(context).size.width / 2.1,
-                decoration: new BoxDecoration(
+                decoration:  BoxDecoration(
                   shape: BoxShape.rectangle,
-                  image: new DecorationImage(
+                  image:  DecorationImage(
                     fit: BoxFit.fill,
                     image: AssetImage('assets/images/HunLogo1.png'),
                   ),
