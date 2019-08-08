@@ -1,30 +1,88 @@
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
+import 'package:hun_app/auth/auth.dart';
+import 'package:hun_app/auth/auth_provider.dart';
 
-GlobalKey pass = new GlobalKey();
-GlobalKey passRepeat = new GlobalKey();
+GlobalKey pass = GlobalKey();
+GlobalKey passRepeat = GlobalKey();
 
 class Register extends StatefulWidget {
   @override
-  createState() => new RegisterState();
+  createState() => RegisterState();
 }
 
-class RegisterState extends State<Register>
-    with TickerProviderStateMixin {
-  TextEditingController passController;
-  TextEditingController emailController;
+class RegisterState extends State<Register> with TickerProviderStateMixin {
+  TextEditingController _passwordController;
+  TextEditingController _emailController;
 
-  Icon _emailIcon = new Icon(null);
-  Icon _passIcon = new Icon(null);
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Icon _emailIcon = Icon(null);
+  Icon _passIcon = Icon(null);
+
+  TextEditingController _firstNameController;
+  TextEditingController _lastNameController;
+  String _emailAddress;
+  String _password;
+
+  bool validateAndSave() {
+    final FormState form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> validateAndSubmit() async {
+    if (this.validateAndSave()) {
+      try {
+        final BaseAuth auth = AuthProvider.of(context).auth;
+        final FirebaseUser user =
+            await auth.createUserWithEmailAndPassword(_emailAddress, _password);
+        print(user.uid);
+
+        setState(() {
+          Navigator.pop(context);
+        });
+
+        // email verification
+        await CloudFunctions.instance
+            .getHttpsCallable(functionName: 'update_user_name')
+            .call({
+          'name': '${_firstNameController.text} ${_lastNameController.text}'
+        }).then((dynamic onValue) async {
+          await user.sendEmailVerification();
+          print(onValue);
+        });
+        print('Verification email has been sent');
+
+        // user type defining
+        await CloudFunctions.instance
+            .getHttpsCallable(functionName: 'update_user_type')
+            .call({'client': true});
+        print('User type has been updated. The user is a client now.');
+      } catch (e) {
+        print('Error: ${e.toString()}');
+      }
+    }
+  }
 
   @override
   void initState() {
-    passController = new TextEditingController();
-    emailController = new TextEditingController();
+    this._passwordController = TextEditingController();
+    this._emailController = TextEditingController();
+    this._firstNameController = TextEditingController();
+    this._lastNameController = TextEditingController();
     super.initState();
   }
 
   void dispose() {
-    passController.dispose();
+    this._emailController.dispose();
+    this._passwordController.dispose();
+    this._firstNameController.dispose();
+    this._lastNameController.dispose();
     super.dispose();
   }
 
@@ -34,7 +92,7 @@ class RegisterState extends State<Register>
       child: Text(
         tittle,
         textDirection: TextDirection.ltr,
-        style: new TextStyle(
+        style: TextStyle(
             fontSize: MediaQuery.of(context).size.width / 12,
             fontFamily: 'Ancízar Sans Bold',
             color: Color(0xff707070)),
@@ -55,9 +113,9 @@ class RegisterState extends State<Register>
         child: Container(
           width: MediaQuery.of(context).size.width / 6,
           height: MediaQuery.of(context).size.width / 6,
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            image: new DecorationImage(
+            image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage('assets/images/HunLogo1.png')),
           ),
@@ -67,13 +125,13 @@ class RegisterState extends State<Register>
           padding: EdgeInsets.all(5),
           child: Row(children: <Widget>[
             Text('HUN',
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 10,
                   fontFamily: 'Ancízar Sans Bold',
                   color: const Color(0xFF1266A4),
                 )),
             Text('Salud',
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 10,
                   fontFamily: 'Ancízar Sans Light',
                   color: const Color(0xFF1266A4),
@@ -102,13 +160,16 @@ class RegisterState extends State<Register>
   }
 
   _textFormField(
-      TextEditingController controller, String hintText, bool obscureText) {
+      TextEditingController controller, String hintText, bool obscureText,
+      {String key}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
           height: MediaQuery.of(context).size.height / 19,
-          width: (MediaQuery.of(context).size.width / 2) + (MediaQuery.of(context).size.height / 19) + 1,
+          width: (MediaQuery.of(context).size.width / 2) +
+              (MediaQuery.of(context).size.height / 19) +
+              1,
           child: Stack(
             children: <Widget>[
               Row(
@@ -116,10 +177,14 @@ class RegisterState extends State<Register>
                   Container(
                     height: MediaQuery.of(context).size.height / 19,
                     width: MediaQuery.of(context).size.height / 38,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
-                        topLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
+                        bottomLeft: Radius.circular(
+                          MediaQuery.of(context).size.height / 38,
+                        ),
+                        topLeft: Radius.circular(
+                          MediaQuery.of(context).size.height / 38,
+                        ),
                       ),
                       color: Color(0xffF1F1F1),
                     ),
@@ -127,37 +192,56 @@ class RegisterState extends State<Register>
                   Container(
                     width: MediaQuery.of(context).size.width / 2,
                     height: MediaQuery.of(context).size.height / 19,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       color: Color(0xffF1F1F1),
                     ),
                     child: TextFormField(
-                        controller: controller,
-                        obscureText: obscureText,
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(
-                            fontSize: MediaQuery.of(context).size.height / 39,
-                            fontFamily: 'Ancízar Sans Light',
-                            color: Color(0xff707070)),
-                        decoration: new InputDecoration(
-                            hintText: hintText,
-                            hintStyle: TextStyle(
-                                fontSize: MediaQuery.of(context).size.height / 39,
-                                fontFamily: 'Ancízar Sans Light',
-                                color: Color.fromRGBO(158, 158, 158, 1)),
-                            fillColor: Colors.white,
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(style: BorderStyle.none)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(style: BorderStyle.none)))),
+                      key: key != '' ? Key(key) : null,
+                      onSaved: (String value) {
+                        if (!obscureText && key == 'email') {
+                          _emailAddress =
+                              _emailController.text == value ? value : null;
+                        } else if (obscureText && key == 'password') {
+                          _password =
+                              _passwordController.text == value ? value : null;
+                        }
+                      },
+                      validator: null,
+                      controller: controller,
+                      obscureText: obscureText,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height / 39,
+                        fontFamily: 'Ancízar Sans Light',
+                        color: Color(0xff707070),
+                      ),
+                      decoration: InputDecoration(
+                        hintText: hintText,
+                        hintStyle: TextStyle(
+                          fontSize: MediaQuery.of(context).size.height / 39,
+                          fontFamily: 'Ancízar Sans Light',
+                          color: Color.fromRGBO(158, 158, 158, 1),
+                        ),
+                        fillColor: Colors.white,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(style: BorderStyle.none),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(style: BorderStyle.none),
+                        ),
+                      ),
+                    ),
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height / 19,
                     width: MediaQuery.of(context).size.height / 38,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(MediaQuery.of(context).size.height / 38),
-                        topRight: Radius.circular(MediaQuery.of(context).size.height / 38),
+                        bottomRight: Radius.circular(
+                            MediaQuery.of(context).size.height / 38),
+                        topRight: Radius.circular(
+                            MediaQuery.of(context).size.height / 38),
                       ),
                       color: Color(0xffF1F1F1),
                     ),
@@ -175,7 +259,9 @@ class RegisterState extends State<Register>
       TextEditingController controller, String hintText, bool obscureText) {
     return Container(
       height: MediaQuery.of(context).size.height / 19,
-      width: (MediaQuery.of(context).size.width / 2) + (MediaQuery.of(context).size.height / 19) + 1,
+      width: (MediaQuery.of(context).size.width / 2) +
+          (MediaQuery.of(context).size.height / 19) +
+          1,
       child: Stack(
         children: <Widget>[
           Row(
@@ -183,10 +269,14 @@ class RegisterState extends State<Register>
               Container(
                 height: MediaQuery.of(context).size.height / 19,
                 width: MediaQuery.of(context).size.height / 38,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
-                    topLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
+                    bottomLeft: Radius.circular(
+                      MediaQuery.of(context).size.height / 38,
+                    ),
+                    topLeft: Radius.circular(
+                      MediaQuery.of(context).size.height / 38,
+                    ),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -194,71 +284,84 @@ class RegisterState extends State<Register>
               Container(
                 width: MediaQuery.of(context).size.width / 2,
                 height: MediaQuery.of(context).size.height / 19,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
                 child: TextField(
-                    onChanged: (String pass) {
-                      setState(() {
-                        if (controller.text == pass) {
-                          _emailIcon = Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                          );
-                        } else {
-                          _emailIcon = Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                          );
-                        }
-                        if (pass == '') {
-                          _emailIcon = new Icon(null);
-                        }
-                      });
-                    },
-                    obscureText: obscureText,
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(
+                  onChanged: (String email) {
+                    setState(() {
+                      if (controller.text == email) {
+                        this._emailIcon = Icon(
+                          Icons.check_circle,
+                          color: Colors.green,
+                        );
+                      } else {
+                        this._emailIcon = Icon(
+                          Icons.cancel,
+                          color: Colors.red,
+                        );
+                      }
+                      if (email == '') {
+                        this._emailIcon = Icon(null);
+                      }
+                    });
+                  },
+                  obscureText: obscureText,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.height / 39,
+                    fontFamily: 'Ancízar Sans Light',
+                    color: Color(0xff707070),
+                  ),
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: TextStyle(
                         fontSize: MediaQuery.of(context).size.height / 39,
                         fontFamily: 'Ancízar Sans Light',
-                        color: Color(0xff707070)),
-                    decoration: new InputDecoration(
-                        hintText: hintText,
-                        hintStyle: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height / 39,
-                            fontFamily: 'Ancízar Sans Light',
-                            color: Color.fromRGBO(158, 158, 158, 1)),
-                        fillColor: Colors.white,
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(style: BorderStyle.none)),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(style: BorderStyle.none)))),
+                        color: Color.fromRGBO(158, 158, 158, 1)),
+                    fillColor: Colors.white,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                    ),
+                  ),
+                ),
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 19,
                 width: MediaQuery.of(context).size.height / 38,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(MediaQuery.of(context).size.height / 38),
-                    topRight: Radius.circular(MediaQuery.of(context).size.height / 38),
+                    bottomRight: Radius.circular(
+                        MediaQuery.of(context).size.height / 38),
+                    topRight: Radius.circular(
+                        MediaQuery.of(context).size.height / 38),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
               ),
             ],
           ),
-          Positioned(right: 2, width: MediaQuery.of(context).size.height / 19, height: MediaQuery.of(context).size.height / 19, child: _emailIcon),
+          Positioned(
+              right: 2,
+              width: MediaQuery.of(context).size.height / 19,
+              height: MediaQuery.of(context).size.height / 19,
+              child: _emailIcon),
         ],
       ),
     );
   }
 
-  _passTextField(
+  _passwordTextField(
       TextEditingController controller, String hintText, bool obscureText) {
     return Container(
       height: MediaQuery.of(context).size.height / 19,
-      width: (MediaQuery.of(context).size.width / 2) + (MediaQuery.of(context).size.height / 19) + 1,
+      width: (MediaQuery.of(context).size.width / 2) +
+          (MediaQuery.of(context).size.height / 19) +
+          1,
       child: Stack(
         children: <Widget>[
           Row(
@@ -266,10 +369,12 @@ class RegisterState extends State<Register>
               Container(
                 height: MediaQuery.of(context).size.height / 19,
                 width: MediaQuery.of(context).size.height / 38,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
-                    topLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
+                    bottomLeft: Radius.circular(
+                        MediaQuery.of(context).size.height / 38),
+                    topLeft: Radius.circular(
+                        MediaQuery.of(context).size.height / 38),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -277,61 +382,71 @@ class RegisterState extends State<Register>
               Container(
                 width: MediaQuery.of(context).size.width / 2,
                 height: MediaQuery.of(context).size.height / 19,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
                 child: TextField(
-                    onChanged: (String pass) {
-                      setState(() {
-                        if (controller.text == pass) {
-                          _passIcon = Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                          );
-                        } else {
-                          _passIcon = Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                          );
-                        }
-                        if (pass == '') {
-                          _passIcon = new Icon(null);
-                        }
-                      });
-                    },
-                    obscureText: obscureText,
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(
+                  onChanged: (String password) {
+                    setState(() {
+                      if (controller.text == password) {
+                        _passIcon = Icon(
+                          Icons.check_circle,
+                          color: Colors.green,
+                        );
+                      } else {
+                        _passIcon = Icon(
+                          Icons.cancel,
+                          color: Colors.red,
+                        );
+                      }
+                      if (password == '') {
+                        _passIcon = Icon(null);
+                      }
+                    });
+                  },
+                  obscureText: obscureText,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height / 39,
+                      fontFamily: 'Ancízar Sans Light',
+                      color: Color(0xff707070)),
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: TextStyle(
                         fontSize: MediaQuery.of(context).size.height / 39,
                         fontFamily: 'Ancízar Sans Light',
-                        color: Color(0xff707070)),
-                    decoration: new InputDecoration(
-                        hintText: hintText,
-                        hintStyle: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height / 39,
-                            fontFamily: 'Ancízar Sans Light',
-                            color: Color.fromRGBO(158, 158, 158, 1)),
-                        fillColor: Colors.white,
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(style: BorderStyle.none)),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(style: BorderStyle.none)))),
+                        color: Color.fromRGBO(158, 158, 158, 1)),
+                    fillColor: Colors.white,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                    ),
+                  ),
+                ),
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 19,
                 width: MediaQuery.of(context).size.height / 38,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(MediaQuery.of(context).size.height / 38),
-                    topRight: Radius.circular(MediaQuery.of(context).size.height / 38),
+                    bottomRight: Radius.circular(
+                        MediaQuery.of(context).size.height / 38),
+                    topRight: Radius.circular(
+                        MediaQuery.of(context).size.height / 38),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
               ),
             ],
           ),
-          Positioned(right: 2, width: MediaQuery.of(context).size.height / 19, height: MediaQuery.of(context).size.height / 19, child: _passIcon),
+          Positioned(
+              right: 2,
+              width: MediaQuery.of(context).size.height / 19,
+              height: MediaQuery.of(context).size.height / 19,
+              child: _passIcon),
         ],
       ),
     );
@@ -349,10 +464,14 @@ class RegisterState extends State<Register>
                 Container(
                   height: MediaQuery.of(context).size.height / 19,
                   width: MediaQuery.of(context).size.height / 38,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
-                      topLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
+                      bottomLeft: Radius.circular(
+                        MediaQuery.of(context).size.height / 38,
+                      ),
+                      topLeft: Radius.circular(
+                        MediaQuery.of(context).size.height / 38,
+                      ),
                     ),
                     color: Color(0xffF1F1F1),
                   ),
@@ -360,41 +479,48 @@ class RegisterState extends State<Register>
                 Container(
                   width: MediaQuery.of(context).size.height / 19,
                   height: MediaQuery.of(context).size.height / 19,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Color(0xffF1F1F1),
                   ),
                   child: TextFormField(
-                      controller: controller,
-                      maxLength: 2,
-                      keyboardType: TextInputType.numberWithOptions(
-                          decimal: false, signed: false),
-                      obscureText: obscureText,
-                      textAlign: TextAlign.center,
-                      style: new TextStyle(
+                    controller: controller,
+                    maxLength: 2,
+                    keyboardType: TextInputType.numberWithOptions(
+                        decimal: false, signed: false),
+                    obscureText: obscureText,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height / 39,
+                        fontFamily: 'Ancízar Sans Light',
+                        color: Color(0xff707070)),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      hintText: hintText,
+                      hintStyle: TextStyle(
                           fontSize: MediaQuery.of(context).size.height / 39,
                           fontFamily: 'Ancízar Sans Light',
-                          color: Color(0xff707070)),
-                      decoration: new InputDecoration(
-                          counterText: '',
-                          hintText: hintText,
-                          hintStyle: TextStyle(
-                              fontSize: MediaQuery.of(context).size.height / 39,
-                              fontFamily: 'Ancízar Sans Light',
-                              color: Color.fromRGBO(158, 158, 158, 1)),
-                          fillColor: Colors.white,
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(style: BorderStyle.none)),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(style: BorderStyle.none)))),
+                          color: Color.fromRGBO(158, 158, 158, 1)),
+                      fillColor: Colors.white,
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(style: BorderStyle.none)),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(style: BorderStyle.none),
+                      ),
+                    ),
+                  ),
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height / 19,
                   width: MediaQuery.of(context).size.height / 38,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(MediaQuery.of(context).size.height / 38),
-                      topRight: Radius.circular(MediaQuery.of(context).size.height / 38),
+                      bottomRight: Radius.circular(
+                        MediaQuery.of(context).size.height / 38,
+                      ),
+                      topRight: Radius.circular(
+                        MediaQuery.of(context).size.height / 38,
+                      ),
                     ),
                     color: Color(0xffF1F1F1),
                   ),
@@ -417,10 +543,14 @@ class RegisterState extends State<Register>
                 Container(
                   height: MediaQuery.of(context).size.height / 19,
                   width: MediaQuery.of(context).size.height / 38,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
-                      topLeft: Radius.circular(MediaQuery.of(context).size.height / 38),
+                      bottomLeft: Radius.circular(
+                        MediaQuery.of(context).size.height / 38,
+                      ),
+                      topLeft: Radius.circular(
+                        MediaQuery.of(context).size.height / 38,
+                      ),
                     ),
                     color: Color(0xffF1F1F1),
                   ),
@@ -428,7 +558,7 @@ class RegisterState extends State<Register>
                 Container(
                   width: MediaQuery.of(context).size.height / 12,
                   height: MediaQuery.of(context).size.height / 19,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Color(0xffF1F1F1),
                   ),
@@ -439,11 +569,11 @@ class RegisterState extends State<Register>
                           decimal: false, signed: false),
                       obscureText: obscureText,
                       textAlign: TextAlign.center,
-                      style: new TextStyle(
+                      style: TextStyle(
                           fontSize: MediaQuery.of(context).size.height / 39,
                           fontFamily: 'Ancízar Sans Light',
                           color: Color(0xff707070)),
-                      decoration: new InputDecoration(
+                      decoration: InputDecoration(
                           counterText: '',
                           hintText: hintText,
                           hintStyle: TextStyle(
@@ -454,15 +584,18 @@ class RegisterState extends State<Register>
                           enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(style: BorderStyle.none)),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(style: BorderStyle.none)))),
+                              borderSide:
+                                  BorderSide(style: BorderStyle.none)))),
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height / 19,
                   width: MediaQuery.of(context).size.height / 38,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(MediaQuery.of(context).size.height / 38),
-                      topRight: Radius.circular(MediaQuery.of(context).size.height / 38),
+                      bottomRight: Radius.circular(
+                          MediaQuery.of(context).size.height / 38),
+                      topRight: Radius.circular(
+                          MediaQuery.of(context).size.height / 38),
                     ),
                     color: Color(0xffF1F1F1),
                   ),
@@ -486,16 +619,18 @@ class RegisterState extends State<Register>
   _mainButton(String buttonText, double height, double width) {
     return Container(
       child: RaisedButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: this.validateAndSubmit,
         color: Color(0xffFF8800),
         elevation: 5,
         highlightElevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height / 34)),
+        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(MediaQuery.of(context).size.height / 34)),
         child: Text(
           buttonText,
-          style: TextStyle(fontSize: MediaQuery.of(context).size.height / 39, color: Colors.white),
+          style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 39,
+              color: Colors.white),
         ),
       ),
       height: height,
@@ -510,32 +645,43 @@ class RegisterState extends State<Register>
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  _spaceBetween(40),
-                  _hunLogoAndTittle(),
-                  _darkTittle('REGISTRO'),
-                  _textFormField(null, 'Nombres', false),
-                  _textFormField(null, 'Apellidos', false),
-                  _textFormField(emailController, 'Email', false),
-                  _emailTextField(emailController, 'Repetir email', false),
-                  _textFormField(passController, 'Contraseña', true),
-                  _passTextField(passController, 'Repetir contraseña', true),
-                  _tittleTextField('Fecha de nacimiento'),
-                  _birthDateField(),
-                  _spaceBetween(15),
-                  _mainButton('Registrarse', MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width / 2),
-                  _spaceBetween(30)
-                ],
-              )
-            ],
+          child: Form(
+            key: this._formKey,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _spaceBetween(40),
+                    _hunLogoAndTittle(),
+                    _darkTittle('REGISTRO'),
+                    _textFormField(_firstNameController, 'Nombres', false,
+                        key: 'first name'),
+                    _textFormField(_lastNameController, 'Apellidos', false,
+                        key: 'last name'),
+                    _textFormField(_emailController, 'Email', false,
+                        key: 'email'),
+                    _emailTextField(_emailController, 'Repetir email', false),
+                    _textFormField(_passwordController, 'Contraseña', true,
+                        key: 'password'),
+                    _passwordTextField(
+                        _passwordController, 'Repetir contraseña', true),
+                    _tittleTextField('Fecha de nacimiento'),
+                    _birthDateField(),
+                    _spaceBetween(15),
+                    _mainButton(
+                        'Registrarse',
+                        MediaQuery.of(context).size.height / 16,
+                        MediaQuery.of(context).size.width / 2),
+                    _spaceBetween(30)
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      )
+      ),
     );
   }
 }
