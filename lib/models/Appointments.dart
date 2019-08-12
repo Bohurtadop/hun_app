@@ -178,67 +178,45 @@ class AppointmentWidget extends StatelessWidget {
                 )
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: RaisedButton(
-                    disabledColor: Colors.white,
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.event,
-                          color: Color(0xff1266A4),
-                          size: MediaQuery.of(context).size.width / 12,
-                        ),
-                        Text(
-                          'Reagendar',
-                          style: TextStyle(
-                            color: Color(0xff1266A4),
-                            fontFamily: 'Ancízar Sans Light',
-                            fontSize: MediaQuery.of(context).size.width / 29,
-                          ),
-                        )
-                      ],
+            Container(
+              child: RaisedButton(
+                disabledColor: Colors.white,
+                color: Colors.white,
+                padding: EdgeInsets.all(0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.cancel,
+                      color: Color(0xff1266A4),
+                      size: MediaQuery.of(context).size.width / 12,
                     ),
-                    onPressed: null,
-                  ),
-                  height: MediaQuery.of(context).size.width / 7,
-                  width: MediaQuery.of(context).size.width / 7,
+                    Text(
+                      'Cancelar',
+                      style: TextStyle(
+                        color: Color(0xff1266A4),
+                        fontFamily: 'Ancízar Sans Light',
+                        fontSize: MediaQuery.of(context).size.width / 29,
+                      ),
+                    )
+                  ],
                 ),
-                Container(
-                  child: RaisedButton(
-                    disabledColor: Colors.white,
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.cancel,
-                          color: Color(0xff1266A4),
-                          size: MediaQuery.of(context).size.width / 12,
-                        ),
-                        Text(
-                          'Cancelar',
-                          style: TextStyle(
-                            color: Color(0xff1266A4),
-                            fontFamily: 'Ancízar Sans Light',
-                            fontSize: MediaQuery.of(context).size.width / 29,
-                          ),
-                        )
-                      ],
-                    ),
-                    onPressed: null,
-                  ),
-                  height: MediaQuery.of(context).size.width / 8,
-                  width: MediaQuery.of(context).size.width / 8,
-                ),
-              ],
+                onPressed: () => this.showUnavailableMessage(context),
+              ),
+              height: MediaQuery.of(context).size.width / 8,
+              width: MediaQuery.of(context).size.width / 8,
             )
           ],
         ),
+      ),
+    );
+  }
+
+  void showUnavailableMessage(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Aún no disponible'),
       ),
     );
   }
