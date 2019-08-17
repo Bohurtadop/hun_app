@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hun_app/Screens/Home.dart';
+import 'package:hun_app/Screens/Main.dart';
 
 class LoggedIn extends StatefulWidget {
   final String uid;
-  LoggedIn(this.uid);
+  LoggedIn({@required this.uid});
 
   @override
-  createState() =>  LoggedInState();
+  createState() => LoggedInState();
 }
 
 class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
@@ -22,18 +22,17 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    rotationController =  AnimationController(
+    rotationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
     );
-    rotationAnimation =
-         Tween(begin: 0.0, end: 0.5).animate(rotationController);
+    rotationAnimation = Tween(begin: 0.0, end: 0.5).animate(rotationController);
 
-    fadeController =  AnimationController(
+    fadeController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 500),
     );
-    fadeAnimation =  Tween(begin: 1.0, end: 0.0).animate(fadeController);
+    fadeAnimation = Tween(begin: 1.0, end: 0.0).animate(fadeController);
 
     rotationController.addStatusListener(
       (rotationStatus) {
@@ -51,13 +50,13 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
           fadeController.reverse();
         } else if (fadeStatus == AnimationStatus.dismissed) {
           rotationController.repeat();
-          time =  Timer(
+          time = Timer(
             Duration(seconds: 1),
             () => setState(
               () => Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => Home(widget.uid),
+                  builder: (BuildContext context) => MainPage(uid: widget.uid),
                 ),
                 (_) => false,
               ),
@@ -67,7 +66,7 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
       },
     );
 
-    rotationController.addListener(()=> {});
+    rotationController.addListener(() => {});
   }
 
   void dispose() {
@@ -89,9 +88,9 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
               child: Container(
                 width: MediaQuery.of(context).size.width / 2.1,
                 height: MediaQuery.of(context).size.width / 2.1,
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  image:  DecorationImage(
+                  image: DecorationImage(
                     fit: BoxFit.fill,
                     image: AssetImage('assets/images/HunLogo1.png'),
                   ),
