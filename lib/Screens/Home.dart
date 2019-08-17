@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hun_app/Screens/Profile.dart';
-import 'package:hun_app/Screens/SetSpeciality.dart';
 import 'package:hun_app/models/Appointments.dart';
 import 'package:hun_app/models/UserInfo.dart';
-import 'package:hun_app/resources/Resources.dart';
 
 List cita1 = ["Fisioterapia", "Domingo 30 de Diciembre", "10:00 a.m."];
 
 class Home extends StatefulWidget {
   final String uid;
-  Home(this.uid);
+  Home({@required this.uid});
 
   @override
   createState() => HomeState();
@@ -112,141 +109,25 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  _bottomNavigationBar() {
-    return BottomAppBar(
-      shape: AutomaticNotchedShape(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(MediaQuery.of(context).size.width / 18),
-            topLeft: Radius.circular(MediaQuery.of(context).size.width / 18),
-          ),
-        ),
-      ),
-      color: Color(0xff1266A4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(0),
-                  child: Icon(
-                    Icons.home,
-                    color: Colors.white,
-                    size: MediaQuery.of(context).size.width / 14,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(0),
-                  child: Text(
-                    'INICIO',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: MediaQuery.of(context).size.width / 28,
-                      fontFamily: 'Ancízar Sans Regular',
-                    ),
-                  ),
-                )
-              ],
-            ),
-            height: MediaQuery.of(context).size.width / 7,
-            width: MediaQuery.of(context).size.width / 6,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width / 7,
-            width: MediaQuery.of(context).size.width / 6,
-            child: IconButton(
-              // TODO: Go to profile profile using the page view
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Profile(widget.uid),
-                ),
-              ),
-              icon: Icon(
-                Icons.account_circle,
-                size: MediaQuery.of(context).size.width / 14,
-                color: Color.fromRGBO(255, 255, 255, 0.50),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 16,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width / 7,
-            width: MediaQuery.of(context).size.width / 6,
-            child: IconButton(
-                onPressed: () => showUnavailableMessage(context),
-                icon: Icon(
-                  Icons.event,
-                  size: MediaQuery.of(context).size.width / 14,
-                  color: Color.fromRGBO(255, 255, 255, 0.50),
-                )),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width / 7,
-            width: MediaQuery.of(context).size.width / 6,
-            child: IconButton(
-              onPressed: () => showUnavailableMessage(context),
-              icon: Icon(
-                Icons.search,
-                size: MediaQuery.of(context).size.width / 14,
-                color: Color.fromRGBO(255, 255, 255, 0.50),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  _floatingActionButton() {
-    return FloatingActionButton(
-      backgroundColor: Colors.orange,
-      onPressed: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => SetSpeciality(widget.uid),
-        ),
-      ),
-      child: Icon(
-        Icons.add,
-        size: MediaQuery.of(context).size.width / 12,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: _pageController,
-      children: <Widget>[
-        Scaffold(
-          backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
-          body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                _spaceBetween(50),
-                _hunLogoAndTittle(),
-                _spaceBetween(30),
-                UserInfo(uid: widget.uid),
-                _darkTittle('PRÓXIMAS CITAS'),
-                ActiveAppointments(uid: widget.uid),
-                _endText(),
-                _spaceBetween(20)
-              ],
-            ),
-          ),
-          bottomNavigationBar: _bottomNavigationBar(),
-          floatingActionButton: _floatingActionButton(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            _spaceBetween(50),
+            _hunLogoAndTittle(),
+            _spaceBetween(30),
+            UserInfo(uid: widget.uid),
+            _darkTittle('PRÓXIMAS CITAS'),
+            ActiveAppointments(uid: widget.uid),
+            _endText(),
+            _spaceBetween(20)
+          ],
         ),
-      ],
+      ),
     );
   }
 }
