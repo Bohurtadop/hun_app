@@ -88,12 +88,20 @@ class AppointmentWidget extends StatelessWidget {
     @required this.type,
     @required this.dateStart,
     @required this.dateEnd,
-    this.state,
+    this.onPressed,
+    this.actionName = 'Cancelar',
+    this.iconAction = Icons.cancel,
+    this.state = AppointmentState.reserved,
   }) : super(key: key);
 
   final String type;
   final DateTime dateStart;
   final DateTime dateEnd;
+
+  // Action methods
+  final String actionName;
+  final IconData iconAction;
+  final void Function() onPressed;
 
   // TODO: show the state of the appointment
   final AppointmentState state;
@@ -188,12 +196,12 @@ class AppointmentWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(
-                      Icons.cancel,
+                      this.iconAction,
                       color: Color(0xff1266A4),
                       size: MediaQuery.of(context).size.width / 12,
                     ),
                     Text(
-                      'Cancelar',
+                      this.actionName,
                       style: TextStyle(
                         color: Color(0xff1266A4),
                         fontFamily: 'Ancízar Sans Light',
@@ -202,7 +210,8 @@ class AppointmentWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                onPressed: () => showUnavailableMessage(context),
+                onPressed:
+                    this.onPressed ?? () => showUnavailableMessage(context),
               ),
               height: MediaQuery.of(context).size.width / 8,
               width: MediaQuery.of(context).size.width / 8,
