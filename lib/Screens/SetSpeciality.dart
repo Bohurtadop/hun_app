@@ -6,7 +6,7 @@ class SetSpeciality extends StatefulWidget {
   final String uid;
   SetSpeciality(this.uid);
   @override
-  createState() =>  SetSpecialityState();
+  createState() => SetSpecialityState();
 }
 
 class SetSpecialityState extends State<SetSpeciality>
@@ -26,9 +26,9 @@ class SetSpecialityState extends State<SetSpeciality>
           child: Container(
             width: MediaQuery.of(context).size.width / 8,
             height: MediaQuery.of(context).size.width / 8,
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              image:  DecorationImage(
+              image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage('assets/images/HunLogo2.png'),
               ),
@@ -41,7 +41,7 @@ class SetSpecialityState extends State<SetSpeciality>
             children: <Widget>[
               Text(
                 'HUN',
-                style:  TextStyle(
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 9,
                   fontFamily: 'Ancízar Sans Bold',
                   color: Color(0xff74BEE7),
@@ -49,7 +49,7 @@ class SetSpecialityState extends State<SetSpeciality>
               ),
               Text(
                 'Salud',
-                style:  TextStyle(
+                style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 9,
                   fontFamily: 'Ancízar Sans Light',
                   color: Color(0xff74BEE7),
@@ -98,7 +98,7 @@ class SetSpecialityState extends State<SetSpeciality>
               height: MediaQuery.of(context).size.width / 7),
           child: Text(
             'Seleccione especialidad',
-            style:  TextStyle(
+            style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width / 16,
                 color: Colors.white,
                 fontFamily: 'Ancízar Sans Bold'),
@@ -110,10 +110,10 @@ class SetSpecialityState extends State<SetSpeciality>
     );
   }
 
-  DateTime _date =  DateTime.now();
-  TimeOfDay _time =  TimeOfDay.now();
+  DateTime _date = DateTime.now();
+  TimeOfDay _time = TimeOfDay.now();
 
-  Future<Null> _selectTime(BuildContext context) async {
+  Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -128,7 +128,7 @@ class SetSpecialityState extends State<SetSpeciality>
     Navigator.of(context).pop();
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -146,14 +146,16 @@ class SetSpecialityState extends State<SetSpeciality>
   }
 
   Future<Widget> _container(String rute) async {
-    return Container(
-      width: MediaQuery.of(context).size.width / 3.5,
-      height: MediaQuery.of(context).size.width / 3.5,
-      decoration:  BoxDecoration(
-        shape: BoxShape.rectangle,
-        image:  DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage(rute),
+    return Future.value(
+      Container(
+        width: MediaQuery.of(context).size.width / 3.5,
+        height: MediaQuery.of(context).size.width / 3.5,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: AssetImage(rute),
+          ),
         ),
       ),
     );
@@ -163,15 +165,15 @@ class SetSpecialityState extends State<SetSpeciality>
     return GestureDetector(
       onTap: () => _selectDate(context),
       child: Container(
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(MediaQuery.of(context).size.width / 18),
           ),
           boxShadow: [
-             BoxShadow(
+            BoxShadow(
               blurRadius: 5.0,
-              color:  Color.fromRGBO(0, 0, 0, 0.36),
-              offset:  Offset(0, 5.0),
+              color: Color.fromRGBO(0, 0, 0, 0.36),
+              offset: Offset(0, 5.0),
             ),
           ],
           color: Colors.white,
@@ -210,7 +212,7 @@ class SetSpecialityState extends State<SetSpeciality>
                   textDirection: TextDirection.rtl,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width / 14,
                     fontFamily: 'Ancízar Sans Regular',
                     color: const Color(0xFF1266A4),

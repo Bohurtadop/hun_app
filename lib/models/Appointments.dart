@@ -28,7 +28,7 @@ class ActiveAppointments extends StatelessWidget {
               return Text('No se pudieron obtener sus citas');
             }
 
-            debugPrint('********\nAppointments:\n+++++++');
+            debugPrint('--------\nAppointments:\n\n+++++++');
 
             // we save the appointments' widgets in a list
             List<Container> appointments = snapshot.data.documents.map(
@@ -45,7 +45,7 @@ class ActiveAppointments extends StatelessWidget {
                 debugPrint('State: ${state.toString()}');
                 debugPrint('Start: ${dateStart.toString()}');
                 debugPrint('End: ${dateEnd.toString()}');
-                debugPrint('+++++++');
+                debugPrint('+++++++\n');
 
                 return Container(
                   child: AppointmentWidget(
@@ -73,7 +73,7 @@ class ActiveAppointments extends StatelessWidget {
             }
 
             debugPrint(
-                '\nWidgets to be displayed: ${appointments.length}\n--------');
+                '\nWidgets to be displayed: ${appointments.length}\n--------\n');
 
             return Column(children: appointments);
         }
