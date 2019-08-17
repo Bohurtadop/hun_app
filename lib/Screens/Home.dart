@@ -16,10 +16,19 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> with TickerProviderStateMixin {
+  PageController _pageController;
+
   @override
   void initState() {
+    _pageController = PageController();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   _darkTittle(String tittle) {
@@ -29,9 +38,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         tittle,
         textDirection: TextDirection.ltr,
         style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width / 12,
-            fontFamily: 'Ancízar Sans Bold',
-            color: Color(0xff707070)),
+          fontSize: MediaQuery.of(context).size.width / 12,
+          fontFamily: 'Ancízar Sans Bold',
+          color: Color(0xff707070),
+        ),
       ),
     );
   }
