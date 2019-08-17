@@ -106,13 +106,24 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
         unselectedItemColor: Color.fromRGBO(255, 255, 255, 0.50),
         onTap: this._onBottomNavItemPressed,
         items: <BottomNavigationBarItem>[
-          _newBarItem(context: context, title: 'INICIO', icon: Icon(Icons.home)),
+          //Home()
+          _newBarItem(
+            context: context,
+            title: 'INICIO',
+            icon: Icon(Icons.home),
+          ),
+
+          //Profile()
           _newBarItem(
             context: context,
             title: 'PERFIL',
             icon: Icon(Icons.account_circle),
           ),
+
+          //This page has not been defined yet.
           _newBarItem(context: context, icon: Icon(Icons.event)),
+
+          //This page has not been defined yet.
           _newBarItem(context: context, icon: Icon(Icons.search))
         ],
       ),
