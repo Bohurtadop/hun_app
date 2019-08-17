@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hun_app/resources/Resources.dart';
 
 enum AppointmentState { available, reserved }
 
@@ -201,22 +202,13 @@ class AppointmentWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                onPressed: () => this.showUnavailableMessage(context),
+                onPressed: () => showUnavailableMessage(context),
               ),
               height: MediaQuery.of(context).size.width / 8,
               width: MediaQuery.of(context).size.width / 8,
             )
           ],
         ),
-      ),
-    );
-  }
-
-  void showUnavailableMessage(BuildContext context) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: const Text('Aún no disponible'),
       ),
     );
   }

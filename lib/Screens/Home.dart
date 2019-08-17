@@ -4,6 +4,7 @@ import 'package:hun_app/Screens/Profile.dart';
 import 'package:hun_app/Screens/SetSpeciality.dart';
 import 'package:hun_app/models/Appointments.dart';
 import 'package:hun_app/models/UserInfo.dart';
+import 'package:hun_app/resources/Resources.dart';
 
 List cita1 = ["Fisioterapia", "Domingo 30 de Diciembre", "10:00 a.m."];
 
@@ -157,6 +158,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             height: MediaQuery.of(context).size.width / 7,
             width: MediaQuery.of(context).size.width / 6,
             child: IconButton(
+              // TODO: Go to profile profile using the page view
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -177,7 +179,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             height: MediaQuery.of(context).size.width / 7,
             width: MediaQuery.of(context).size.width / 6,
             child: IconButton(
-                onPressed: null,
+                onPressed: () => showUnavailableMessage(context),
                 icon: Icon(
                   Icons.event,
                   size: MediaQuery.of(context).size.width / 14,
@@ -188,7 +190,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             height: MediaQuery.of(context).size.width / 7,
             width: MediaQuery.of(context).size.width / 6,
             child: IconButton(
-              onPressed: null,
+              onPressed: () => showUnavailableMessage(context),
               icon: Icon(
                 Icons.search,
                 size: MediaQuery.of(context).size.width / 14,
@@ -219,26 +221,32 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            _spaceBetween(50),
-            _hunLogoAndTittle(),
-            _spaceBetween(30),
-            UserInfo(uid: widget.uid),
-            _darkTittle('PRÓXIMAS CITAS'),
-            ActiveAppointments(uid: widget.uid),
-            _endText(),
-            _spaceBetween(20)
-          ],
+    return PageView(
+      controller: _pageController,
+      children: <Widget>[
+        Scaffold(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                _spaceBetween(50),
+                _hunLogoAndTittle(),
+                _spaceBetween(30),
+                UserInfo(uid: widget.uid),
+                _darkTittle('PRÓXIMAS CITAS'),
+                ActiveAppointments(uid: widget.uid),
+                _endText(),
+                _spaceBetween(20)
+              ],
+            ),
+          ),
+          bottomNavigationBar: _bottomNavigationBar(),
+          floatingActionButton: _floatingActionButton(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ),
-      ),
-      bottomNavigationBar: _bottomNavigationBar(),
-      floatingActionButton: _floatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      ],
     );
   }
 }

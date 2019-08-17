@@ -6,6 +6,7 @@ import 'package:hun_app/auth/auth.dart';
 import 'package:hun_app/auth/auth_provider.dart';
 import 'package:hun_app/auth/root_page.dart';
 import 'package:hun_app/models/UserInfo.dart';
+import 'package:hun_app/resources/Resources.dart';
 
 class Profile extends StatefulWidget {
   final String uid;
@@ -222,7 +223,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
             height: MediaQuery.of(context).size.width / 7,
             width: MediaQuery.of(context).size.width / 6,
             child: IconButton(
-                onPressed: null,
+                onPressed: () => showUnavailableMessage(context),
                 icon: Icon(
                   Icons.event,
                   size: MediaQuery.of(context).size.width / 14,
@@ -233,7 +234,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
             height: MediaQuery.of(context).size.width / 7,
             width: MediaQuery.of(context).size.width / 6,
             child: IconButton(
-              onPressed: null,
+              onPressed: () => showUnavailableMessage(context),
               icon: Icon(
                 Icons.search,
                 size: MediaQuery.of(context).size.width / 14,
