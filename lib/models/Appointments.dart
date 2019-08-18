@@ -83,6 +83,113 @@ class PendingAppointments extends StatelessWidget {
   }
 }
 
+class AvailableAppointments extends StatelessWidget {
+  final String uid;
+  final String specialty;
+  const AvailableAppointments(
+      {Key key, @required this.uid, @required this.specialty})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: Firestore.instance
+          .collection('/specialties/$specialty/appointments')
+          .where('state', isEqualTo: 0)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+          default:
+            if (snapshot.data.documents.length == 0 || !snapshot.hasData) {
+              return Text(
+                'No hay citas disponibles',
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 18,
+                  fontFamily: 'Ancízar Sans Light',
+                  color: Color(0xFF1266A4),
+                ),
+              );
+            }
+            debugPrint('--------\nAvailable appointments:\n\n+++++++');
+
+            // we save the appointments' widgets in a list
+            List<Container> appointments = snapshot.data.documents.map(
+              (DocumentSnapshot document) {
+                AppointmentState state =
+                    AppointmentState.values[document['state']];
+                String appointmentType = document['type'];
+                DateTime dateStart = document['start'].toDate();
+                DateTime dateEnd = document['end'].toDate();
+                String doctorName = document['doctor_name'];
+
+                const int max_length = 23;
+
+                // we limit the amount of character of the doctor's name (avoid out bounds)
+                if (doctorName.length > max_length) {
+                  List<String> subNames = doctorName.split(' ');
+                  doctorName = '';
+                  for (var str in subNames) {
+                    doctorName = doctorName.length + str.length > max_length
+                        ? doctorName
+                        : doctorName.isEmpty ? str : '$doctorName $str';
+                  }
+                }
+
+                debugPrint('Appointment id: ${document.documentID}');
+                debugPrint('Type: $appointmentType');
+                debugPrint('Doctor\'s id: ${document['doctor']}');
+                debugPrint('Doctor\'s name: $doctorName');
+                debugPrint('State: ${state.toString()}');
+                debugPrint('Start: ${dateStart.toString()}');
+                debugPrint('End: ${dateEnd.toString()}');
+                debugPrint('+++++++\n');
+
+                return Container(
+                  child: AppointmentWidget(
+                    key: Key(document.documentID),
+                    doctorName: doctorName,
+                    actionName: 'Reservar',
+                    iconAction: Icons.add,
+                    type: appointmentType,
+                    dateStart: dateStart,
+                    showDoctor: true,
+                    dateEnd: dateEnd,
+                    state: state,
+                  ),
+                );
+              },
+            ).toList();
+
+            int length = appointments.length + 1;
+
+            debugPrint('Specialties: ${length - 1}');
+            debugPrint('Space(s) to be inserted: $length');
+
+            // We add spaces between appointments
+            for (var i = 0; i < length; i++) {
+              appointments.insert(
+                2 * i,
+                Container(child: spaceBetween(20)),
+              );
+              debugPrint('\nSpace inserted at: ${2 * i}');
+            }
+
+            debugPrint(
+                '\nWidgets to be displayed: ${appointments.length}\n--------\n');
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: appointments,
+            );
+        }
+      },
+    );
+  }
+}
+
 class AppointmentWidget extends StatelessWidget {
   const AppointmentWidget({
     Key key,
@@ -90,12 +197,16 @@ class AppointmentWidget extends StatelessWidget {
     @required this.dateStart,
     @required this.dateEnd,
     this.onPressed,
+    this.doctorName,
+    this.showDoctor = false,
     this.actionName = 'Cancelar',
     this.iconAction = Icons.cancel,
     this.state = AppointmentState.reserved,
   }) : super(key: key);
 
   final String type;
+  final bool showDoctor;
+  final String doctorName;
   final DateTime dateStart;
   final DateTime dateEnd;
 
@@ -168,6 +279,15 @@ class AppointmentWidget extends StatelessWidget {
                     fontSize: MediaQuery.of(context).size.width / 18,
                   ),
                 ),
+                if (this.showDoctor)
+                  Text(
+                    this.doctorName,
+                    style: TextStyle(
+                      color: Color(0xff1266A4),
+                      fontFamily: 'Ancízar Sans Bold',
+                      fontSize: MediaQuery.of(context).size.width / 18,
+                    ),
+                  ),
                 // we display where it starts the appointment
                 Text(
                   dateStart.toString(),
