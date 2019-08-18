@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hun_app/Screens/ChooseAppointment.dart';
 import 'package:hun_app/resources/Resources.dart';
 
 class Specialties extends StatelessWidget {
-  const Specialties({Key key}) : super(key: key);
+  final String uid;
+  const Specialties({Key key, @required this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class Specialties extends StatelessWidget {
 
               return Container(
                 child: SpecialtyWidget(
+                  uid: uid,
                   key: Key(document.documentID),
                   name: name,
                   assetRute: assetRoute,
@@ -67,21 +70,36 @@ class Specialties extends StatelessWidget {
 }
 
 class SpecialtyWidget extends StatelessWidget {
-  const SpecialtyWidget(
-      {Key key, @required this.name, @required this.assetRute, this.onTap})
-      : super(key: key);
+  const SpecialtyWidget({
+    @required Key key,
+    @required this.name,
+    @required this.assetRute,
+    @required this.uid,
+  }) : super(key: key);
   final String name;
   final String assetRute;
-  final void Function() onTap;
+
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: this.onTap ??
-          () {
-            if (kDebugMode) debugPrint('[Specialty widget] Tapped with key: ${key.toString()}}');
-            Navigator.pop(context);
-          },
+      onTap: () {
+        if (kDebugMode)
+          debugPrint(
+              '[Specialty widget] Specialty selected: ${key.toString().substring(3, key.toString().length - 3)}');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => ChooseAppointment(
+              uid: uid,
+              specialty:
+                  //we obtain the specialty id from the key
+                  key.toString().substring(3, key.toString().length - 3),
+            ),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(

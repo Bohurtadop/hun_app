@@ -47,7 +47,8 @@ class SetSpecialityState extends State<SetSpeciality>
         child: Container(
           alignment: Alignment.center,
           constraints: BoxConstraints.expand(
-              height: MediaQuery.of(context).size.width / 7),
+            height: MediaQuery.of(context).size.width / 7,
+          ),
           child: Text(
             'Seleccione especialidad',
             style: TextStyle(
@@ -101,7 +102,7 @@ class SetSpecialityState extends State<SetSpeciality>
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
       body: SingleChildScrollView(
-        child: Specialties(),
+        child: Specialties(uid: widget.uid),
       ),
       appBar: _appBar(),
       floatingActionButton: _floatingActionButton(),
