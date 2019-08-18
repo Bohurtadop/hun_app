@@ -49,6 +49,7 @@ class ActiveAppointments extends StatelessWidget {
 
                 return Container(
                   child: AppointmentWidget(
+                    key: Key(document.documentID),
                     type: appointmentType,
                     dateStart: dateStart,
                     dateEnd: dateEnd,
