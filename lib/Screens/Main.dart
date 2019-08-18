@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hun_app/Screens/Home.dart';
 import 'package:hun_app/Screens/Profile.dart';
 import 'package:hun_app/Screens/SetSpeciality.dart';
+import 'package:hun_app/resources/Resources.dart';
 
 class MainPage extends StatefulWidget {
   final String uid;
@@ -47,22 +48,6 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
     );
   }
 
-  _floatingActionButton() {
-    return FloatingActionButton(
-      backgroundColor: Colors.orange,
-      onPressed: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => SetSpeciality(widget.uid),
-        ),
-      ),
-      child: Icon(
-        Icons.add,
-        size: MediaQuery.of(context).size.width / 12,
-      ),
-    );
-  }
-
   void _onPageChanged(int page) {
     setState(() {
       return _page = page;
@@ -93,7 +78,16 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
           Profile(uid: widget.uid),
         ],
       ),
-      floatingActionButton: _floatingActionButton(),
+      floatingActionButton: floatingActionButton(
+        context: context,
+        icon: Icons.add,
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => SetSpeciality(widget.uid),
+          ),
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: this._page,

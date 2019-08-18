@@ -180,3 +180,55 @@ Container offTopicButton(
     width: width,
   );
 }
+
+AppBar appBar({@required BuildContext context, @required String text}) {
+  return AppBar(
+    automaticallyImplyLeading: false,
+    backgroundColor: Color(0xff1266A4),
+    centerTitle: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(MediaQuery.of(context).size.width / 18),
+        bottomRight: Radius.circular(MediaQuery.of(context).size.width / 18),
+      ),
+    ),
+    title: hunLogoAndTittle(context),
+    bottom: PreferredSize(
+      child: Container(
+        alignment: Alignment.center,
+        constraints: BoxConstraints.expand(
+          height: MediaQuery.of(context).size.width / 7,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).size.width / 16,
+            color: Colors.white,
+            fontFamily: 'Ancízar Sans Bold',
+          ),
+        ),
+      ),
+      preferredSize: Size(
+        MediaQuery.of(context).size.width / 7,
+        MediaQuery.of(context).size.width / 7,
+      ),
+    ),
+  );
+}
+
+FloatingActionButton floatingActionButton(
+    {@required BuildContext context,
+    @required void Function() onPressed,
+    Widget child,
+    IconData icon,
+    Color backgroundColor}) {
+  return FloatingActionButton(
+    backgroundColor: backgroundColor ?? Colors.orange,
+    onPressed: onPressed ?? () => showUnavailableMessage(context),
+    child: child ??
+        Icon(
+          icon,
+          size: MediaQuery.of(context).size.width / 12,
+        ),
+  );
+}
