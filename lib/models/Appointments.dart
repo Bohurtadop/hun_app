@@ -160,9 +160,11 @@ class AvailableAppointments extends StatelessWidget {
                     dateEnd: dateEnd,
                     state: state,
                     onPressed: () async {
-                      debugPrint(
-                          '\n\n[Assign appointment] Before progress indicator');
-                      CircularProgressIndicator();
+                      debugPrint('[Assign appointment] Before pop() twice');
+                      
+                      // we go to home page
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
 
                       var parameters = {
                         'specialty': specialty,
@@ -177,11 +179,6 @@ class AvailableAppointments extends StatelessWidget {
                           .then((HttpsCallableResult value) {
                         //Value returned
                         debugPrint('[Assign appointment] Value: ${value.data}');
-
-                        debugPrint('[Assign appointment] Before pop() twice');
-                        // we go to home page
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
 
                         debugPrint('[Assign appointment] Success \n\n');
                       }).catchError((error) {
