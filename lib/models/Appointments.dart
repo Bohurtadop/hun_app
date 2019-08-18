@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hun_app/resources/Resources.dart';
@@ -158,6 +159,35 @@ class AvailableAppointments extends StatelessWidget {
                     showDoctor: true,
                     dateEnd: dateEnd,
                     state: state,
+                    onPressed: () async {
+                      debugPrint(
+                          '\n\n[Assign appointment] Before progress indicator');
+                      CircularProgressIndicator();
+
+                      var parameters = {
+                        'specialty': specialty,
+                        'appointment': document.documentID
+                      };
+
+                      debugPrint(
+                          '[Assign appointment] Before calling the firebase function "assign_appointment" with parameters $parameters');
+                      await CloudFunctions.instance
+                          .getHttpsCallable(functionName: 'assign_appointment')
+                          .call(parameters)
+                          .then((HttpsCallableResult value) {
+                        //Value returned
+                        debugPrint('[Assign appointment] Value: ${value.data}');
+
+                        debugPrint('[Assign appointment] Before pop() twice');
+                        // we go to home page
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+
+                        debugPrint('[Assign appointment] Success \n\n');
+                      }).catchError((error) {
+                        debugPrint('[Assign appointment] Error: $error \n\n');
+                      });
+                    },
                   ),
                 );
               },
