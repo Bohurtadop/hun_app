@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hun_app/Animations/Loading.dart';
 import 'package:hun_app/auth/auth.dart';
@@ -17,7 +18,7 @@ class HUN extends StatelessWidget {
     return AuthProvider(
       auth: Auth(),
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: kDebugMode,
         debugShowMaterialGrid: false,
         checkerboardOffscreenLayers: false,
         checkerboardRasterCacheImages: false,

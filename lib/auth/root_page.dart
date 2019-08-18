@@ -13,7 +13,7 @@ class RootPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final bool isLoggedIn = snapshot.hasData;
-          return isLoggedIn ? LoggedIn(snapshot.data) : Login();
+          return isLoggedIn ? LoggedIn(uid: snapshot.data) : Login();
         }
         return _buildWaitingScreen();
       },

@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hun_app/resources/Resources.dart';
 
 enum AppointmentState { available, reserved }
 
 // This class creates a widget with all active appointments.
-class ActiveAppointments extends StatelessWidget {
-  const ActiveAppointments({@required this.uid});
+class PendingAppointments extends StatelessWidget {
+  const PendingAppointments({@required this.uid});
   final String uid;
 
   @override
@@ -27,7 +28,7 @@ class ActiveAppointments extends StatelessWidget {
               return Text('No se pudieron obtener sus citas');
             }
 
-            debugPrint('********\nAppointments:\n+++++++');
+            debugPrint('--------\nAppointments:\n\n+++++++');
 
             // we save the appointments' widgets in a list
             List<Container> appointments = snapshot.data.documents.map(
@@ -44,10 +45,11 @@ class ActiveAppointments extends StatelessWidget {
                 debugPrint('State: ${state.toString()}');
                 debugPrint('Start: ${dateStart.toString()}');
                 debugPrint('End: ${dateEnd.toString()}');
-                debugPrint('+++++++');
+                debugPrint('+++++++\n');
 
                 return Container(
                   child: AppointmentWidget(
+                    key: Key(document.documentID),
                     type: appointmentType,
                     dateStart: dateStart,
                     dateEnd: dateEnd,
@@ -66,13 +68,13 @@ class ActiveAppointments extends StatelessWidget {
             for (var i = 0; i < length; i++) {
               appointments.insert(
                 2 * i + 1,
-                Container(child: SizedBox(height: 20)),
+                Container(child: spaceBetween(20)),
               );
               debugPrint('\nSpace inserted at: ${2 * i + 1}');
             }
 
             debugPrint(
-                '\nWidgets to be displayed: ${appointments.length}\n--------');
+                '\nWidgets to be displayed: ${appointments.length}\n--------\n');
 
             return Column(children: appointments);
         }
@@ -87,12 +89,20 @@ class AppointmentWidget extends StatelessWidget {
     @required this.type,
     @required this.dateStart,
     @required this.dateEnd,
-    this.state,
+    this.onPressed,
+    this.actionName = 'Cancelar',
+    this.iconAction = Icons.cancel,
+    this.state = AppointmentState.reserved,
   }) : super(key: key);
 
   final String type;
   final DateTime dateStart;
   final DateTime dateEnd;
+
+  // Action methods
+  final String actionName;
+  final IconData iconAction;
+  final void Function() onPressed;
 
   // TODO: show the state of the appointment
   final AppointmentState state;
@@ -187,12 +197,12 @@ class AppointmentWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(
-                      Icons.cancel,
+                      this.iconAction,
                       color: Color(0xff1266A4),
                       size: MediaQuery.of(context).size.width / 12,
                     ),
                     Text(
-                      'Cancelar',
+                      this.actionName,
                       style: TextStyle(
                         color: Color(0xff1266A4),
                         fontFamily: 'Ancízar Sans Light',
@@ -201,22 +211,14 @@ class AppointmentWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                onPressed: () => this.showUnavailableMessage(context),
+                onPressed:
+                    this.onPressed ?? () => showUnavailableMessage(context),
               ),
               height: MediaQuery.of(context).size.width / 8,
               width: MediaQuery.of(context).size.width / 8,
             )
           ],
         ),
-      ),
-    );
-  }
-
-  void showUnavailableMessage(BuildContext context) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: const Text('Aún no disponible'),
       ),
     );
   }
