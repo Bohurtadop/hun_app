@@ -80,6 +80,7 @@ class SpecialtyWidget extends StatelessWidget {
       onTap: this.onTap ??
           () {
             if (kDebugMode) debugPrint('[Specialty widget] Tapped with key: ${key.toString()}}');
+            Navigator.pop(context);
           },
       child: Container(
         decoration: BoxDecoration(

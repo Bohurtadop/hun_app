@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
 void showUnavailableMessage(BuildContext context) {
+  showToast(context: context);
+}
+
+void showToast(
+    {@required BuildContext context,
+    String message = 'Aún no disponible',
+    int milliseconds = 500}) {
   final scaffold = Scaffold.of(context);
   scaffold.showSnackBar(
     SnackBar(
-      content: const Text('Aún no disponible'),
-      duration: Duration(milliseconds: 500),
+      content: Text(message),
+      duration: Duration(milliseconds: milliseconds),
     ),
   );
 }
