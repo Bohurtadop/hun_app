@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
+import 'package:hun_app/resources/Resources.dart';
+
 class SetSpeciality extends StatefulWidget {
   final String uid;
   SetSpeciality(this.uid);
@@ -15,57 +17,6 @@ class SetSpecialityState extends State<SetSpeciality>
   void initState() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
-  }
-
-  _hunLogoAndTittle() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Hero(
-          tag: 'hunLogo',
-          child: Container(
-            width: MediaQuery.of(context).size.width / 8,
-            height: MediaQuery.of(context).size.width / 8,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage('assets/images/HunLogo2.png'),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(5),
-          child: Row(
-            children: <Widget>[
-              Text(
-                'HUN',
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 9,
-                  fontFamily: 'Ancízar Sans Bold',
-                  color: Color(0xff74BEE7),
-                ),
-              ),
-              Text(
-                'Salud',
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 9,
-                  fontFamily: 'Ancízar Sans Light',
-                  color: Color(0xff74BEE7),
-                ),
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  _spaceBetween(double space) {
-    return SizedBox(
-      height: space,
-    );
   }
 
   _floatingActionButton() {
@@ -90,7 +41,7 @@ class SetSpecialityState extends State<SetSpeciality>
           bottomRight: Radius.circular(MediaQuery.of(context).size.width / 18),
         ),
       ),
-      title: _hunLogoAndTittle(),
+      title: hunLogoAndTittle(context),
       bottom: PreferredSize(
         child: Container(
           alignment: Alignment.center,
@@ -233,45 +184,45 @@ class SetSpecialityState extends State<SetSpeciality>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Dermatology.png', "Dermatología"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Pediatrics.png', "Pediatría"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Allergology.png', "Alergología"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Anesthesiology.png', "Anestesiología"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Non-invasive cardiology.png',
                 "Cardiología no invasiva"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Cardiovascular surgery.png',
                 "Cirugía cardiovascular"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Head and neck surgery.png',
                 "Cirugía de cabeza y cuello"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Hand surgery.png', "Cirugía de mano"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/General surgery.png', "Cirugía general"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Maxillofacial surgery.png',
                 "Cirugía maxilofacial"),
-            _spaceBetween(20),
+            spaceBetween(20),
             _specialityContainer(
                 'assets/specialities/Peripheral vascular surgery.png',
                 "Cirugía vascular periférica"),
-            _spaceBetween(20)
+            spaceBetween(20)
           ],
         ),
       ),

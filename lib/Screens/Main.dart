@@ -4,8 +4,6 @@ import 'package:hun_app/Screens/Home.dart';
 import 'package:hun_app/Screens/Profile.dart';
 import 'package:hun_app/Screens/SetSpeciality.dart';
 
-List cita1 = ["Fisioterapia", "Domingo 30 de Diciembre", "10:00 a.m."];
-
 class MainPage extends StatefulWidget {
   final String uid;
   final int initialPage;

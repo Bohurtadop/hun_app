@@ -67,7 +67,7 @@ class ActiveAppointments extends StatelessWidget {
             for (var i = 0; i < length; i++) {
               appointments.insert(
                 2 * i + 1,
-                Container(child: SizedBox(height: 20)),
+                Container(child: spaceBetween(20)),
               );
               debugPrint('\nSpace inserted at: ${2 * i + 1}');
             }
