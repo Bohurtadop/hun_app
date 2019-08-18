@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hun_app/models/Specialties.dart';
 import 'dart:async';
 
 import 'package:hun_app/resources/Resources.dart';
@@ -96,135 +97,11 @@ class SetSpecialityState extends State<SetSpeciality>
     _selectTime(context);
   }
 
-  Future<Widget> _container(String rute) async {
-    return Future.value(
-      Container(
-        width: MediaQuery.of(context).size.width / 3.5,
-        height: MediaQuery.of(context).size.width / 3.5,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage(rute),
-          ),
-        ),
-      ),
-    );
-  }
-
-  _specialityContainer(String rute, String description) {
-    return GestureDetector(
-      onTap: () => _selectDate(context),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(MediaQuery.of(context).size.width / 18),
-          ),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 5.0,
-              color: Color.fromRGBO(0, 0, 0, 0.36),
-              offset: Offset(0, 5.0),
-            ),
-          ],
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.width / 28,
-            left: MediaQuery.of(context).size.width / 150,
-            right: MediaQuery.of(context).size.width / 150,
-            top: MediaQuery.of(context).size.width / 28,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width / 3.5,
-                height: MediaQuery.of(context).size.width / 3.5,
-                child: FutureBuilder(
-                  future: _container(rute),
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return snapshot.data;
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 2,
-                height: MediaQuery.of(context).size.width / 5,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  textDirection: TextDirection.rtl,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width / 14,
-                    fontFamily: 'Ancízar Sans Regular',
-                    color: const Color(0xFF1266A4),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Dermatology.png', "Dermatología"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Pediatrics.png', "Pediatría"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Allergology.png', "Alergología"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Anesthesiology.png', "Anestesiología"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Non-invasive cardiology.png',
-                "Cardiología no invasiva"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Cardiovascular surgery.png',
-                "Cirugía cardiovascular"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Head and neck surgery.png',
-                "Cirugía de cabeza y cuello"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Hand surgery.png', "Cirugía de mano"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/General surgery.png', "Cirugía general"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Maxillofacial surgery.png',
-                "Cirugía maxilofacial"),
-            spaceBetween(20),
-            _specialityContainer(
-                'assets/specialities/Peripheral vascular surgery.png',
-                "Cirugía vascular periférica"),
-            spaceBetween(20)
-          ],
-        ),
+        child: Specialties(),
       ),
       appBar: _appBar(),
       floatingActionButton: _floatingActionButton(),

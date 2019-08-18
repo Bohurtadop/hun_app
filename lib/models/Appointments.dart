@@ -6,8 +6,8 @@ import 'package:hun_app/resources/Resources.dart';
 enum AppointmentState { available, reserved }
 
 // This class creates a widget with all active appointments.
-class ActiveAppointments extends StatelessWidget {
-  const ActiveAppointments({@required this.uid});
+class PendingAppointments extends StatelessWidget {
+  const PendingAppointments({@required this.uid});
   final String uid;
 
   @override

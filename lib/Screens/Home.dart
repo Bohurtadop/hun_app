@@ -55,7 +55,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             spaceBetween(30),
             UserInfo(uid: widget.uid),
             darkTitle(title: 'PRÓXIMAS CITAS', context: context),
-            ActiveAppointments(uid: widget.uid),
+            PendingAppointments(uid: widget.uid),
             _endText(),
             spaceBetween(20)
           ],
