@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hun_app/auth/root_page.dart';
 import 'package:hun_app/resources/Resources.dart';
@@ -33,10 +34,6 @@ class LoadingState extends State<Loading> {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
   }
-
-  
-
-  
 
   _sansTittle(String tittle) {
     return Text(

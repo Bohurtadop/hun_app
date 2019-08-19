@@ -1,10 +1,12 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hun_app/Screens/Main.dart';
 
 class LoggedIn extends StatefulWidget {
   final String uid;
+
   LoggedIn({@required this.uid});
 
   @override

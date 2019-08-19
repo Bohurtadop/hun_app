@@ -1,12 +1,17 @@
 import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class BaseAuth {
   Stream<String> get onAuthChanged;
+
   Future<String> signInWithEmailAndPassword(String email, String password);
+
   Future<FirebaseUser> createUserWithEmailAndPassword(
       String email, String password);
+
   Future<String> currentUserID();
+
   Future<void> signOut();
 }
 

@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:hun_app/Screens/Home.dart';
 import 'package:hun_app/Screens/Profile.dart';
 import 'package:hun_app/Screens/SetSpeciality.dart';
+import 'package:hun_app/resources/Resources.dart';
 
 class MainPage extends StatefulWidget {
   final String uid;
   final int initialPage;
+
   MainPage({this.uid, this.initialPage = 0});
 
   @override
@@ -47,83 +49,100 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
     );
   }
 
-  _floatingActionButton() {
-    return FloatingActionButton(
-      backgroundColor: Colors.orange,
-      onPressed: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => SetSpeciality(widget.uid),
-        ),
-      ),
-      child: Icon(
-        Icons.add,
-        size: MediaQuery.of(context).size.width / 12,
-      ),
-    );
-  }
-
   void _onPageChanged(int page) {
-    setState(() {
-      return _page = page;
-    });
+    setState(() => _page = page);
     debugPrint('[MainPage] Current page: $page');
   }
 
-  void _onBottomNavItemPressed(int index) {
-    setState(() => _page = index);
+  void _onBottomItemPressed(int index, BuildContext context) {
+    debugPrint(
+        '-> [MainPage] User is in the page: ${_pageController.page.truncate()}');
     if (_pageController.hasClients) {
-      _pageController.animateToPage(
-        index,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
+      debugPrint('\n-> [MainPage] User has selected the page: $index');
+
+      // We change to the page located at index
+      _pageController
+          .animateToPage(index,
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut)
+          .then(
+        (_) {
+          // if that page is not
+          if (index != _pageController.page.truncate()) {
+            debugPrint(
+                '-> [MainPage] User could have selected an invalid page.');
+            showToast(
+                context: context, message: '⚠ Página aún no disponible ⚠');
+          }
+        },
       );
-      debugPrint('\n[MainPage] User has selected the page: $index\n');
     }
+  }
+
+  Future _setSpecialty(BuildContext context) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => SetSpeciality(widget.uid),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: this._pageController,
-        onPageChanged: this._onPageChanged,
-        children: <Widget>[
-          Home(uid: widget.uid),
-          Profile(uid: widget.uid),
-        ],
-      ),
-      floatingActionButton: _floatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: this._page,
-        showUnselectedLabels: false,
-        selectedItemColor: Colors.white,
-        backgroundColor: Color(0xff1266A4),
-        iconSize: MediaQuery.of(context).size.width / 14,
-        unselectedItemColor: Color.fromRGBO(255, 255, 255, 0.50),
-        onTap: this._onBottomNavItemPressed,
-        items: <BottomNavigationBarItem>[
-          //Home()
-          _newBarItem(
-            context: context,
-            title: 'INICIO',
-            icon: Icon(Icons.home),
-          ),
+      body: Builder(
+        builder: (BuildContext context) {
+          return Scaffold(
+            body: PageView(
+              controller: this._pageController,
+              onPageChanged: this._onPageChanged,
+              children: <Widget>[
+                Home(uid: widget.uid),
+                Profile(uid: widget.uid),
+              ],
+            ),
+            floatingActionButton: floatingActionButton(
+              context: context,
+              icon: Icons.add,
+              onPressed: () => _setSpecialty(context),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: this._page,
+              showUnselectedLabels: false,
+              selectedItemColor: Colors.white,
+              backgroundColor: Color(0xff1266A4),
+              iconSize: MediaQuery.of(context).size.width / 14,
+              unselectedItemColor: Color.fromRGBO(255, 255, 255, 0.50),
 
-          //Profile()
-          _newBarItem(
-            context: context,
-            title: 'PERFIL',
-            icon: Icon(Icons.account_circle),
-          ),
+              // when the user taps on a item
+              onTap: (int index) => _onBottomItemPressed(index, context),
+              items: <BottomNavigationBarItem>[
+                //Home()
+                _newBarItem(
+                  context: context,
+                  title: 'INICIO',
+                  icon: Icon(Icons.home),
+                ),
 
-          //This page has not been defined yet.
-          _newBarItem(context: context, icon: Icon(Icons.event)),
+                //Profile()
+                _newBarItem(
+                  context: context,
+                  title: 'PERFIL',
+                  icon: Icon(Icons.account_circle),
+                ),
 
-          //This page has not been defined yet.
-          _newBarItem(context: context, icon: Icon(Icons.search))
-        ],
+                //This page has not been defined yet.
+                _newBarItem(context: context, icon: Icon(Icons.event)),
+
+                //This page has not been defined yet.
+                _newBarItem(context: context, icon: Icon(Icons.search))
+              ],
+            ),
+          );
+        },
       ),
     );
   }
