@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hun_app/models/Appointments.dart';
-
 import 'package:hun_app/resources/Resources.dart';
 
 class ChooseAppointment extends StatefulWidget {
   final String uid;
   final String specialty;
+
   ChooseAppointment({@required this.uid, @required this.specialty});
+
   @override
   createState() => ChooseAppointmentState();
 }

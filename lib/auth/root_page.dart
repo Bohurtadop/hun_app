@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hun_app/Animations/LoggedIn.dart';
-import 'auth_provider.dart';
 import 'package:hun_app/Screens/Login.dart';
+
 import 'auth.dart';
+import 'auth_provider.dart';
 
 class RootPage extends StatelessWidget {
   @override

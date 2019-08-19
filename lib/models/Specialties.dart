@@ -7,6 +7,7 @@ import 'package:hun_app/resources/Resources.dart';
 
 class Specialties extends StatelessWidget {
   final String uid;
+
   const Specialties({Key key, @required this.uid}) : super(key: key);
 
   @override

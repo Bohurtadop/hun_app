@@ -1,13 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hun_app/models/Specialties.dart';
-import 'dart:async';
-
 import 'package:hun_app/resources/Resources.dart';
 
 class SetSpeciality extends StatefulWidget {
   final String uid;
+
   SetSpeciality(this.uid);
+
   @override
   createState() => SetSpecialityState();
 }

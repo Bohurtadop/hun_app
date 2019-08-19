@@ -6,6 +6,7 @@ import 'package:hun_app/resources/Resources.dart';
 
 class Home extends StatefulWidget {
   final String uid;
+
   Home({@required this.uid});
 
   @override

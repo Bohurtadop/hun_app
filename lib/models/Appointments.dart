@@ -9,6 +9,7 @@ enum AppointmentState { available, reserved }
 // This class creates a widget with all active appointments.
 class PendingAppointments extends StatelessWidget {
   const PendingAppointments({@required this.uid});
+
   final String uid;
 
   @override
@@ -87,6 +88,7 @@ class PendingAppointments extends StatelessWidget {
 class AvailableAppointments extends StatelessWidget {
   final String uid;
   final String specialty;
+
   const AvailableAppointments(
       {Key key, @required this.uid, @required this.specialty})
       : super(key: key);
@@ -161,7 +163,7 @@ class AvailableAppointments extends StatelessWidget {
                     state: state,
                     onPressed: () async {
                       debugPrint('[Assign appointment] Before pop() twice');
-                      
+
                       // we go to home page
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
