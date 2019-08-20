@@ -23,12 +23,10 @@ class LoadingState extends State<Loading> {
     );
     nextTime = Timer(
       Duration(seconds: 3),
-      () => setState(
-        () => Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (BuildContext context) => RootPage()),
-          (_) => false,
-        ),
+      () => Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => RootPage()),
+        (_) => false,
       ),
     );
     SystemChannels.textInput.invokeMethod('TextInput.hide');
