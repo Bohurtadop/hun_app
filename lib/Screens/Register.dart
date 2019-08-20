@@ -1,14 +1,18 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
-import 'package:hun_app/auth/auth.dart';
-import 'package:hun_app/auth/auth_provider.dart';
+import 'package:hun_app/Animations/LoggedIn.dart';
+import 'package:hun_app/auth/user_repository.dart';
 import 'package:hun_app/resources/Resources.dart';
 
 GlobalKey pass = GlobalKey();
 GlobalKey passRepeat = GlobalKey();
 
 class Register extends StatefulWidget {
+  final UserRepository _user;
+
+  Register(this._user);
+
   @override
   createState() => RegisterState();
 }
@@ -39,31 +43,39 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
   Future<void> validateAndSubmit() async {
     if (this.validateAndSave()) {
       try {
-        final BaseAuth auth = AuthProvider.of(context).auth;
-        final FirebaseUser user =
-            await auth.createUserWithEmailAndPassword(_emailAddress, _password);
-        print(user.uid);
-
         setState(() {
-          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => LoggedIn()),
+          );
         });
+        await widget._user
+            .signUp(_emailAddress, _password)
+            .then((success) async {
+          if (success) {
+            FirebaseUser user = widget._user.user;
 
-        // email verification
-        await CloudFunctions.instance
-            .getHttpsCallable(functionName: 'update_user_name')
-            .call({
-          'name': '${_firstNameController.text} ${_lastNameController.text}'
-        }).then((dynamic onValue) async {
-          await user.sendEmailVerification();
-          print(onValue);
+            // email verification
+            await CloudFunctions.instance
+                .getHttpsCallable(functionName: 'update_user_name')
+                .call({
+              'name': '${_firstNameController.text} ${_lastNameController.text}'
+            }).then((dynamic onValue) async {
+              await user.sendEmailVerification();
+              print(onValue);
+            });
+            print('Verification email has been sent');
+
+            // user type defining
+            await CloudFunctions.instance
+                .getHttpsCallable(functionName: 'update_user_type')
+                .call({'client': true});
+            print('User type has been updated. The user is a client now.');
+          } else {
+            showToast(
+                context: context, message: 'Error en la creación del usuario.');
+          }
         });
-        print('Verification email has been sent');
-
-        // user type defining
-        await CloudFunctions.instance
-            .getHttpsCallable(functionName: 'update_user_type')
-            .call({'client': true});
-        print('User type has been updated. The user is a client now.');
       } catch (e) {
         print('Error: ${e.toString()}');
       }
@@ -597,6 +609,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                       false,
                       key: 'last name',
                     ),
+                    spaceBetween(5),
                     _textFormField(
                       _emailController,
                       'Email',
@@ -604,6 +617,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                       key: 'email',
                     ),
                     _emailTextField(_emailController, 'Repetir email', false),
+                    spaceBetween(5),
                     _textFormField(
                       _passwordController,
                       'Contraseña',

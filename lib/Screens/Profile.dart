@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hun_app/auth/auth.dart';
-import 'package:hun_app/auth/auth_provider.dart';
-import 'package:hun_app/auth/root_page.dart';
+import 'package:hun_app/auth/user_repository.dart';
 import 'package:hun_app/models/UserInfo.dart';
 import 'package:hun_app/resources/Resources.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   final String uid;
@@ -16,22 +15,6 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> with TickerProviderStateMixin {
-  Future<void> _signOut() async {
-    try {
-      final BaseAuth auth = AuthProvider.of(context).auth;
-      await auth.signOut();
-      setState(
-        () => Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (BuildContext context) => RootPage()),
-          (_) => false,
-        ),
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   void initState() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -97,7 +80,8 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
                       buttonText: "Cerrar sesión",
                       height: MediaQuery.of(context).size.height / 16,
                       width: MediaQuery.of(context).size.width / 2.1,
-                      onPressed: this._signOut,
+                      onPressed: () =>
+                          Provider.of<UserRepository>(context).signOut(),
                     ),
                     spaceBetween(20),
                   ],
