@@ -2,18 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hun_app/Screens/Main.dart';
 
-class LoggedIn extends StatefulWidget {
-  final String uid;
-
-  LoggedIn({@required this.uid});
+class AuthAnimation extends StatefulWidget {
+  AuthAnimation();
 
   @override
-  createState() => LoggedInState();
+  createState() => AuthAnimationState();
 }
 
-class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
+class AuthAnimationState extends State<AuthAnimation>
+    with TickerProviderStateMixin {
   AnimationController rotationController;
   Animation rotationAnimation;
   AnimationController fadeController;
@@ -55,13 +53,7 @@ class LoggedInState extends State<LoggedIn> with TickerProviderStateMixin {
           time = Timer(
             Duration(seconds: 1),
             () => setState(
-              () => Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => MainPage(uid: widget.uid),
-                ),
-                (_) => false,
-              ),
+              () => Navigator.pop(context),
             ),
           );
         }

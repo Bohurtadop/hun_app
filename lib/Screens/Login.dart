@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hun_app/Animations/LoggedIn.dart';
 import 'package:hun_app/Screens/Register.dart';
-import 'package:hun_app/auth/auth.dart';
-import 'package:hun_app/auth/auth_provider.dart';
+import 'package:hun_app/auth/user_repository.dart';
 import 'package:hun_app/resources/Resources.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
 
   String _email;
   String _password;
+  UserRepository _user;
 
   bool validateAndSave() {
     final FormState form = _formKey.currentState;
@@ -26,13 +28,22 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
     return false;
   }
 
-  Future<void> validateAndSubmit() async {
+  Future<void> validateAndSubmit(BuildContext _context) async {
     if (this.validateAndSave()) {
       try {
-        final BaseAuth auth = AuthProvider.of(context).auth;
-        final String userId =
-            await auth.signInWithEmailAndPassword(_email, _password);
-        print(userId);
+        bool success = await this._user.signIn(_email, _password);
+        setState(() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => LoggedIn()),
+          ).then((_) {
+            if (!success)
+              showToast(
+                  context: _context,
+                  message: 'Verifica tus credenciales',
+                  milliseconds: 1000);
+          });
+        });
       } catch (e) {
         print('Error: $e');
       }
@@ -41,11 +52,11 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    SystemChannels.textInput.invokeMethod('TextInput.show');
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+
     super.initState();
   }
 
@@ -137,68 +148,76 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
+    this._user = Provider.of<UserRepository>(context);
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Form(
-            key: this._formKey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    spaceBetween(40),
-                    Hero(tag: 'hunLogo', child: hunLogo(context)),
-                    paddingTitle(context),
-                    spaceBetween(20),
-                    _textFormField('Usuario/Email', false),
-                    spaceBetween(1),
-                    _textFormField('Contraseña', true),
-                    spaceBetween(20),
-                    mainButton(
-                      context: context,
-                      buttonText: 'Iniciar Sesión',
-                      height: MediaQuery.of(context).size.height / 16,
-                      width: MediaQuery.of(context).size.width / 2,
-                      onPressed: this.validateAndSubmit,
-                    ),
-                    spaceBetween(5),
-                    Text(
-                      '¿Es usuario nuevo?',
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height / 39,
-                        fontFamily: 'Ancízar Sans Light',
-                        color: Color(0xff707070),
-                      ),
-                    ),
-                    offTopicButton(
-                      context: context,
-                      buttonText: 'Registrarse',
-                      height: MediaQuery.of(context).size.height / 16,
-                      width: MediaQuery.of(context).size.width / 2.1,
-                      onPressed: () {
-                        _formKey.currentState.reset();
-                        return setState(
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => Register(),
+      body: Builder(
+        builder: (BuildContext context) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Form(
+                  key: this._formKey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          spaceBetween(40),
+                          Hero(tag: 'hunLogo', child: hunLogo(context)),
+                          paddingTitle(context),
+                          spaceBetween(20),
+                          _textFormField('Usuario/Email', false),
+                          spaceBetween(1),
+                          _textFormField('Contraseña', true),
+                          spaceBetween(20),
+                          mainButton(
+                            context: context,
+                            buttonText: 'Iniciar Sesión',
+                            height: MediaQuery.of(context).size.height / 16,
+                            width: MediaQuery.of(context).size.width / 2,
+                            onPressed: () => this.validateAndSubmit(context),
+                          ),
+                          spaceBetween(5),
+                          Text(
+                            '¿Es usuario nuevo?',
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.height / 39,
+                              fontFamily: 'Ancízar Sans Light',
+                              color: Color(0xff707070),
                             ),
                           ),
-                        );
-                      },
-                    ),
-                    spaceBetween(20)
-                  ],
-                )
-              ],
+                          offTopicButton(
+                            context: context,
+                            buttonText: 'Registrarse',
+                            height: MediaQuery.of(context).size.height / 16,
+                            width: MediaQuery.of(context).size.width / 2.1,
+                            onPressed: () {
+                              _formKey.currentState.reset();
+                              return setState(
+                                () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Register(this._user),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          spaceBetween(20)
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
