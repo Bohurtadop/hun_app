@@ -31,6 +31,14 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
   String _emailAddress;
   String _password;
 
+  // Terms of conditions
+  bool _termsOfCond = false;
+
+  void _onTOCChanged(bool value) {
+    setState(() => _termsOfCond = value);
+    debugPrint('[Register] Checkbox state: $value');
+  }
+
   bool validateAndSave() {
     final FormState form = _formKey.currentState;
     if (form.validate()) {
@@ -42,11 +50,23 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
 
   Future<void> validateAndSubmit(BuildContext _context) async {
     if (this.validateAndSave()) {
-      if (_firstNameController.text.isEmpty || _firstNameController.text == null)
-        return showToast(context: _context, message: 'Verifica el nombre que has ingresado');
-      
-      if (_lastNameController.text.isEmpty || _lastNameController.text == null)
-        return showToast(context: _context, message: 'Verifica el nombre que has ingresado');
+      if (!this._termsOfCond) {
+        debugPrint('[Register] User has not accepted TOC: $_termsOfCond');
+        return acceptTOC(context: _context);
+      }
+      if (_firstNameController.text == null ||
+          _firstNameController.text.length < 2)
+        return showToast(
+          context: _context,
+          message: 'Verifica el nombre que has ingresado',
+        );
+
+      if (_lastNameController.text == null ||
+          _lastNameController.text.length < 2)
+        return showToast(
+          context: _context,
+          message: 'Verifica el apellido que has ingresado',
+        );
       try {
         setState(() {
           Navigator.push(
@@ -80,7 +100,10 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
             print('User type has been updated. The user is a client now.');
           } else {
             showToast(
-                context: _context, message: 'Error en la creación del usuario.', milliseconds: 1000);
+              context: _context,
+              message: 'Error en la creación del usuario.',
+              milliseconds: 1000,
+            );
           }
         });
       } catch (e) {
@@ -91,6 +114,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    debugPrint('[Register] Checkbox initial state: $_termsOfCond');
     this._passwordController = TextEditingController();
     this._emailController = TextEditingController();
     this._firstNameController = TextEditingController();
@@ -613,6 +637,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                             false,
                             key: 'first name',
                           ),
+                          spaceBetween(1),
                           _textFormField(
                             _lastNameController,
                             'Apellidos',
@@ -626,6 +651,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                             false,
                             key: 'email',
                           ),
+                          spaceBetween(1),
                           _emailTextField(
                               _emailController, 'Repetir email', false),
                           spaceBetween(5),
@@ -635,11 +661,13 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                             true,
                             key: 'password',
                           ),
+                          spaceBetween(1),
                           _passwordTextField(
                             _passwordController,
                             'Repetir contraseña',
                             true,
                           ),
+                          spaceBetween(2),
                           _tittleTextField('Fecha de nacimiento'),
                           _birthDateField(),
                           spaceBetween(15),
@@ -650,9 +678,14 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                             width: MediaQuery.of(context).size.width / 2,
                             height: MediaQuery.of(context).size.height / 16,
                           ),
-                          spaceBetween(10),
+                          checkBoxWithURL(
+                            context: context,
+                            onChanged: _onTOCChanged,
+                            value: _termsOfCond,
+                            text: toc,
+                          ),
                           Text(
-                            '¿Tiene una cuenta?',
+                            '¿Tienes una cuenta?',
                             style: TextStyle(
                               fontSize: MediaQuery.of(context).size.height / 39,
                               fontFamily: 'Ancízar Sans Light',
