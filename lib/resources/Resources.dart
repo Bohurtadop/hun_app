@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const toc_url =
+    'https://www.termsfeed.com/terms-conditions/dbae561d1d18dc8e23603059836db4bb';
+const toc = 'Al iniciar sesión acepta nuestros términos y condiciones';
 
 void showUnavailableMessage(BuildContext context) {
   showToast(context: context);
@@ -20,6 +25,57 @@ void showToast(
 SizedBox spaceBetween(double space) {
   return SizedBox(
     height: space,
+  );
+}
+
+void acceptTOC({BuildContext context}) {
+  return showToast(
+    context: context,
+    message: 'Debe aceptar los términos y condiciones',
+    milliseconds: 1500,
+  );
+}
+
+Future<bool> launchURL({String url}) async {
+  debugPrint('[Launch URL] url: $url');
+  if (await canLaunch(url)) {
+    bool launched = await launch(url);
+    if (launched) {
+      debugPrint('[Launch URL] url has been launched');
+    } else {
+      debugPrint('[Launch URL] url has NOT been launched');
+    }
+    return Future.value(launched);
+  }
+  debugPrint('[Launch URL] url cannot be launched');
+  return Future.error('Could not launch $url');
+}
+
+Row checkBoxWithURL(
+    {@required BuildContext context,
+    @required void Function(bool) onChanged,
+    @required bool value,
+    @required String text,
+    String url = toc_url}) {
+  return Row(
+    children: <Widget>[
+      Checkbox(
+        onChanged: onChanged,
+        value: value,
+      ),
+      RaisedButton(
+        color: Color(0x00000000),
+        highlightElevation: 0,
+        elevation: 0,
+        onPressed: () => launchURL(url: url),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).size.height / text.length,
+          ),
+        ),
+      ),
+    ],
   );
 }
 
