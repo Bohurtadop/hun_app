@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hun_app/Animations/LoggedIn.dart';
+import 'package:hun_app/Animations/auth_updating.dart';
 import 'package:hun_app/Screens/Register.dart';
 import 'package:hun_app/auth/user_repository.dart';
 import 'package:hun_app/resources/Resources.dart';
@@ -35,7 +35,8 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
         setState(() {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => LoggedIn()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => AuthAnimation()),
           ).then((_) {
             if (!success)
               showToast(

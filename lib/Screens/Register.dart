@@ -1,7 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
-import 'package:hun_app/Animations/LoggedIn.dart';
+import 'package:hun_app/Animations/auth_updating.dart';
 import 'package:hun_app/auth/user_repository.dart';
 import 'package:hun_app/resources/Resources.dart';
 
@@ -40,13 +40,19 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
     return false;
   }
 
-  Future<void> validateAndSubmit() async {
+  Future<void> validateAndSubmit(BuildContext _context) async {
     if (this.validateAndSave()) {
+      if (_firstNameController.text.isEmpty || _firstNameController.text == null)
+        return showToast(context: _context, message: 'Verifica el nombre que has ingresado');
+      
+      if (_lastNameController.text.isEmpty || _lastNameController.text == null)
+        return showToast(context: _context, message: 'Verifica el nombre que has ingresado');
       try {
         setState(() {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => LoggedIn()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => AuthAnimation()),
           );
         });
         await widget._user
@@ -54,6 +60,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
             .then((success) async {
           if (success) {
             FirebaseUser user = widget._user.user;
+            Navigator.pop(context);
 
             // email verification
             await CloudFunctions.instance
@@ -73,7 +80,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
             print('User type has been updated. The user is a client now.');
           } else {
             showToast(
-                context: context, message: 'Error en la creación del usuario.');
+                context: _context, message: 'Error en la creación del usuario.', milliseconds: 1000);
           }
         });
       } catch (e) {
@@ -581,87 +588,94 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Form(
-            key: this._formKey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    spaceBetween(40),
-                    hunLogoAndTittle(context),
-                    darkTitle(title: 'REGISTRO', context: context),
-                    _textFormField(
-                      _firstNameController,
-                      'Nombres',
-                      false,
-                      key: 'first name',
-                    ),
-                    _textFormField(
-                      _lastNameController,
-                      'Apellidos',
-                      false,
-                      key: 'last name',
-                    ),
-                    spaceBetween(5),
-                    _textFormField(
-                      _emailController,
-                      'Email',
-                      false,
-                      key: 'email',
-                    ),
-                    _emailTextField(_emailController, 'Repetir email', false),
-                    spaceBetween(5),
-                    _textFormField(
-                      _passwordController,
-                      'Contraseña',
-                      true,
-                      key: 'password',
-                    ),
-                    _passwordTextField(
-                      _passwordController,
-                      'Repetir contraseña',
-                      true,
-                    ),
-                    _tittleTextField('Fecha de nacimiento'),
-                    _birthDateField(),
-                    spaceBetween(15),
-                    mainButton(
-                      context: context,
-                      buttonText: 'Registrarse',
-                      onPressed: this.validateAndSubmit,
-                      width: MediaQuery.of(context).size.width / 2,
-                      height: MediaQuery.of(context).size.height / 16,
-                    ),
-                    spaceBetween(10),
-                    Text(
-                      '¿Tiene una cuenta?',
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height / 39,
-                        fontFamily: 'Ancízar Sans Light',
-                        color: Color(0xff707070),
-                      ),
-                    ),
-                    offTopicButton(
-                      context: context,
-                      buttonText: 'Iniciar sesión',
-                      height: MediaQuery.of(context).size.height / 16,
-                      width: MediaQuery.of(context).size.width / 2.1,
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    spaceBetween(30)
-                  ],
-                )
-              ],
+      body: Builder(
+        builder: (BuildContext _context) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Form(
+                  key: this._formKey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          spaceBetween(40),
+                          hunLogoAndTittle(context),
+                          darkTitle(title: 'REGISTRO', context: context),
+                          _textFormField(
+                            _firstNameController,
+                            'Nombres',
+                            false,
+                            key: 'first name',
+                          ),
+                          _textFormField(
+                            _lastNameController,
+                            'Apellidos',
+                            false,
+                            key: 'last name',
+                          ),
+                          spaceBetween(5),
+                          _textFormField(
+                            _emailController,
+                            'Email',
+                            false,
+                            key: 'email',
+                          ),
+                          _emailTextField(
+                              _emailController, 'Repetir email', false),
+                          spaceBetween(5),
+                          _textFormField(
+                            _passwordController,
+                            'Contraseña',
+                            true,
+                            key: 'password',
+                          ),
+                          _passwordTextField(
+                            _passwordController,
+                            'Repetir contraseña',
+                            true,
+                          ),
+                          _tittleTextField('Fecha de nacimiento'),
+                          _birthDateField(),
+                          spaceBetween(15),
+                          mainButton(
+                            context: context,
+                            buttonText: 'Registrarse',
+                            onPressed: () => this.validateAndSubmit(_context),
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: MediaQuery.of(context).size.height / 16,
+                          ),
+                          spaceBetween(10),
+                          Text(
+                            '¿Tiene una cuenta?',
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.height / 39,
+                              fontFamily: 'Ancízar Sans Light',
+                              color: Color(0xff707070),
+                            ),
+                          ),
+                          offTopicButton(
+                            context: context,
+                            buttonText: 'Iniciar sesión',
+                            height: MediaQuery.of(context).size.height / 16,
+                            width: MediaQuery.of(context).size.width / 2.1,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          spaceBetween(30)
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

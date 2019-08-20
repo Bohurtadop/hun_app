@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hun_app/Animations/LoggedIn.dart';
+import 'package:hun_app/Animations/auth_updating.dart';
 import 'package:hun_app/Screens/Login.dart';
 import 'package:hun_app/Screens/Main.dart';
 import 'package:hun_app/auth/user_repository.dart';
@@ -14,14 +14,14 @@ class RootPage extends StatelessWidget {
         builder: (context, UserRepository userRepo, _) {
           switch (userRepo.status) {
             case AuthStatus.Uninitialized:
-              return LoggedIn();
+              return AuthAnimation();
             case AuthStatus.Unauthenticated:
             case AuthStatus.Authenticating:
               return Login();
             case AuthStatus.Authenticated:
               return MainPage(uid: userRepo.user.uid);
             default:
-              return LoggedIn();
+              return AuthAnimation();
           }
         },
       ),

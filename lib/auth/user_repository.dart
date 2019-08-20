@@ -22,6 +22,7 @@ class UserRepository with ChangeNotifier {
   FirebaseUser get user => _user;
 
   Future<bool> signIn(String email, String password) async {
+    debugPrint('[User repository] Sign in has been called.');
     try {
       _status = AuthStatus.Authenticating;
       notifyListeners();
@@ -45,21 +46,24 @@ class UserRepository with ChangeNotifier {
   }
 
   Future<bool> signUp(String email, String password) async {
+    debugPrint('[User repository] Sign up has been called.');
     try {
       _status = AuthStatus.Authenticating;
       notifyListeners();
 
       debugPrint('[User repository] Auth status: ${_status.toString()}');
 
-      await _auth.createUserWithEmailAndPassword(
+      await _auth
+          .createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
-
-      debugPrint(
-          '[User repository] Succesful register with email and password.');
-
-      return true;
+      )
+          .then((_) {
+        debugPrint(
+            '[User repository] Succesful register with email and password.');
+        debugPrint('[User repository] User\'s id: ${_user.uid}');
+      });
+      return Future.delayed(Duration(milliseconds: 500), () => true);
     } catch (e) {
       _status = AuthStatus.Unauthenticated;
       notifyListeners();
@@ -72,6 +76,7 @@ class UserRepository with ChangeNotifier {
   }
 
   Future signOut() async {
+    debugPrint('[User repository] Sign out has been called.');
     _auth.signOut();
     _status = AuthStatus.Unauthenticated;
     notifyListeners();
@@ -83,6 +88,8 @@ class UserRepository with ChangeNotifier {
   }
 
   Future<void> _onAuthStateChanged(FirebaseUser firebaseUser) async {
+    debugPrint('[User repository] Auth state listener callback.');
+    debugPrint('[User repository] Previous auth status: ${_status.toString()}');
     debugPrint('[User repository] Auth status has changed.');
 
     if (firebaseUser == null) {
