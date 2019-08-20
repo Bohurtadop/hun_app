@@ -59,6 +59,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
         return showToast(
           context: _context,
           message: 'Verifica el nombre que has ingresado',
+          milliseconds: 1000,
         );
 
       if (_lastNameController.text == null ||
@@ -66,6 +67,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
         return showToast(
           context: _context,
           message: 'Verifica el apellido que has ingresado',
+          milliseconds: 1000,
         );
       try {
         setState(() {
@@ -80,7 +82,6 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
             .then((success) async {
           if (success) {
             FirebaseUser user = widget._user.user;
-            Navigator.pop(context);
 
             // email verification
             await CloudFunctions.instance
@@ -98,6 +99,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 .getHttpsCallable(functionName: 'update_user_type')
                 .call({'client': true});
             print('User type has been updated. The user is a client now.');
+            Navigator.pop(context);
           } else {
             showToast(
               context: _context,

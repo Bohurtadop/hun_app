@@ -31,7 +31,7 @@ SizedBox spaceBetween(double space) {
 void acceptTOC({BuildContext context}) {
   return showToast(
     context: context,
-    message: 'Debe aceptar los términos y condiciones',
+    message: 'Debes aceptar los términos y condiciones',
     milliseconds: 1500,
   );
 }
