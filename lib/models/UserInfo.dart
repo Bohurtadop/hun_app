@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 class UserInfo extends StatelessWidget {
   const UserInfo({this.uid});
+
   final String uid;
 
   @override
@@ -48,9 +49,12 @@ class UserInfo extends StatelessWidget {
                     top: 0,
                     child: Center(
                       child: Text(
-                        '$name',
+                        name,
                         style: new TextStyle(
-                            fontSize: MediaQuery.of(context).size.width / 10,
+                            fontSize: name.length > 10
+                                ? MediaQuery.of(context).size.width /
+                                    name.length
+                                : MediaQuery.of(context).size.width / 10,
                             color: Color(0xFF1266A4),
                             fontFamily: 'Ancízar Sans Bold'),
                       ),
@@ -61,7 +65,7 @@ class UserInfo extends StatelessWidget {
                     top: MediaQuery.of(context).size.width / 9,
                     child: Center(
                       child: Text(
-                        '$userType',
+                        userType,
                         style: new TextStyle(
                           fontSize: MediaQuery.of(context).size.width / 15,
                           fontFamily: 'Ancízar Sans Light',

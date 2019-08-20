@@ -1,13 +1,18 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
-import 'package:hun_app/auth/auth.dart';
-import 'package:hun_app/auth/auth_provider.dart';
+import 'package:hun_app/Animations/auth_updating.dart';
+import 'package:hun_app/auth/user_repository.dart';
+import 'package:hun_app/resources/Resources.dart';
 
 GlobalKey pass = GlobalKey();
 GlobalKey passRepeat = GlobalKey();
 
 class Register extends StatefulWidget {
+  final UserRepository _user;
+
+  Register(this._user);
+
   @override
   createState() => RegisterState();
 }
@@ -35,34 +40,49 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
     return false;
   }
 
-  Future<void> validateAndSubmit() async {
+  Future<void> validateAndSubmit(BuildContext _context) async {
     if (this.validateAndSave()) {
+      if (_firstNameController.text.isEmpty || _firstNameController.text == null)
+        return showToast(context: _context, message: 'Verifica el nombre que has ingresado');
+      
+      if (_lastNameController.text.isEmpty || _lastNameController.text == null)
+        return showToast(context: _context, message: 'Verifica el nombre que has ingresado');
       try {
-        final BaseAuth auth = AuthProvider.of(context).auth;
-        final FirebaseUser user =
-            await auth.createUserWithEmailAndPassword(_emailAddress, _password);
-        print(user.uid);
-
         setState(() {
-          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => AuthAnimation()),
+          );
         });
+        await widget._user
+            .signUp(_emailAddress, _password)
+            .then((success) async {
+          if (success) {
+            FirebaseUser user = widget._user.user;
+            Navigator.pop(context);
 
-        // email verification
-        await CloudFunctions.instance
-            .getHttpsCallable(functionName: 'update_user_name')
-            .call({
-          'name': '${_firstNameController.text} ${_lastNameController.text}'
-        }).then((dynamic onValue) async {
-          await user.sendEmailVerification();
-          print(onValue);
+            // email verification
+            await CloudFunctions.instance
+                .getHttpsCallable(functionName: 'update_user_name')
+                .call({
+              'name': '${_firstNameController.text} ${_lastNameController.text}'
+            }).then((dynamic onValue) async {
+              await user.sendEmailVerification();
+              print(onValue);
+            });
+            print('Verification email has been sent');
+
+            // user type defining
+            await CloudFunctions.instance
+                .getHttpsCallable(functionName: 'update_user_type')
+                .call({'client': true});
+            print('User type has been updated. The user is a client now.');
+          } else {
+            showToast(
+                context: _context, message: 'Error en la creación del usuario.', milliseconds: 1000);
+          }
         });
-        print('Verification email has been sent');
-
-        // user type defining
-        await CloudFunctions.instance
-            .getHttpsCallable(functionName: 'update_user_type')
-            .call({'client': true});
-        print('User type has been updated. The user is a client now.');
       } catch (e) {
         print('Error: ${e.toString()}');
       }
@@ -84,60 +104,6 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
     this._firstNameController.dispose();
     this._lastNameController.dispose();
     super.dispose();
-  }
-
-  _darkTittle(String tittle) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Text(
-        tittle,
-        textDirection: TextDirection.ltr,
-        style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width / 12,
-            fontFamily: 'Ancízar Sans Bold',
-            color: Color(0xff707070)),
-      ),
-    );
-  }
-
-  _spaceBetween(double space) {
-    return SizedBox(
-      height: space,
-    );
-  }
-
-  _hunLogoAndTittle() {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      Hero(
-        tag: 'hunLogo',
-        child: Container(
-          width: MediaQuery.of(context).size.width / 6,
-          height: MediaQuery.of(context).size.width / 6,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage('assets/images/HunLogo1.png')),
-          ),
-        ),
-      ),
-      Padding(
-          padding: EdgeInsets.all(5),
-          child: Row(children: <Widget>[
-            Text('HUN',
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 10,
-                  fontFamily: 'Ancízar Sans Bold',
-                  color: const Color(0xFF1266A4),
-                )),
-            Text('Salud',
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 10,
-                  fontFamily: 'Ancízar Sans Light',
-                  color: const Color(0xFF1266A4),
-                ))
-          ])),
-    ]);
   }
 
   _tittleTextField(String tittle) {
@@ -317,9 +283,10 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                   decoration: InputDecoration(
                     hintText: hintText,
                     hintStyle: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height / 39,
-                        fontFamily: 'Ancízar Sans Light',
-                        color: Color.fromRGBO(158, 158, 158, 1)),
+                      fontSize: MediaQuery.of(context).size.height / 39,
+                      fontFamily: 'Ancízar Sans Light',
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                    ),
                     fillColor: Colors.white,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(style: BorderStyle.none),
@@ -336,9 +303,11 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(
-                        MediaQuery.of(context).size.height / 38),
+                      MediaQuery.of(context).size.height / 38,
+                    ),
                     topRight: Radius.circular(
-                        MediaQuery.of(context).size.height / 38),
+                      MediaQuery.of(context).size.height / 38,
+                    ),
                   ),
                   color: Color(0xffF1F1F1),
                 ),
@@ -346,10 +315,11 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
             ],
           ),
           Positioned(
-              right: 2,
-              width: MediaQuery.of(context).size.height / 19,
-              height: MediaQuery.of(context).size.height / 19,
-              child: _emailIcon),
+            right: 2,
+            width: MediaQuery.of(context).size.height / 19,
+            height: MediaQuery.of(context).size.height / 19,
+            child: _emailIcon,
+          ),
         ],
       ),
     );
@@ -616,71 +586,96 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
     );
   }
 
-  _mainButton(String buttonText, double height, double width) {
-    return Container(
-      child: RaisedButton(
-        onPressed: this.validateAndSubmit,
-        color: Color(0xffFF8800),
-        elevation: 5,
-        highlightElevation: 0,
-        shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.height / 34)),
-        child: Text(
-          buttonText,
-          style: TextStyle(
-              fontSize: MediaQuery.of(context).size.height / 39,
-              color: Colors.white),
-        ),
-      ),
-      height: height,
-      width: width,
-    );
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Form(
-            key: this._formKey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    _spaceBetween(40),
-                    _hunLogoAndTittle(),
-                    _darkTittle('REGISTRO'),
-                    _textFormField(_firstNameController, 'Nombres', false,
-                        key: 'first name'),
-                    _textFormField(_lastNameController, 'Apellidos', false,
-                        key: 'last name'),
-                    _textFormField(_emailController, 'Email', false,
-                        key: 'email'),
-                    _emailTextField(_emailController, 'Repetir email', false),
-                    _textFormField(_passwordController, 'Contraseña', true,
-                        key: 'password'),
-                    _passwordTextField(
-                        _passwordController, 'Repetir contraseña', true),
-                    _tittleTextField('Fecha de nacimiento'),
-                    _birthDateField(),
-                    _spaceBetween(15),
-                    _mainButton(
-                        'Registrarse',
-                        MediaQuery.of(context).size.height / 16,
-                        MediaQuery.of(context).size.width / 2),
-                    _spaceBetween(30)
-                  ],
-                )
-              ],
+      body: Builder(
+        builder: (BuildContext _context) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Form(
+                  key: this._formKey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          spaceBetween(40),
+                          hunLogoAndTittle(context),
+                          darkTitle(title: 'REGISTRO', context: context),
+                          _textFormField(
+                            _firstNameController,
+                            'Nombres',
+                            false,
+                            key: 'first name',
+                          ),
+                          _textFormField(
+                            _lastNameController,
+                            'Apellidos',
+                            false,
+                            key: 'last name',
+                          ),
+                          spaceBetween(5),
+                          _textFormField(
+                            _emailController,
+                            'Email',
+                            false,
+                            key: 'email',
+                          ),
+                          _emailTextField(
+                              _emailController, 'Repetir email', false),
+                          spaceBetween(5),
+                          _textFormField(
+                            _passwordController,
+                            'Contraseña',
+                            true,
+                            key: 'password',
+                          ),
+                          _passwordTextField(
+                            _passwordController,
+                            'Repetir contraseña',
+                            true,
+                          ),
+                          _tittleTextField('Fecha de nacimiento'),
+                          _birthDateField(),
+                          spaceBetween(15),
+                          mainButton(
+                            context: context,
+                            buttonText: 'Registrarse',
+                            onPressed: () => this.validateAndSubmit(_context),
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: MediaQuery.of(context).size.height / 16,
+                          ),
+                          spaceBetween(10),
+                          Text(
+                            '¿Tiene una cuenta?',
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.height / 39,
+                              fontFamily: 'Ancízar Sans Light',
+                              color: Color(0xff707070),
+                            ),
+                          ),
+                          offTopicButton(
+                            context: context,
+                            buttonText: 'Iniciar sesión',
+                            height: MediaQuery.of(context).size.height / 16,
+                            width: MediaQuery.of(context).size.width / 2.1,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          spaceBetween(30)
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
