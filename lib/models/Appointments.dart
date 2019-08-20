@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:hun_app/resources/Resources.dart';
 
 enum AppointmentState { available, reserved }
@@ -249,6 +251,11 @@ class AppointmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // TODO: Display date format as english or spanish
+    initializeDateFormatting();
+    var date = new DateFormat.yMMMEd('es').addPattern('- h:mm a');
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
@@ -319,7 +326,7 @@ class AppointmentWidget extends StatelessWidget {
                   ),
                 // we display where it starts the appointment
                 Text(
-                  dateStart.toString(),
+                  date.format(dateStart),
                   style: TextStyle(
                     color: Colors.black54,
                     fontFamily: 'Ancízar Sans Light',
@@ -328,7 +335,7 @@ class AppointmentWidget extends StatelessWidget {
                 ),
                 // we display where it ends the appointment
                 Text(
-                  dateEnd.toString(),
+                  date.format(dateEnd),
                   style: TextStyle(
                     color: Colors.black54,
                     fontFamily: 'Ancízar Sans Light',
