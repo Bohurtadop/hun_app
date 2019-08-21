@@ -4,6 +4,8 @@ import "package:flutter/material.dart";
 import 'package:hun_app/Animations/auth_updating.dart';
 import 'package:hun_app/auth/user_repository.dart';
 import 'package:hun_app/resources/Resources.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 GlobalKey pass = GlobalKey();
 GlobalKey passRepeat = GlobalKey();
@@ -48,6 +50,32 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
     return false;
   }
 
+  DateTime _birthday = DateTime.now();
+  bool _validDate = false;
+
+  Future<void> _datePicker(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _birthday,
+      firstDate: DateTime.now().subtract(Duration(days: 365 * 100)),
+      lastDate: DateTime.now(),
+    );
+
+    final age = DateTime.now().difference(picked);
+
+    if (picked != null) {
+      setState(() {
+        _birthday = picked;
+        _validDate = age.inDays / 365 >= 18.01;
+      });
+    }
+
+    debugPrint(
+        "[Register] Date selected day: ${_birthday.day} / month: ${_birthday.month} / year: ${_birthday.year}");
+    debugPrint('[Register] Actual age is ${(age.inDays / 365)}');
+    debugPrint('[Register] Is not under 18? ${age.inDays / 365 >= 18.01}');
+  }
+
   Future<void> validateAndSubmit(BuildContext _context) async {
     if (this.validateAndSave()) {
       if (!this._termsOfCond) {
@@ -58,7 +86,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
           _firstNameController.text.length < 2)
         return showToast(
           context: _context,
-          message: 'Verifica el nombre que has ingresado',
+          message: 'Verifica el nombre que has ingresado.',
           milliseconds: 1000,
         );
 
@@ -66,9 +94,17 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
           _lastNameController.text.length < 2)
         return showToast(
           context: _context,
-          message: 'Verifica el apellido que has ingresado',
+          message: 'Verifica el apellido que has ingresado.',
           milliseconds: 1000,
         );
+
+      if (!_validDate) {
+        return showToast(
+          context: _context,
+          message: 'Debes ser mayor de edad para registrarte.',
+          milliseconds: 1000,
+        );
+      }
       try {
         setState(() {
           Navigator.push(
@@ -144,7 +180,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
             style: TextStyle(
                 fontFamily: 'Ancízar Sans Light',
                 color: Color(0xff707070),
-                fontSize: MediaQuery.of(context).size.height / 38),
+                fontSize: MediaQuery.of(context).size.width / 18),
           ),
         ),
       ],
@@ -448,167 +484,29 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
     );
   }
 
-  _birthDateField() {
-    _textFieldDateSmall(
-        TextEditingController controller, String hintText, bool obscureText) {
-      return Container(
-        height: MediaQuery.of(context).size.height / 19,
-        child: Stack(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height / 19,
-                  width: MediaQuery.of(context).size.height / 38,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(
-                        MediaQuery.of(context).size.height / 38,
-                      ),
-                      topLeft: Radius.circular(
-                        MediaQuery.of(context).size.height / 38,
-                      ),
-                    ),
-                    color: Color(0xffF1F1F1),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.height / 19,
-                  height: MediaQuery.of(context).size.height / 19,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Color(0xffF1F1F1),
-                  ),
-                  child: TextFormField(
-                    controller: controller,
-                    maxLength: 2,
-                    keyboardType: TextInputType.numberWithOptions(
-                        decimal: false, signed: false),
-                    obscureText: obscureText,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height / 39,
-                        fontFamily: 'Ancízar Sans Light',
-                        color: Color(0xff707070)),
-                    decoration: InputDecoration(
-                      counterText: '',
-                      hintText: hintText,
-                      hintStyle: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height / 39,
-                          fontFamily: 'Ancízar Sans Light',
-                          color: Color.fromRGBO(158, 158, 158, 1)),
-                      fillColor: Colors.white,
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(style: BorderStyle.none)),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(style: BorderStyle.none),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height / 19,
-                  width: MediaQuery.of(context).size.height / 38,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(
-                        MediaQuery.of(context).size.height / 38,
-                      ),
-                      topRight: Radius.circular(
-                        MediaQuery.of(context).size.height / 38,
-                      ),
-                    ),
-                    color: Color(0xffF1F1F1),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
+  Widget _birthDateField({@required BuildContext innerContext}) {
+    initializeDateFormatting();
+    var date = new DateFormat.yMMMd('es');
 
-    _textFieldDateBig(
-        TextEditingController controller, String hintText, bool obscureText) {
-      return Container(
-        height: MediaQuery.of(context).size.height / 19,
-        child: Stack(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height / 19,
-                  width: MediaQuery.of(context).size.height / 38,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(
-                        MediaQuery.of(context).size.height / 38,
-                      ),
-                      topLeft: Radius.circular(
-                        MediaQuery.of(context).size.height / 38,
-                      ),
-                    ),
-                    color: Color(0xffF1F1F1),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.height / 12,
-                  height: MediaQuery.of(context).size.height / 19,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Color(0xffF1F1F1),
-                  ),
-                  child: TextFormField(
-                      controller: controller,
-                      maxLength: 4,
-                      keyboardType: TextInputType.numberWithOptions(
-                          decimal: false, signed: false),
-                      obscureText: obscureText,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height / 39,
-                          fontFamily: 'Ancízar Sans Light',
-                          color: Color(0xff707070)),
-                      decoration: InputDecoration(
-                          counterText: '',
-                          hintText: hintText,
-                          hintStyle: TextStyle(
-                              fontSize: MediaQuery.of(context).size.height / 39,
-                              fontFamily: 'Ancízar Sans Light',
-                              color: Color.fromRGBO(158, 158, 158, 1)),
-                          fillColor: Colors.white,
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(style: BorderStyle.none)),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(style: BorderStyle.none)))),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height / 19,
-                  width: MediaQuery.of(context).size.height / 38,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(
-                          MediaQuery.of(context).size.height / 38),
-                      topRight: Radius.circular(
-                          MediaQuery.of(context).size.height / 38),
-                    ),
-                    color: Color(0xffF1F1F1),
-                  ),
-                ),
-              ],
+    return GestureDetector(
+      onTap: () => _datePicker(innerContext),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            date.format(_birthday),
+            style: TextStyle(
+              color: _validDate
+                  ? Theme.of(context).primaryColor
+                  : Color(0xffFF5555),
+              fontFamily: 'Ancízar Sans Light',
+              fontSize: MediaQuery.of(context).size.width / 18,
             ),
-          ],
-        ),
-      );
-    }
-
-    return Row(
-      children: <Widget>[
-        _textFieldDateSmall(null, 'DD', false),
-        _textFieldDateSmall(null, 'MM', false),
-        _textFieldDateBig(null, 'AAAA', false),
-      ],
+          ),
+          SizedBox(width: MediaQuery.of(context).size.width / 10),
+          Icon(Icons.calendar_today),
+        ],
+      ),
     );
   }
 
@@ -630,7 +528,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          spaceBetween(40),
+                          spaceBetweenVertical(40),
                           hunLogoAndTittle(context),
                           darkTitle(title: 'REGISTRO', context: context),
                           _textFormField(
@@ -639,40 +537,40 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                             false,
                             key: 'first name',
                           ),
-                          spaceBetween(1),
+                          spaceBetweenVertical(1),
                           _textFormField(
                             _lastNameController,
                             'Apellidos',
                             false,
                             key: 'last name',
                           ),
-                          spaceBetween(5),
+                          spaceBetweenVertical(5),
                           _textFormField(
                             _emailController,
                             'Email',
                             false,
                             key: 'email',
                           ),
-                          spaceBetween(1),
+                          spaceBetweenVertical(1),
                           _emailTextField(
                               _emailController, 'Repetir email', false),
-                          spaceBetween(5),
+                          spaceBetweenVertical(5),
                           _textFormField(
                             _passwordController,
                             'Contraseña',
                             true,
                             key: 'password',
                           ),
-                          spaceBetween(1),
+                          spaceBetweenVertical(1),
                           _passwordTextField(
                             _passwordController,
                             'Repetir contraseña',
                             true,
                           ),
-                          spaceBetween(2),
+                          spaceBetweenVertical(2),
                           _tittleTextField('Fecha de nacimiento'),
-                          _birthDateField(),
-                          spaceBetween(15),
+                          _birthDateField(innerContext: _context),
+                          spaceBetweenVertical(15),
                           mainButton(
                             context: context,
                             buttonText: 'Registrarse',
@@ -684,7 +582,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                             context: context,
                             onChanged: _onTOCChanged,
                             value: _termsOfCond,
-                            text: toc,
+                            text: toc_sign_up,
                           ),
                           Text(
                             '¿Tienes una cuenta?',
@@ -701,7 +599,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                             width: MediaQuery.of(context).size.width / 2.1,
                             onPressed: () => Navigator.pop(context),
                           ),
-                          spaceBetween(30)
+                          spaceBetweenVertical(30)
                         ],
                       )
                     ],
