@@ -56,25 +56,25 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    spaceBetween(40),
+                    spaceBetweenVertical(40),
                     hunLogoAndTittle(context),
                     _profilePhoto(),
                     UserInfo(uid: widget.uid),
-                    spaceBetween(10),
+                    spaceBetweenVertical(10),
                     mainButton(
                       context: context,
                       buttonText: "Editar datos",
                       height: MediaQuery.of(context).size.height / 16,
                       width: MediaQuery.of(context).size.width / 2,
                     ),
-                    spaceBetween(5),
+                    spaceBetweenVertical(5),
                     mainButton(
                       context: context,
                       buttonText: "Mi historia clínica",
                       height: MediaQuery.of(context).size.height / 16,
                       width: MediaQuery.of(context).size.width / 2,
                     ),
-                    spaceBetween(10),
+                    spaceBetweenVertical(10),
                     offTopicButton(
                       context: context,
                       buttonText: "Cerrar sesión",
@@ -83,7 +83,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
                       onPressed: () =>
                           Provider.of<UserRepository>(context).signOut(),
                     ),
-                    spaceBetween(20),
+                    spaceBetweenVertical(20),
                   ],
                 ),
               ),

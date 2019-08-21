@@ -180,14 +180,14 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          spaceBetween(40),
+                          spaceBetweenVertical(40),
                           Hero(tag: 'hunLogo', child: hunLogo(context)),
                           paddingTitle(context),
-                          spaceBetween(20),
+                          spaceBetweenVertical(20),
                           _textFormField('Usuario/Email', false),
-                          spaceBetween(1),
+                          spaceBetweenVertical(1),
                           _textFormField('Contraseña', true),
-                          spaceBetween(10),
+                          spaceBetweenVertical(10),
                           mainButton(
                             context: context,
                             buttonText: 'Iniciar Sesión',
@@ -199,7 +199,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                             context: context,
                             onChanged: _onTOCChanged,
                             value: _termsOfCond,
-                            text: toc,
+                            text: toc_sign_in,
                           ),
                           Text(
                             '¿Eres un usuario nuevo?',
@@ -225,7 +225,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                               );
                             },
                           ),
-                          spaceBetween(20)
+                          spaceBetweenVertical(20)
                         ],
                       )
                     ],

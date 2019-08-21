@@ -3,7 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 const toc_url =
     'https://www.termsfeed.com/terms-conditions/dbae561d1d18dc8e23603059836db4bb';
-const toc = 'Al iniciar sesión acepta nuestros términos y condiciones';
+const toc_sign_in = 'Al iniciar sesión aceptas nuestros términos y condiciones';
+const toc_sign_up = 'Al crear tu cuenta aceptas nuestros términos y condiciones';
 
 void showUnavailableMessage(BuildContext context) {
   showToast(context: context);
@@ -22,7 +23,7 @@ void showToast(
   );
 }
 
-SizedBox spaceBetween(double space) {
+SizedBox spaceBetweenVertical(double space) {
   return SizedBox(
     height: space,
   );

@@ -55,7 +55,7 @@ class Specialties extends StatelessWidget {
             for (var i = 0; i < length; i++) {
               specialties.insert(
                 2 * i,
-                Container(child: spaceBetween(20)),
+                Container(child: spaceBetweenVertical(20)),
               );
               debugPrint('\nSpace inserted at: ${2 * i}');
             }

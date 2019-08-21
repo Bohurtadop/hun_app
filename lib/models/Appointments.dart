@@ -72,7 +72,7 @@ class PendingAppointments extends StatelessWidget {
             for (var i = 0; i < length; i++) {
               appointments.insert(
                 2 * i + 1,
-                Container(child: spaceBetween(20)),
+                Container(child: spaceBetweenVertical(20)),
               );
               debugPrint('\nSpace inserted at: ${2 * i + 1}');
             }
@@ -203,7 +203,7 @@ class AvailableAppointments extends StatelessWidget {
             for (var i = 0; i < length; i++) {
               appointments.insert(
                 2 * i,
-                Container(child: spaceBetween(20)),
+                Container(child: spaceBetweenVertical(20)),
               );
               debugPrint('\nSpace inserted at: ${2 * i}');
             }

@@ -51,14 +51,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            spaceBetween(50),
+            spaceBetweenVertical(50),
             hunLogoAndTittle(context),
-            spaceBetween(30),
+            spaceBetweenVertical(30),
             UserInfo(uid: widget.uid),
             darkTitle(title: 'PRÓXIMAS CITAS', context: context),
             PendingAppointments(uid: widget.uid),
             _endText(),
-            spaceBetween(20)
+            spaceBetweenVertical(20)
           ],
         ),
       ),
