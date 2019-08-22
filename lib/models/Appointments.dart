@@ -170,15 +170,16 @@ class AvailableAppointments extends StatelessWidget {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
 
+                      const function_name = 'assign_appointment';
                       var parameters = {
                         'specialty': specialty,
                         'appointment': document.documentID
                       };
 
                       debugPrint(
-                          '[Assign appointment] Before calling the firebase function "assign_appointment" with parameters $parameters');
+                          '[Assign appointment] Before calling the firebase function $function_name with parameters $parameters');
                       await CloudFunctions.instance
-                          .getHttpsCallable(functionName: 'assign_appointment')
+                          .getHttpsCallable(functionName: function_name)
                           .call(parameters)
                           .then((HttpsCallableResult value) {
                         //Value returned
