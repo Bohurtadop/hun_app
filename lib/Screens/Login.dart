@@ -44,19 +44,20 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
       }
 
       try {
-        bool success = await this._user.signIn(_email, _password);
-        setState(() {
+        setState(() async {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => AuthAnimation()),
-          ).then((_) {
-            if (!success)
-              showToast(
-                  context: _context,
-                  message: 'Verifica tus credenciales',
-                  milliseconds: 1000);
-          });
+              builder: (BuildContext context) => AuthAnimation(),
+            ),
+          );
+          bool success = await this._user.signIn(_email, _password);
+          if (!success)
+            showToast(
+              context: _context,
+              message: 'Verifica tus credenciales',
+              milliseconds: 1000,
+            );
         });
       } catch (e) {
         print('Error: $e');
