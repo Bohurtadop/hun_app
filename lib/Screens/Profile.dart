@@ -59,7 +59,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
                     spaceBetweenVertical(40),
                     hunLogoAndTittle(context),
                     _profilePhoto(),
-                    UserInfo(uid: widget.uid),
+                    UserInfo(uid: widget.uid, birthday: true),
                     spaceBetweenVertical(10),
                     mainButton(
                       context: context,

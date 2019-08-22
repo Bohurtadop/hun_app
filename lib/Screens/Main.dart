@@ -24,6 +24,9 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     this._page = widget.initialPage ?? 0;
     _pageController = PageController(initialPage: this._page);
+    debugPrint(
+      '[Main Page] Page controller has been initialized in page: $_page',
+    );
     super.initState();
   }
 
