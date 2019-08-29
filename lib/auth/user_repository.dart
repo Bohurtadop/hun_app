@@ -63,7 +63,7 @@ class UserRepository with ChangeNotifier {
             '[User repository] Succesful register with email and password.');
         debugPrint('[User repository] User\'s id: ${_user.uid}');
       });
-      return Future.delayed(Duration(milliseconds: 500), () => true);
+      return Future.delayed(Duration(milliseconds: 200), () => true);
     } catch (e) {
       _status = AuthStatus.Unauthenticated;
       notifyListeners();

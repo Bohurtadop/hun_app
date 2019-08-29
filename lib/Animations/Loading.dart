@@ -80,7 +80,7 @@ class LoadingState extends State<Loading> {
                             ),
                           ),
                         ),
-                        spaceBetween(10),
+                        spaceBetweenVertical(10),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 1.7,
                           height: MediaQuery.of(context).size.width / 8,

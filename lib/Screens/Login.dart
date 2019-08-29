@@ -44,19 +44,20 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
       }
 
       try {
-        bool success = await this._user.signIn(_email, _password);
-        setState(() {
+        setState(() async {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => AuthAnimation()),
-          ).then((_) {
-            if (!success)
-              showToast(
-                  context: _context,
-                  message: 'Verifica tus credenciales',
-                  milliseconds: 1000);
-          });
+              builder: (BuildContext context) => AuthAnimation(),
+            ),
+          );
+          bool success = await this._user.signIn(_email, _password);
+          if (!success)
+            showToast(
+              context: _context,
+              message: 'Verifica tus credenciales',
+              milliseconds: 1000,
+            );
         });
       } catch (e) {
         print('Error: $e');
@@ -180,14 +181,14 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          spaceBetween(40),
+                          spaceBetweenVertical(40),
                           Hero(tag: 'hunLogo', child: hunLogo(context)),
                           paddingTitle(context),
-                          spaceBetween(20),
+                          spaceBetweenVertical(20),
                           _textFormField('Usuario/Email', false),
-                          spaceBetween(1),
+                          spaceBetweenVertical(1),
                           _textFormField('Contraseña', true),
-                          spaceBetween(10),
+                          spaceBetweenVertical(10),
                           mainButton(
                             context: context,
                             buttonText: 'Iniciar Sesión',
@@ -199,7 +200,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                             context: context,
                             onChanged: _onTOCChanged,
                             value: _termsOfCond,
-                            text: toc,
+                            text: toc_sign_in,
                           ),
                           Text(
                             '¿Eres un usuario nuevo?',
@@ -225,7 +226,7 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                               );
                             },
                           ),
-                          spaceBetween(20)
+                          spaceBetweenVertical(20)
                         ],
                       )
                     ],
