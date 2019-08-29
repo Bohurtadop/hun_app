@@ -19,6 +19,14 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
   String _password;
   UserRepository _user;
 
+  // Terms of conditions
+  bool _termsOfCond = false;
+
+  void _onTOCChanged(bool value) {
+    setState(() => _termsOfCond = value);
+    debugPrint('[Login] Checkbox state: $value');
+  }
+
   bool validateAndSave() {
     final FormState form = _formKey.currentState;
     if (form.validate()) {
@@ -30,20 +38,26 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
 
   Future<void> validateAndSubmit(BuildContext _context) async {
     if (this.validateAndSave()) {
+      if (!this._termsOfCond) {
+        debugPrint('[Login] User has not accepted TOC: $_termsOfCond');
+        return acceptTOC(context: _context);
+      }
+
       try {
-        bool success = await this._user.signIn(_email, _password);
-        setState(() {
+        setState(() async {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => AuthAnimation()),
-          ).then((_) {
-            if (!success)
-              showToast(
-                  context: _context,
-                  message: 'Verifica tus credenciales',
-                  milliseconds: 1000);
-          });
+              builder: (BuildContext context) => AuthAnimation(),
+            ),
+          );
+          bool success = await this._user.signIn(_email, _password);
+          if (!success)
+            showToast(
+              context: _context,
+              message: 'Verifica tus credenciales',
+              milliseconds: 1000,
+            );
         });
       } catch (e) {
         print('Error: $e');
@@ -53,11 +67,11 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    debugPrint('[Login] Checkbox initial state: $_termsOfCond');
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-
     super.initState();
   }
 
@@ -167,14 +181,14 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          spaceBetween(40),
+                          spaceBetweenVertical(40),
                           Hero(tag: 'hunLogo', child: hunLogo(context)),
                           paddingTitle(context),
-                          spaceBetween(20),
+                          spaceBetweenVertical(20),
                           _textFormField('Usuario/Email', false),
-                          spaceBetween(1),
+                          spaceBetweenVertical(1),
                           _textFormField('Contraseña', true),
-                          spaceBetween(20),
+                          spaceBetweenVertical(10),
                           mainButton(
                             context: context,
                             buttonText: 'Iniciar Sesión',
@@ -182,9 +196,14 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                             width: MediaQuery.of(context).size.width / 2,
                             onPressed: () => this.validateAndSubmit(context),
                           ),
-                          spaceBetween(5),
+                          checkBoxWithURL(
+                            context: context,
+                            onChanged: _onTOCChanged,
+                            value: _termsOfCond,
+                            text: toc_sign_in,
+                          ),
                           Text(
-                            '¿Es usuario nuevo?',
+                            '¿Eres un usuario nuevo?',
                             style: TextStyle(
                               fontSize: MediaQuery.of(context).size.height / 39,
                               fontFamily: 'Ancízar Sans Light',
@@ -198,18 +217,16 @@ class LoginState extends State<Login> with TickerProviderStateMixin {
                             width: MediaQuery.of(context).size.width / 2.1,
                             onPressed: () {
                               _formKey.currentState.reset();
-                              return setState(
-                                () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Register(this._user),
-                                  ),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Register(this._user),
                                 ),
                               );
                             },
                           ),
-                          spaceBetween(20)
+                          spaceBetweenVertical(20)
                         ],
                       )
                     ],

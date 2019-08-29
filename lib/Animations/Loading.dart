@@ -23,12 +23,10 @@ class LoadingState extends State<Loading> {
     );
     nextTime = Timer(
       Duration(seconds: 3),
-      () => setState(
-        () => Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (BuildContext context) => RootPage()),
-          (_) => false,
-        ),
+      () => Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => RootPage()),
+        (_) => false,
       ),
     );
     SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -82,7 +80,7 @@ class LoadingState extends State<Loading> {
                             ),
                           ),
                         ),
-                        spaceBetween(10),
+                        spaceBetweenVertical(10),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 1.7,
                           height: MediaQuery.of(context).size.width / 8,
