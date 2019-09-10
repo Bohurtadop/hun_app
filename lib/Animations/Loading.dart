@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hun_app/auth/root_page.dart';
+import 'package:hun_app/resources/Resources.dart';
 
 class Loading extends StatefulWidget {
   @override
-  createState() =>  LoadingState();
+  createState() => LoadingState();
 }
 
 class LoadingState extends State<Loading> {
@@ -15,74 +17,26 @@ class LoadingState extends State<Loading> {
 
   @override
   void initState() {
-    fadeTime =  Timer(
+    fadeTime = Timer(
       Duration(seconds: 2),
       () => setState(() => firstStateEnabled = false),
     );
-    nextTime =  Timer(
+    nextTime = Timer(
       Duration(seconds: 3),
-      () => setState(
-        () => Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (BuildContext context) => RootPage()),
-          (_) => false,
-        ),
+      () => Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => RootPage()),
+        (_) => false,
       ),
     );
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
   }
 
-  _hunLogo() {
-    return Container(
-      width: MediaQuery.of(context).size.width / 1.9,
-      height: MediaQuery.of(context).size.width / 1.9,
-      decoration:  BoxDecoration(
-        shape: BoxShape.rectangle,
-        image:  DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage('assets/images/HunLogo1.png'),
-        ),
-      ),
-    );
-  }
-
-  _paddingTitle() {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: Row(
-        children: <Widget>[
-          Text(
-            'HUN',
-            style:  TextStyle(
-              fontSize: MediaQuery.of(context).size.height / 12,
-              fontFamily: 'Ancízar Sans Bold',
-              color: const Color(0xFF1266A4),
-            ),
-          ),
-          Text(
-            'Salud',
-            style:  TextStyle(
-              fontSize: MediaQuery.of(context).size.height / 12,
-              fontFamily: 'Ancízar Sans Light',
-              color: const Color(0xFF1266A4),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  _spaceBetween(double space) {
-    return SizedBox(
-      height: space,
-    );
-  }
-
   _sansTittle(String tittle) {
     return Text(
       tittle,
-      style:  TextStyle(
+      style: TextStyle(
         fontSize: MediaQuery.of(context).size.width / 18,
         fontFamily: 'Ancízar Sans Regular',
         color: const Color(0xFF1266A4),
@@ -93,7 +47,7 @@ class LoadingState extends State<Loading> {
   _serifTittle(String tittle) {
     return Text(
       tittle,
-      style:  TextStyle(
+      style: TextStyle(
         fontSize: MediaQuery.of(context).size.width / 20,
         fontFamily: 'Ancízar Serif Regular',
         color: const Color(0xFF1266A4),
@@ -118,15 +72,15 @@ class LoadingState extends State<Loading> {
                         Container(
                           width: MediaQuery.of(context).size.width / 1.9,
                           height: MediaQuery.of(context).size.width / 1.9,
-                          decoration:  BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
-                            image:  DecorationImage(
+                            image: DecorationImage(
                               fit: BoxFit.fill,
                               image: AssetImage('assets/images/HunLogo3.png'),
                             ),
                           ),
                         ),
-                        _spaceBetween(10),
+                        spaceBetweenVertical(10),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 1.7,
                           height: MediaQuery.of(context).size.width / 8,
@@ -166,8 +120,8 @@ class LoadingState extends State<Loading> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Hero(tag: 'hunLogo', child: _hunLogo()),
-                            _paddingTitle(),
+                            Hero(tag: 'hunLogo', child: hunLogo(context)),
+                            paddingTitle(context),
                           ],
                         ),
                       ],

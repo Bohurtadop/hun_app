@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class UserInfo extends StatelessWidget {
-  const UserInfo({this.uid});
+  const UserInfo({this.uid, this.birthday = false});
+
   final String uid;
+  final bool birthday;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,10 @@ class UserInfo extends StatelessWidget {
             DocumentSnapshot userDocument = snapshot.data;
             String name = userDocument['displayName'];
 
+            initializeDateFormatting();
+            var date = new DateFormat.yMMMEd('es');
+            DateTime birthday = userDocument['birthday'].toDate();
+
             var type = userDocument['type'];
 
             String userType;
@@ -48,28 +56,46 @@ class UserInfo extends StatelessWidget {
                     top: 0,
                     child: Center(
                       child: Text(
-                        '$name',
+                        name,
                         style: new TextStyle(
-                            fontSize: MediaQuery.of(context).size.width / 10,
-                            color: Color(0xFF1266A4),
-                            fontFamily: 'Ancízar Sans Bold'),
+                          fontSize: name.length > 10
+                              ? MediaQuery.of(context).size.width / name.length
+                              : MediaQuery.of(context).size.width / 10,
+                          color: Color(0xFF1266A4),
+                          fontFamily: 'Ancízar Sans Bold',
+                        ),
                       ),
                     ),
                   ),
                   Positioned(
                     width: MediaQuery.of(context).size.width / 1.5,
-                    top: MediaQuery.of(context).size.width / 9,
+                    top: MediaQuery.of(context).size.width / 15,
                     child: Center(
                       child: Text(
-                        '$userType',
+                        userType,
                         style: new TextStyle(
-                          fontSize: MediaQuery.of(context).size.width / 15,
+                          fontSize: MediaQuery.of(context).size.width / 20,
                           fontFamily: 'Ancízar Sans Light',
                           color: Color(0xff9E9E9E),
                         ),
                       ),
                     ),
                   ),
+                  if (this.birthday && birthday != null)
+                    Positioned(
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      top: MediaQuery.of(context).size.width / 8,
+                      child: Center(
+                        child: Text(
+                          date.format(birthday),
+                          style: new TextStyle(
+                            fontSize: MediaQuery.of(context).size.width / 20,
+                            fontFamily: 'Ancízar Sans Light',
+                            color: Theme.of(context).accentColor,
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             );
