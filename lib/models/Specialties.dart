@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hun_app/Screens/ChooseAppointment.dart';
+import 'package:hun_app/auth/user_repository.dart';
 import 'package:hun_app/resources/Resources.dart';
+import 'package:provider/provider.dart';
 
 class Specialties extends StatelessWidget {
-  final String uid;
-
-  const Specialties({Key key, @required this.uid}) : super(key: key);
+  const Specialties({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,6 @@ class Specialties extends StatelessWidget {
 
               return Container(
                 child: SpecialtyWidget(
-                  uid: uid,
                   key: Key(document.documentID),
                   name: name,
                   assetRute: assetRoute,
@@ -75,12 +74,9 @@ class SpecialtyWidget extends StatelessWidget {
     @required Key key,
     @required this.name,
     @required this.assetRute,
-    @required this.uid,
   }) : super(key: key);
   final String name;
   final String assetRute;
-
-  final String uid;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +89,6 @@ class SpecialtyWidget extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (BuildContext context) => ChooseAppointment(
-              uid: uid,
               specialty:
                   //we obtain the specialty id from the key
                   key.toString().substring(3, key.toString().length - 3),

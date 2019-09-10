@@ -19,7 +19,7 @@ class RootPage extends StatelessWidget {
             case AuthStatus.Authenticating:
               return Login();
             case AuthStatus.Authenticated:
-              return MainPage(uid: userRepo.user.uid);
+              return MainPage();
             default:
               return AuthAnimation();
           }

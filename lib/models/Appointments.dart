@@ -2,24 +2,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hun_app/auth/user_repository.dart';
 import 'package:hun_app/resources/Resources.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 enum AppointmentState { available, reserved }
 
 // This class creates a widget with all active appointments.
 class PendingAppointments extends StatelessWidget {
-  const PendingAppointments({@required this.uid});
-
-  final String uid;
+  const PendingAppointments();
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collectionGroup('appointments')
-          .where('client', isEqualTo: this.uid)
+          .where(
+            'client',
+            isEqualTo: Provider.of<UserRepository>(context).user.uid,
+          )
           .where('state', isGreaterThanOrEqualTo: 1)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -88,11 +91,9 @@ class PendingAppointments extends StatelessWidget {
 }
 
 class AvailableAppointments extends StatelessWidget {
-  final String uid;
   final String specialty;
 
-  const AvailableAppointments(
-      {Key key, @required this.uid, @required this.specialty})
+  const AvailableAppointments({Key key, @required this.specialty})
       : super(key: key);
 
   @override
