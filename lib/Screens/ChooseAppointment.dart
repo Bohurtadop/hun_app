@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hun_app/models/Specialties.dart';
+import 'package:hun_app/models/Appointments.dart';
 import 'package:hun_app/resources/Resources.dart';
 
-class SetSpeciality extends StatefulWidget {
-  SetSpeciality();
+class ChooseAppointment extends StatefulWidget {
+  final String specialty;
+
+  ChooseAppointment({@required this.specialty});
 
   @override
-  createState() => SetSpecialityState();
+  createState() => ChooseAppointmentState();
 }
 
-class SetSpecialityState extends State<SetSpeciality>
+class ChooseAppointmentState extends State<ChooseAppointment>
     with TickerProviderStateMixin {
   @override
   void initState() {
@@ -22,12 +24,12 @@ class SetSpecialityState extends State<SetSpeciality>
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
       body: SingleChildScrollView(
-        child: Specialties(),
+        child: AvailableAppointments(specialty: widget.specialty),
       ),
-      appBar: appBar(context: context, text: 'Seleccione la especialidad'),
+      appBar: appBar(context: context, text: 'Seleccione la cita deseada'),
       floatingActionButton: floatingActionButton(
         context: context,
-        icon: Icons.close,
+        icon: Icons.arrow_back,
         onPressed: () => Navigator.of(context).pop(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,

@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:hun_app/Animations/LoggedIn.dart';
-import 'auth_provider.dart';
+import 'package:hun_app/Animations/auth_updating.dart';
 import 'package:hun_app/Screens/Login.dart';
-import 'auth.dart';
+import 'package:hun_app/Screens/Main.dart';
+import 'package:hun_app/auth/user_repository.dart';
+import 'package:provider/provider.dart';
 
 class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final BaseAuth auth = AuthProvider.of(context).auth;
-    return StreamBuilder<String>(
-      stream: auth.onAuthChanged,
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          final bool isLoggedIn = snapshot.hasData;
-          return isLoggedIn ? LoggedIn(snapshot.data) : Login();
-        }
-        return _buildWaitingScreen();
-      },
-    );
-  }
-
-  Widget _buildWaitingScreen() {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
+    return ChangeNotifierProvider(
+      builder: (_) => UserRepository.instance(),
+      child: Consumer(
+        builder: (context, UserRepository userRepo, _) {
+          switch (userRepo.status) {
+            case AuthStatus.Uninitialized:
+              return AuthAnimation();
+            case AuthStatus.Unauthenticated:
+            case AuthStatus.Authenticating:
+              return Login();
+            case AuthStatus.Authenticated:
+              return MainPage();
+            default:
+              return AuthAnimation();
+          }
+        },
       ),
     );
   }
