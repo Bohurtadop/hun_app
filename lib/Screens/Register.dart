@@ -229,7 +229,7 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
             style: TextStyle(
                 fontFamily: 'Ancízar Sans Light',
                 color: Color(0xff707070),
-                fontSize: MediaQuery.of(context).size.width / 18),
+                fontSize: MediaQuery.of(context).size.width / 22),
           ),
         ),
       ],
@@ -273,42 +273,6 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                       shape: BoxShape.rectangle,
                       color: Color(0xffF1F1F1),
                     ),
-                    child: TextFormField(
-                      key: key != '' ? Key(key) : null,
-                      onSaved: (String value) {
-                        if (!obscureText && key == 'email') {
-                          _emailAddress =
-                              _emailController.text == value ? value : null;
-                        } else if (obscureText && key == 'password') {
-                          _password =
-                              _passwordController.text == value ? value : null;
-                        }
-                      },
-                      validator: null,
-                      controller: controller,
-                      obscureText: obscureText,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height / 39,
-                        fontFamily: 'Ancízar Sans Light',
-                        color: Color(0xff707070),
-                      ),
-                      decoration: InputDecoration(
-                        hintText: hintText,
-                        hintStyle: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height / 39,
-                          fontFamily: 'Ancízar Sans Light',
-                          color: Color.fromRGBO(158, 158, 158, 1),
-                        ),
-                        fillColor: Colors.white,
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(style: BorderStyle.none),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(style: BorderStyle.none),
-                        ),
-                      ),
-                    ),
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height / 19,
@@ -325,6 +289,48 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+              Positioned(
+                left: MediaQuery.of(context).size.height / 38,
+                top: MediaQuery.of(context).size.height / 150,
+                width: MediaQuery.of(context).size.width / 2.2,
+                height: MediaQuery.of(context).size.height / 19,
+                child: TextFormField(
+                  key: key != '' ? Key(key) : null,
+                  onSaved: (String value) {
+                    if (!obscureText && key == 'email') {
+                      _emailAddress =
+                      _emailController.text == value ? value : null;
+                    } else if (obscureText && key == 'password') {
+                      _password =
+                      _passwordController.text == value ? value : null;
+                    }
+                  },
+                  validator: null,
+                  controller: controller,
+                  obscureText: obscureText,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.height / 39,
+                    fontFamily: 'Ancízar Sans Light',
+                    color: Color(0xff707070),
+                  ),
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height / 39,
+                      fontFamily: 'Ancízar Sans Light',
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                    ),
+                    fillColor: Colors.white,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         )
@@ -365,48 +371,6 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
-                child: TextField(
-                  onChanged: (String email) {
-                    setState(() {
-                      if (controller.text == email) {
-                        this._emailIcon = Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                        );
-                      } else {
-                        this._emailIcon = Icon(
-                          Icons.cancel,
-                          color: Colors.red,
-                        );
-                      }
-                      if (email == '') {
-                        this._emailIcon = Icon(null);
-                      }
-                    });
-                  },
-                  obscureText: obscureText,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.height / 39,
-                    fontFamily: 'Ancízar Sans Light',
-                    color: Color(0xff707070),
-                  ),
-                  decoration: InputDecoration(
-                    hintText: hintText,
-                    hintStyle: TextStyle(
-                      fontSize: MediaQuery.of(context).size.height / 39,
-                      fontFamily: 'Ancízar Sans Light',
-                      color: Color.fromRGBO(158, 158, 158, 1),
-                    ),
-                    fillColor: Colors.white,
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(style: BorderStyle.none),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(style: BorderStyle.none),
-                    ),
-                  ),
-                ),
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 19,
@@ -424,6 +388,54 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 ),
               ),
             ],
+          ),
+          Positioned(
+            left: MediaQuery.of(context).size.height / 38,
+            top: MediaQuery.of(context).size.height / 150,
+            width: MediaQuery.of(context).size.width / 2.2,
+            height: MediaQuery.of(context).size.height / 19,
+            child: TextField(
+              onChanged: (String email) {
+                setState(() {
+                  if (controller.text == email) {
+                    this._emailIcon = Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                    );
+                  } else {
+                    this._emailIcon = Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                    );
+                  }
+                  if (email == '') {
+                    this._emailIcon = Icon(null);
+                  }
+                });
+              },
+              obscureText: obscureText,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.height / 39,
+                fontFamily: 'Ancízar Sans Light',
+                color: Color(0xff707070),
+              ),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: TextStyle(
+                  fontSize: MediaQuery.of(context).size.height / 39,
+                  fontFamily: 'Ancízar Sans Light',
+                  color: Color.fromRGBO(158, 158, 158, 1),
+                ),
+                fillColor: Colors.white,
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(style: BorderStyle.none),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(style: BorderStyle.none),
+                ),
+              ),
+            ),
           ),
           Positioned(
             right: 2,
@@ -467,46 +479,6 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                   shape: BoxShape.rectangle,
                   color: Color(0xffF1F1F1),
                 ),
-                child: TextField(
-                  onChanged: (String password) {
-                    setState(() {
-                      if (controller.text == password) {
-                        _passIcon = Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                        );
-                      } else {
-                        _passIcon = Icon(
-                          Icons.cancel,
-                          color: Colors.red,
-                        );
-                      }
-                      if (password == '') {
-                        _passIcon = Icon(null);
-                      }
-                    });
-                  },
-                  obscureText: obscureText,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.height / 39,
-                      fontFamily: 'Ancízar Sans Light',
-                      color: Color(0xff707070)),
-                  decoration: InputDecoration(
-                    hintText: hintText,
-                    hintStyle: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height / 39,
-                        fontFamily: 'Ancízar Sans Light',
-                        color: Color.fromRGBO(158, 158, 158, 1)),
-                    fillColor: Colors.white,
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(style: BorderStyle.none),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(style: BorderStyle.none),
-                    ),
-                  ),
-                ),
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 19,
@@ -522,6 +494,52 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                 ),
               ),
             ],
+          ),
+          Positioned(
+            left: MediaQuery.of(context).size.height / 38,
+            top: MediaQuery.of(context).size.height / 150,
+            width: MediaQuery.of(context).size.width / 2.2,
+            height: MediaQuery.of(context).size.height / 19,
+            child: TextField(
+              onChanged: (String password) {
+                setState(() {
+                  if (controller.text == password) {
+                    _passIcon = Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                    );
+                  } else {
+                    _passIcon = Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                    );
+                  }
+                  if (password == '') {
+                    _passIcon = Icon(null);
+                  }
+                });
+              },
+              obscureText: obscureText,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.height / 39,
+                  fontFamily: 'Ancízar Sans Light',
+                  color: Color(0xff707070)),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: TextStyle(
+                    fontSize: MediaQuery.of(context).size.height / 39,
+                    fontFamily: 'Ancízar Sans Light',
+                    color: Color.fromRGBO(158, 158, 158, 1)),
+                fillColor: Colors.white,
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(style: BorderStyle.none),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(style: BorderStyle.none),
+                ),
+              ),
+            ),
           ),
           Positioned(
               right: 2,
@@ -549,11 +567,11 @@ class RegisterState extends State<Register> with TickerProviderStateMixin {
                   ? Theme.of(context).primaryColor
                   : Color(0xffFF5555),
               fontFamily: 'Ancízar Sans Light',
-              fontSize: MediaQuery.of(context).size.width / 18,
+              fontSize: MediaQuery.of(context).size.width / 22,
             ),
           ),
           SizedBox(width: MediaQuery.of(context).size.width / 10),
-          Icon(Icons.calendar_today),
+          Icon(Icons.event),
         ],
       ),
     );
