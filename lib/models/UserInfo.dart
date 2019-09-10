@@ -1,20 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hun_app/auth/user_repository.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class UserInfo extends StatelessWidget {
-  const UserInfo({this.uid, this.birthday = false});
-
-  final String uid;
+  const UserInfo({this.birthday = false});
   final bool birthday;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream:
-          Firestore.instance.collection('users').document(this.uid).snapshots(),
+      stream: Firestore.instance
+          .collection('users')
+          .document(Provider.of<UserRepository>(context).user.uid)
+          .snapshots(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {

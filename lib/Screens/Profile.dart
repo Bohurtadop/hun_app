@@ -6,9 +6,7 @@ import 'package:hun_app/resources/Resources.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
-  final String uid;
-
-  Profile({@required this.uid});
+  Profile();
 
   @override
   createState() => ProfileState();
@@ -59,7 +57,7 @@ class ProfileState extends State<Profile> with TickerProviderStateMixin {
                     spaceBetweenVertical(40),
                     hunLogoAndTittle(context),
                     _profilePhoto(),
-                    UserInfo(uid: widget.uid, birthday: true),
+                    UserInfo(birthday: true),
                     spaceBetweenVertical(10),
                     mainButton(
                       context: context,

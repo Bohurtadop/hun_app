@@ -5,10 +5,6 @@ import 'package:hun_app/models/UserInfo.dart';
 import 'package:hun_app/resources/Resources.dart';
 
 class Home extends StatefulWidget {
-  final String uid;
-
-  Home({@required this.uid});
-
   @override
   createState() => HomeState();
 }
@@ -54,9 +50,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             spaceBetweenVertical(50),
             hunLogoAndTittle(context),
             spaceBetweenVertical(30),
-            UserInfo(uid: widget.uid),
+            UserInfo(),
             darkTitle(title: 'PRÓXIMAS CITAS', context: context),
-            PendingAppointments(uid: widget.uid),
+            PendingAppointments(),
             _endText(),
             spaceBetweenVertical(20)
           ],

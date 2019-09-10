@@ -4,9 +4,7 @@ import 'package:hun_app/models/Specialties.dart';
 import 'package:hun_app/resources/Resources.dart';
 
 class SetSpeciality extends StatefulWidget {
-  final String uid;
-
-  SetSpeciality(this.uid);
+  SetSpeciality();
 
   @override
   createState() => SetSpecialityState();
@@ -24,7 +22,7 @@ class SetSpecialityState extends State<SetSpeciality>
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
       body: SingleChildScrollView(
-        child: Specialties(uid: widget.uid),
+        child: Specialties(),
       ),
       appBar: appBar(context: context, text: 'Seleccione la especialidad'),
       floatingActionButton: floatingActionButton(

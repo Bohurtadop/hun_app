@@ -6,10 +6,9 @@ import 'package:hun_app/Screens/SetSpeciality.dart';
 import 'package:hun_app/resources/Resources.dart';
 
 class MainPage extends StatefulWidget {
-  final String uid;
   final int initialPage;
 
-  MainPage({this.uid, this.initialPage = 0});
+  MainPage({this.initialPage = 0});
 
   @override
   createState() => MainPageState();
@@ -86,7 +85,7 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => SetSpeciality(widget.uid),
+        builder: (BuildContext context) => SetSpeciality(),
       ),
     );
   }
@@ -101,8 +100,8 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
               controller: this._pageController,
               onPageChanged: this._onPageChanged,
               children: <Widget>[
-                Home(uid: widget.uid),
-                Profile(uid: widget.uid),
+                Home(),
+                Profile(),
               ],
             ),
             floatingActionButton: floatingActionButton(
