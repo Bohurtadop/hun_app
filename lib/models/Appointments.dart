@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hun_app/resources/Resources.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 enum AppointmentState { available, reserved }
 
 // This class creates a widget with all active appointments.
-class ActiveAppointments extends StatelessWidget {
-  const ActiveAppointments({@required this.uid});
+class PendingAppointments extends StatelessWidget {
+  const PendingAppointments({@required this.uid});
+
   final String uid;
 
   @override
@@ -27,7 +32,7 @@ class ActiveAppointments extends StatelessWidget {
               return Text('No se pudieron obtener sus citas');
             }
 
-            debugPrint('********\nAppointments:\n+++++++');
+            debugPrint('--------\nAppointments:\n\n+++++++');
 
             // we save the appointments' widgets in a list
             List<Container> appointments = snapshot.data.documents.map(
@@ -44,10 +49,11 @@ class ActiveAppointments extends StatelessWidget {
                 debugPrint('State: ${state.toString()}');
                 debugPrint('Start: ${dateStart.toString()}');
                 debugPrint('End: ${dateEnd.toString()}');
-                debugPrint('+++++++');
+                debugPrint('+++++++\n');
 
                 return Container(
                   child: AppointmentWidget(
+                    key: Key(document.documentID),
                     type: appointmentType,
                     dateStart: dateStart,
                     dateEnd: dateEnd,
@@ -66,15 +72,150 @@ class ActiveAppointments extends StatelessWidget {
             for (var i = 0; i < length; i++) {
               appointments.insert(
                 2 * i + 1,
-                Container(child: SizedBox(height: 20)),
+                Container(child: spaceBetweenVertical(20)),
               );
               debugPrint('\nSpace inserted at: ${2 * i + 1}');
             }
 
             debugPrint(
-                '\nWidgets to be displayed: ${appointments.length}\n--------');
+                '\nWidgets to be displayed: ${appointments.length}\n--------\n');
 
             return Column(children: appointments);
+        }
+      },
+    );
+  }
+}
+
+class AvailableAppointments extends StatelessWidget {
+  final String uid;
+  final String specialty;
+
+  const AvailableAppointments(
+      {Key key, @required this.uid, @required this.specialty})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: Firestore.instance
+          .collection('/specialties/$specialty/appointments')
+          .where('state', isEqualTo: 0)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+          default:
+            if (snapshot.data.documents.length == 0 || !snapshot.hasData) {
+              return Text(
+                'No hay citas disponibles',
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 18,
+                  fontFamily: 'Ancízar Sans Light',
+                  color: Color(0xFF1266A4),
+                ),
+              );
+            }
+            debugPrint('--------\nAvailable appointments:\n\n+++++++');
+
+            // we save the appointments' widgets in a list
+            List<Container> appointments = snapshot.data.documents.map(
+              (DocumentSnapshot document) {
+                AppointmentState state =
+                    AppointmentState.values[document['state']];
+                String appointmentType = document['type'];
+                DateTime dateStart = document['start'].toDate();
+                DateTime dateEnd = document['end'].toDate();
+                String doctorName = document['doctor_name'];
+
+                const int max_length = 23;
+
+                // we limit the amount of character of the doctor's name (avoid out bounds)
+                if (doctorName.length > max_length) {
+                  List<String> subNames = doctorName.split(' ');
+                  doctorName = '';
+                  for (var str in subNames) {
+                    doctorName = doctorName.length + str.length > max_length
+                        ? doctorName
+                        : doctorName.isEmpty ? str : '$doctorName $str';
+                  }
+                }
+
+                debugPrint('Appointment id: ${document.documentID}');
+                debugPrint('Type: $appointmentType');
+                debugPrint('Doctor\'s id: ${document['doctor']}');
+                debugPrint('Doctor\'s name: $doctorName');
+                debugPrint('State: ${state.toString()}');
+                debugPrint('Start: ${dateStart.toString()}');
+                debugPrint('End: ${dateEnd.toString()}');
+                debugPrint('+++++++\n');
+
+                return Container(
+                  child: AppointmentWidget(
+                    key: Key(document.documentID),
+                    doctorName: doctorName,
+                    actionName: 'Reservar',
+                    iconAction: Icons.add,
+                    type: appointmentType,
+                    dateStart: dateStart,
+                    showDoctor: true,
+                    dateEnd: dateEnd,
+                    state: state,
+                    onPressed: () async {
+                      debugPrint('[Assign appointment] Before pop() twice');
+
+                      // we go to home page
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+
+                      const function_name = 'assign_appointment';
+                      var parameters = {
+                        'specialty': specialty,
+                        'appointment': document.documentID
+                      };
+
+                      debugPrint(
+                          '[Assign appointment] Before calling the firebase function $function_name with parameters $parameters');
+                      await CloudFunctions.instance
+                          .getHttpsCallable(functionName: function_name)
+                          .call(parameters)
+                          .then((HttpsCallableResult value) {
+                        //Value returned
+                        debugPrint('[Assign appointment] Value: ${value.data}');
+
+                        debugPrint('[Assign appointment] Success \n\n');
+                      }).catchError((error) {
+                        debugPrint('[Assign appointment] Error: $error \n\n');
+                      });
+                    },
+                  ),
+                );
+              },
+            ).toList();
+
+            int length = appointments.length + 1;
+
+            debugPrint('Specialties: ${length - 1}');
+            debugPrint('Space(s) to be inserted: $length');
+
+            // We add spaces between appointments
+            for (var i = 0; i < length; i++) {
+              appointments.insert(
+                2 * i,
+                Container(child: spaceBetweenVertical(20)),
+              );
+              debugPrint('\nSpace inserted at: ${2 * i}');
+            }
+
+            debugPrint(
+                '\nWidgets to be displayed: ${appointments.length}\n--------\n');
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: appointments,
+            );
         }
       },
     );
@@ -87,18 +228,34 @@ class AppointmentWidget extends StatelessWidget {
     @required this.type,
     @required this.dateStart,
     @required this.dateEnd,
-    this.state,
+    this.onPressed,
+    this.doctorName,
+    this.showDoctor = false,
+    this.actionName = 'Cancelar',
+    this.iconAction = Icons.cancel,
+    this.state = AppointmentState.reserved,
   }) : super(key: key);
 
   final String type;
+  final bool showDoctor;
+  final String doctorName;
   final DateTime dateStart;
   final DateTime dateEnd;
+
+  // Action methods
+  final String actionName;
+  final IconData iconAction;
+  final void Function() onPressed;
 
   // TODO: show the state of the appointment
   final AppointmentState state;
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Display date format as english or spanish
+    initializeDateFormatting();
+    var date = new DateFormat.yMMMEd('es').addPattern('- h:mm a');
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
@@ -158,9 +315,18 @@ class AppointmentWidget extends StatelessWidget {
                     fontSize: MediaQuery.of(context).size.width / 18,
                   ),
                 ),
+                if (this.showDoctor)
+                  Text(
+                    this.doctorName,
+                    style: TextStyle(
+                      color: Color(0xff1266A4),
+                      fontFamily: 'Ancízar Sans Bold',
+                      fontSize: MediaQuery.of(context).size.width / 18,
+                    ),
+                  ),
                 // we display where it starts the appointment
                 Text(
-                  dateStart.toString(),
+                  date.format(dateStart),
                   style: TextStyle(
                     color: Colors.black54,
                     fontFamily: 'Ancízar Sans Light',
@@ -169,7 +335,7 @@ class AppointmentWidget extends StatelessWidget {
                 ),
                 // we display where it ends the appointment
                 Text(
-                  dateEnd.toString(),
+                  date.format(dateEnd),
                   style: TextStyle(
                     color: Colors.black54,
                     fontFamily: 'Ancízar Sans Light',
@@ -178,64 +344,34 @@ class AppointmentWidget extends StatelessWidget {
                 )
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: RaisedButton(
-                    disabledColor: Colors.white,
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.event,
-                          color: Color(0xff1266A4),
-                          size: MediaQuery.of(context).size.width / 12,
-                        ),
-                        Text(
-                          'Reagendar',
-                          style: TextStyle(
-                            color: Color(0xff1266A4),
-                            fontFamily: 'Ancízar Sans Light',
-                            fontSize: MediaQuery.of(context).size.width / 29,
-                          ),
-                        )
-                      ],
+            Container(
+              child: RaisedButton(
+                disabledColor: Colors.white,
+                color: Colors.white,
+                padding: EdgeInsets.all(0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      this.iconAction,
+                      color: Color(0xff1266A4),
+                      size: MediaQuery.of(context).size.width / 12,
                     ),
-                    onPressed: null,
-                  ),
-                  height: MediaQuery.of(context).size.width / 7,
-                  width: MediaQuery.of(context).size.width / 7,
+                    Text(
+                      this.actionName,
+                      style: TextStyle(
+                        color: Color(0xff1266A4),
+                        fontFamily: 'Ancízar Sans Light',
+                        fontSize: MediaQuery.of(context).size.width / 29,
+                      ),
+                    )
+                  ],
                 ),
-                Container(
-                  child: RaisedButton(
-                    disabledColor: Colors.white,
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.cancel,
-                          color: Color(0xff1266A4),
-                          size: MediaQuery.of(context).size.width / 12,
-                        ),
-                        Text(
-                          'Cancelar',
-                          style: TextStyle(
-                            color: Color(0xff1266A4),
-                            fontFamily: 'Ancízar Sans Light',
-                            fontSize: MediaQuery.of(context).size.width / 29,
-                          ),
-                        )
-                      ],
-                    ),
-                    onPressed: null,
-                  ),
-                  height: MediaQuery.of(context).size.width / 8,
-                  width: MediaQuery.of(context).size.width / 8,
-                ),
-              ],
+                onPressed:
+                    this.onPressed ?? () => showUnavailableMessage(context),
+              ),
+              height: MediaQuery.of(context).size.width / 8,
+              width: MediaQuery.of(context).size.width / 8,
             )
           ],
         ),

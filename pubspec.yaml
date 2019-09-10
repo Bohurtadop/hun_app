@@ -14,7 +14,7 @@ description: A new Flutter application for National University.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -23,6 +23,15 @@ dependencies:
   firebase_auth: ^0.11.0
   cloud_firestore: ^0.12.9
   cloud_functions: ^0.3.0
+  
+  # Languages (date, strings)
+  intl: ^0.15.8
+
+  # Auth
+  provider: ^3.0.0+1
+
+  # URLs, email, phone and sms
+  url_launcher: ^5.1.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
