@@ -24,8 +24,7 @@ class ChooseAppointmentState extends State<ChooseAppointment>
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
       body: SingleChildScrollView(
-        child:
-            AvailableAppointments(specialty: widget.specialty),
+        child: AvailableAppointments(specialty: widget.specialty),
       ),
       appBar: appBar(context: context, text: 'Seleccione la cita deseada'),
       floatingActionButton: floatingActionButton(
