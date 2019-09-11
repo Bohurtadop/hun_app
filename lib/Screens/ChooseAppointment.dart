@@ -26,7 +26,12 @@ class ChooseAppointmentState extends State<ChooseAppointment>
       body: SingleChildScrollView(
         child: AvailableAppointments(specialty: widget.specialty),
       ),
-      appBar: appBar(context: context, text: 'Seleccione la cita deseada'),
+      appBar: appBar(
+        context: context,
+        text: 'Seleccione la cita deseada',
+        asset: 'assets/images/HunLogo2.png',
+        color: Colors.white.value
+      ),
       floatingActionButton: floatingActionButton(
         context: context,
         icon: Icons.arrow_back,
