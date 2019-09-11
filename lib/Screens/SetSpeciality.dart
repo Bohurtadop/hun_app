@@ -24,7 +24,12 @@ class SetSpecialityState extends State<SetSpeciality>
       body: SingleChildScrollView(
         child: Specialties(),
       ),
-      appBar: appBar(context: context, text: 'Seleccione la especialidad'),
+      appBar: appBar(
+        context: context,
+        text: 'Seleccione la especialidad',
+        asset: 'assets/images/HunLogo2.png',
+        color: Colors.white.value
+      ),
       floatingActionButton: floatingActionButton(
         context: context,
         icon: Icons.close,

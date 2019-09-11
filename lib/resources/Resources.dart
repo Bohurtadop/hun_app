@@ -81,7 +81,8 @@ Row checkBoxWithURL(
   );
 }
 
-Row hunLogoAndTittle(BuildContext context) {
+Row hunLogoAndTittle(BuildContext context,
+    {String asset = 'assets/images/HunLogo1.png', int color = 0xFF1266A4}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
@@ -94,7 +95,7 @@ Row hunLogoAndTittle(BuildContext context) {
             shape: BoxShape.rectangle,
             image: DecorationImage(
               fit: BoxFit.fill,
-              image: AssetImage('assets/images/HunLogo1.png'),
+              image: AssetImage(asset),
             ),
           ),
         ),
@@ -108,7 +109,7 @@ Row hunLogoAndTittle(BuildContext context) {
               style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width / 9,
                 fontFamily: 'Ancízar Sans Bold',
-                color: const Color(0xFF1266A4),
+                color: Color(color),
               ),
             ),
             Text(
@@ -116,7 +117,7 @@ Row hunLogoAndTittle(BuildContext context) {
               style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width / 9,
                 fontFamily: 'Ancízar Sans Light',
-                color: const Color(0xFF1266A4),
+                color: Color(color),
               ),
             )
           ],
@@ -239,7 +240,8 @@ Container offTopicButton(
   );
 }
 
-AppBar appBar({@required BuildContext context, @required String text}) {
+AppBar appBar(
+    {@required BuildContext context, @required String text, String asset, int color}) {
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Color(0xff1266A4),
@@ -250,7 +252,9 @@ AppBar appBar({@required BuildContext context, @required String text}) {
         bottomRight: Radius.circular(MediaQuery.of(context).size.width / 18),
       ),
     ),
-    title: hunLogoAndTittle(context),
+    title: asset != null && color != null
+        ? hunLogoAndTittle(context, asset: asset, color: color)
+        : hunLogoAndTittle(context),
     bottom: PreferredSize(
       child: Container(
         alignment: Alignment.center,
