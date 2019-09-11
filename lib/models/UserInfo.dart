@@ -50,7 +50,7 @@ class UserInfo extends StatelessWidget {
 
             return SizedBox(
               width: MediaQuery.of(context).size.width / 1.5,
-              height: MediaQuery.of(context).size.width / 5,
+              height: MediaQuery.of(context).size.width / 4,
               child: Stack(
                 children: <Widget>[
                   Positioned(
@@ -74,7 +74,7 @@ class UserInfo extends StatelessWidget {
                     top: MediaQuery.of(context).size.width / 15,
                     child: Center(
                       child: Text(
-                        userType,
+                        '\n$userType',
                         style: new TextStyle(
                           fontSize: MediaQuery.of(context).size.width / 20,
                           fontFamily: 'Ancízar Sans Light',
@@ -89,7 +89,7 @@ class UserInfo extends StatelessWidget {
                       top: MediaQuery.of(context).size.width / 8,
                       child: Center(
                         child: Text(
-                          date.format(birthday),
+                          '\n${date.format(birthday)}',
                           style: new TextStyle(
                             fontSize: MediaQuery.of(context).size.width / 20,
                             fontFamily: 'Ancízar Sans Light',
